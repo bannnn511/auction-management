@@ -41,11 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
     }
   );
-  User.associate = function (models) {
-    User.hasMany(models.Comment, {
-      as: 'comments',
-      foreignKey: 'userId',
-    });
-  };
+  // User.associate = function (models) {
+  //   User.hasMany(models.Comment, {
+  //     as: 'comments',
+  //     foreignKey: 'userId',
+  //   });
+  // };
   return User;
 };

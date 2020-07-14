@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon src/app.js",
     "db:migrate:status": "npx sequelize db:migrate:status",
-    "db:migrate": "npx sequelize db:create intern-project && npx sequelize-cli db:migrate",
+    "db:migrate": "npx sequelize db:create auctionDB && npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
     "db:generate:migrations": "timestamp=\"$(($(date +'%s * 1000 + %-N / 1000000')))\" && fileName=\"$timestamp-$desc\" && npx makemigration --name=\"$fileName\""
   },
