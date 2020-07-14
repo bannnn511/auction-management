@@ -36,6 +36,12 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: 'created_at',
       }
     );
+    Products.associate = (models) => {
+        Products.hasMany(models.CategoryManagement, {
+          as: 'CategoryManagement',
+          foreignKey: 'productId',
+        });
+      }
     return Products;
   };
   

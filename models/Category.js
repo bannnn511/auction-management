@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: "updated_at",
       createdAt: "created_at",
 		}
-	);
+  );
+  Category.associate = (models) => {
+    Category.hasMany(models.CategoryManagement, {
+      as: 'CategoryManagement',
+      foreignKey: 'categoryId',
+    });
+  }
 	return Category;
 };
