@@ -1,6 +1,6 @@
 import { User, Comment } from '../../../models';
 import { getUserByEmail } from './business';
-import { sequelizeUser } from './user.sequelize';
+import { serializeUser } from './user.serialize';
 
 export async function getAllUsers(req, res, next) {
   // const users = await User.findAll({});

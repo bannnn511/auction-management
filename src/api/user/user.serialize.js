@@ -1,4 +1,4 @@
-export function sequelizeUser(doc) {
+export function serializeUser(doc) {
   return {
     id: doc.id,
     email: doc.email,
