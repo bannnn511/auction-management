@@ -9,18 +9,18 @@ var Sequelize = require('sequelize');
  * createTable "auctionManagements", deps: []
  * createTable "buyers", deps: []
  * createTable "category", deps: []
- * createTable "category_management", deps: []
- * createTable "favorite", deps: []
  * createTable "products", deps: []
- * createTable "rating", deps: []
+ * createTable "ratings", deps: []
  * createTable "users", deps: []
+ * createTable "categoryManagment", deps: [category, products]
+ * createTable "favorites", deps: [buyers, products]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "1594722976000-update-db",
-    "created": "2020-07-14T10:36:17.288Z",
+    "name": "1594783868000-change-models-field",
+    "created": "2020-07-15T03:31:09.775Z",
     "comment": ""
 };
 
@@ -39,11 +39,11 @@ var migrationCommands = function(transaction) {
                     },
                     "userId": {
                         "type": Sequelize.UUID,
-                        "field": "userId"
+                        "field": "user_id"
                     },
                     "productId": {
                         "type": Sequelize.UUID,
-                        "field": "productId"
+                        "field": "product_id"
                     },
                     "price": {
                         "type": Sequelize.FLOAT,
@@ -79,11 +79,11 @@ var migrationCommands = function(transaction) {
                     },
                     "userId": {
                         "type": Sequelize.UUID,
-                        "field": "userId"
+                        "field": "user_id"
                     },
                     "productId": {
                         "type": Sequelize.UUID,
-                        "field": "productId"
+                        "field": "product_id"
                     },
                     "description": {
                         "type": Sequelize.TEXT,
@@ -112,7 +112,7 @@ var migrationCommands = function(transaction) {
                 {
                     "userId": {
                         "type": Sequelize.UUID,
-                        "field": "userId",
+                        "field": "user_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
@@ -147,15 +147,15 @@ var migrationCommands = function(transaction) {
                     "isSeller": {
                         "type": Sequelize.BOOLEAN,
                         "defaultValue": false,
-                        "field": "isSeller"
+                        "field": "is_seller"
                     },
                     "plusPoint": {
                         "type": Sequelize.INTEGER,
-                        "field": "plusPoint"
+                        "field": "plus_point"
                     },
                     "minusPoint": {
                         "type": Sequelize.INTEGER,
-                        "field": "minusPoint"
+                        "field": "minus_point"
                     },
                     "created_at": {
                         "type": Sequelize.DATE,
@@ -180,79 +180,13 @@ var migrationCommands = function(transaction) {
                 {
                     "categoryId": {
                         "type": Sequelize.UUID,
-                        "field": "categoryId",
+                        "field": "category_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
                     "categoryName": {
                         "type": Sequelize.STRING,
-                        "field": "categoryName"
-                    },
-                    "created_at": {
-                        "type": Sequelize.DATE,
-                        "field": "created_at",
-                        "allowNull": false
-                    },
-                    "updated_at": {
-                        "type": Sequelize.DATE,
-                        "field": "updated_at",
-                        "allowNull": false
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "category_management",
-                {
-                    "categoryId": {
-                        "type": Sequelize.UUID,
-                        "field": "categoryId",
-                        "defaultValue": Sequelize.UUIDV4,
-                        "primaryKey": true
-                    },
-                    "productId": {
-                        "type": Sequelize.UUID,
-                        "field": "productId",
-                        "defaultValue": Sequelize.UUIDV4,
-                        "primaryKey": true
-                    },
-                    "created_at": {
-                        "type": Sequelize.DATE,
-                        "field": "created_at",
-                        "allowNull": false
-                    },
-                    "updated_at": {
-                        "type": Sequelize.DATE,
-                        "field": "updated_at",
-                        "allowNull": false
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "favorite",
-                {
-                    "userId": {
-                        "type": Sequelize.UUID,
-                        "field": "userId",
-                        "defaultValue": Sequelize.UUIDV4,
-                        "primaryKey": true
-                    },
-                    "productId": {
-                        "type": Sequelize.UUID,
-                        "field": "productId",
-                        "unique": true,
-                        "defaultValue": Sequelize.UUIDV4
+                        "field": "category_name"
                     },
                     "created_at": {
                         "type": Sequelize.DATE,
@@ -277,31 +211,31 @@ var migrationCommands = function(transaction) {
                 {
                     "productId": {
                         "type": Sequelize.UUID,
-                        "field": "productId",
+                        "field": "product_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
                     "productName": {
                         "type": Sequelize.TEXT,
                         "allowNull": false,
-                        "field": "productName"
+                        "field": "product_name"
                     },
                     "imgURL": {
                         "type": Sequelize.TEXT,
-                        "field": "imgUrl"
+                        "field": "img_url"
                     },
                     "currentPrice": {
                         "type": Sequelize.FLOAT,
                         "allowNull": false,
-                        "field": "currentPrice"
+                        "field": "current_price"
                     },
                     "buyNowPrice": {
                         "type": Sequelize.FLOAT,
-                        "field": "buyNowPrice"
+                        "field": "buy_now_price"
                     },
                     "endAt": {
                         "type": Sequelize.DATE,
-                        "field": "endAt"
+                        "field": "end_at"
                     },
                     "created_at": {
                         "type": Sequelize.DATE,
@@ -322,23 +256,23 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
-                "rating",
+                "ratings",
                 {
                     "userID": {
                         "type": Sequelize.UUID,
-                        "field": "userID",
+                        "field": "user_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
                     "ratedUserId": {
                         "type": Sequelize.UUID,
-                        "field": "ratedUserId",
+                        "field": "rated_user_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
                     "productID": {
                         "type": Sequelize.UUID,
-                        "field": "productID",
+                        "field": "product_id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
@@ -350,9 +284,9 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.INTEGER,
                         "field": "point"
                     },
-                    "createdAt": {
+                    "created_at": {
                         "type": Sequelize.DATE,
-                        "field": "createdAt",
+                        "field": "created_at",
                         "allowNull": false
                     },
                     "updated_at": {
@@ -413,6 +347,116 @@ var migrationCommands = function(transaction) {
                     "transaction": transaction
                 }
             ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "categoryManagment",
+                {
+                    "categoryId": {
+                        "type": Sequelize.UUID,
+                        "field": "category_id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "productId": {
+                        "type": Sequelize.UUID,
+                        "field": "product_id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    },
+                    "category_id": {
+                        "type": Sequelize.UUID,
+                        "field": "category_id",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "category",
+                            "key": "category_id"
+                        },
+                        "allowNull": true
+                    },
+                    "product_id": {
+                        "type": Sequelize.UUID,
+                        "field": "product_id",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "products",
+                            "key": "product_id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "favorites",
+                {
+                    "userId": {
+                        "type": Sequelize.UUID,
+                        "field": "user_id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "productId": {
+                        "type": Sequelize.UUID,
+                        "field": "product_id",
+                        "unique": true,
+                        "defaultValue": Sequelize.UUIDV4
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    },
+                    "user_id": {
+                        "type": Sequelize.UUID,
+                        "field": "user_id",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "buyers",
+                            "key": "user_id"
+                        },
+                        "allowNull": true
+                    },
+                    "product_id": {
+                        "type": Sequelize.UUID,
+                        "field": "product_id",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "products",
+                            "key": "product_id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
         }
     ];
 };
@@ -443,13 +487,13 @@ var rollbackCommands = function(transaction) {
         },
         {
             fn: "dropTable",
-            params: ["category_management", {
+            params: ["categoryManagment", {
                 transaction: transaction
             }]
         },
         {
             fn: "dropTable",
-            params: ["favorite", {
+            params: ["favorites", {
                 transaction: transaction
             }]
         },
@@ -461,7 +505,7 @@ var rollbackCommands = function(transaction) {
         },
         {
             fn: "dropTable",
-            params: ["rating", {
+            params: ["ratings", {
                 transaction: transaction
             }]
         },

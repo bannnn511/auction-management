@@ -6,22 +6,24 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        field: 'category_id',
       },
       categoryName: {
         type: DataTypes.STRING,
+        field: 'category_name',
       },
     },
     {
-      tableName: "category",
-      updatedAt: "updated_at",
-      createdAt: "created_at",
-		}
+      tableName: 'category',
+      updatedAt: 'updated_at',
+      createdAt: 'created_at',
+    }
   );
   Category.associate = (models) => {
     Category.hasMany(models.CategoryManagement, {
-      as: 'CategoryManagement',
-      foreignKey: 'categoryId',
+      as: 'categoryManagement',
+      foreignKey: 'category_id',
     });
-  }
-	return Category;
+  };
+  return Category;
 };

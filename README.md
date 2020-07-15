@@ -24,7 +24,7 @@ npm start
 Generate migrations from Sequelize models
 
 ```bash
-desc=<description-for-migration> npm run db:generate:migrations
+desc=<description> npm run db:generate:migrations
 ```
 
 Check migration status
