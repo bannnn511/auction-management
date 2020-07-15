@@ -5,19 +5,16 @@ module.exports = (sequelize, DataTypes) => {
       userID: {
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         field: 'user_id',
       },
       ratedUserId: {
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         field: 'rated_user_id',
       },
       productID: {
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         field: 'product_id',
       },
       description: {
@@ -35,5 +32,20 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
     }
   );
+
+  Rating.associate = (models) => {
+    Rating.belongsTo(models.AuctionManagement, {
+      as: 'auctionManagements',
+      foreignKey: 'user_id',
+    });
+  };
+
+  Rating.associate = (models) => {
+    Rating.belongsTo(models.AuctionManagement, {
+      as: 'auctionManagements',
+      foreignKey: 'product_id',
+    });
+  };
+
   return Rating;
 };

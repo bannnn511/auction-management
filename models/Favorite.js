@@ -5,12 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         field: 'user_id',
       },
       productId: {
+        primaryKey: true,
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         unique: true,
         field: 'product_id',
       },
@@ -23,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Favorite.associate = (models) => {
-    Favorite.belongsTo(models.Buyer, {
+    Favorite.belongsTo(models.Buyers, {
       as: 'buyers',
       foreignKey: 'user_id',
     });

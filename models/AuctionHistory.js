@@ -3,10 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     'AuctionHistory',
     {
       userId: {
+        primaryKey: true,
         type: DataTypes.UUID,
         field: 'user_id',
       },
       productId: {
+        primaryKey: true,
         type: DataTypes.UUID,
         field: 'product_id',
       },
@@ -21,6 +23,20 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
     }
   );
+
+  AuctionHistory.associate = (models) => {
+    AuctionHistory.belongsTo(models.AuctionManagement, {
+      as: 'auctionManagements',
+      foreignKey: 'user_id',
+    });
+  };
+
+  AuctionHistory.associate = (models) => {
+    AuctionHistory.belongsTo(models.AuctionManagement, {
+      as: 'auctionManagements',
+      foreignKey: 'product_id',
+    });
+  };
 
   return AuctionHistory;
 };

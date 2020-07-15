@@ -50,5 +50,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'product_id',
     });
   };
+
+  Products.associate = (models) => {
+    Products.hasMany(models.AuctionManagement, {
+      as: 'auctionManagements',
+      foreignKey: 'product_id',
+    });
+  };
+
   return Products;
 };

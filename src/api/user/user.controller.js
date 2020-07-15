@@ -33,5 +33,5 @@ export async function createNewUser(req, res, next) {
 
   // await user.save();
 
-  res.status(201).json({ user: sequelizeUser(user) });
+  res.status(201).json({ user: serializeUser(user) });
 }

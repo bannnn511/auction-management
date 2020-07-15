@@ -58,9 +58,17 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
     }
   );
+
   Buyers.associate = (models) => {
     Buyers.hasMany(models.Favorite, {
       as: 'favorites',
+      foreignKey: 'user_id',
+    });
+  };
+
+  Buyers.associate = (models) => {
+    Buyers.hasMany(models.AuctionManagement, {
+      as: 'auctionManagements',
       foreignKey: 'user_id',
     });
   };
