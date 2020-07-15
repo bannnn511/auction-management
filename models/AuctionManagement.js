@@ -1,68 +1,61 @@
 module.exports = (sequelize, DataTypes) => {
   const AuctionManagement = sequelize.define(
-    'AuctionManagement',
+    "AuctionManagement",
     {
-      userId: {
+      id: {
         primaryKey: true,
         type: DataTypes.UUID,
-        field: 'user_id',
+        defaultValue: DataTypes.UUIDV4,
+        field: "id",
+      },
+      buyerID: {
+        type: DataTypes.UUID,
+        field: "buyer_id",
+      },
+      sellerID: {
+        type: DataTypes.UUID,
+        field: "seller_id",
+      },
+      auctionID: {
+        type: DataTypes.UUID,
+        field: "auction_id",
       },
       productId: {
-        primaryKey: true,
         type: DataTypes.UUID,
-        field: 'product_id',
+        field: "product_id",
       },
       description: {
         type: DataTypes.TEXT,
-        field: 'description',
+        field: "description",
       },
     },
     {
-      tableName: 'auctionManagements',
-      updatedAt: 'updated_at',
-      createdAt: 'created_at',
+      tableName: "auctionManagements",
+      updatedAt: "updated_at",
+      createdAt: "created_at",
     }
   );
 
   AuctionManagement.associate = (models) => {
     AuctionManagement.belongsTo(models.Products, {
-      as: 'products',
-      foreignKey: 'product_id',
+      as: "products",
+      foreignKey: "product_id",
     });
-  };
-
-  AuctionManagement.associate = (models) => {
     AuctionManagement.belongsTo(models.Buyers, {
-      as: 'buyers',
-      foreignKey: 'user_id',
+      as: "buyers",
+      foreignKey: "buyer_id",
     });
-  };
-  
-  AuctionManagement.associate = (models) => {
+    AuctionManagement.belongsTo(models.Buyers, {
+      as: "seller",
+      foreignKey: "seller_id",
+    });
     AuctionManagement.hasMany(models.AuctionHistory, {
-      as: 'auctionHistory',
-      foreignKey: 'user_id',
+      as: "auctionHistory",
+      foreignKey: "product_id",
     });
-  };
-
-  AuctionManagement.associate = (models) => {
-    AuctionManagement.hasMany(models.AuctionHistory, {
-      as: 'auctionHistory',
-      foreignKey: 'product_id',
-    });
-  };
-
-  AuctionManagement.associate = (models) => {
     AuctionManagement.hasMany(models.Rating, {
-      as: 'ratings',
-      foreignKey: 'user_id',
-    });
-  };
-
-  AuctionManagement.associate = (models) => {
-    AuctionManagement.hasMany(models.Rating, {
-      as: 'ratings',
-      foreignKey: 'product_id',
+      as: "auction",
+      foreignKey: "auction_id",
     });
   };
 

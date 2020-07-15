@@ -1,29 +1,35 @@
 module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
-    'Category',
+    "Category",
     {
-      categoryId: {
+      id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        field: 'category_id',
+        field: "id",
+      },
+      categoryId: {
+        type: DataTypes.UUID,
+        field: "category_id",
       },
       categoryName: {
         type: DataTypes.STRING,
-        field: 'category_name',
+        field: "category_name",
       },
     },
     {
-      tableName: 'category',
-      updatedAt: 'updated_at',
-      createdAt: 'created_at',
+      tableName: "category",
+      updatedAt: "updated_at",
+      createdAt: "created_at",
     }
   );
+
   Category.associate = (models) => {
     Category.hasMany(models.CategoryManagement, {
-      as: 'categoryManagement',
-      foreignKey: 'category_id',
+      as: "categoryManagement",
+      foreignKey: "category_id",
     });
   };
+
   return Category;
 };

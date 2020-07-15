@@ -1,40 +1,41 @@
 module.exports = (sequelize, DataTypes) => {
   const AuctionHistory = sequelize.define(
-    'AuctionHistory',
+    "AuctionHistory",
     {
-      userId: {
+      id: {
         primaryKey: true,
         type: DataTypes.UUID,
-        field: 'user_id',
+        defaultValue: DataTypes.UUIDV4,
+        field: "id",
+      },
+      userId: {
+        type: DataTypes.UUID,
+        field: "user_id",
       },
       productId: {
-        primaryKey: true,
         type: DataTypes.UUID,
-        field: 'product_id',
+        field: "product_id",
       },
       price: {
         type: DataTypes.FLOAT,
-        field: 'price',
+        field: "price",
       },
     },
     {
-      tableName: 'auctionHistory',
-      updatedAt: 'updated_at',
-      createdAt: 'created_at',
+      tableName: "auctionHistory",
+      updatedAt: "updated_at",
+      createdAt: "created_at",
     }
   );
 
   AuctionHistory.associate = (models) => {
+    // AuctionHistory.belongsTo(models.AuctionManagement, {
+    //   as: "auctionManagements",
+    //   foreignKey: "user_id",
+    // });
     AuctionHistory.belongsTo(models.AuctionManagement, {
-      as: 'auctionManagements',
-      foreignKey: 'user_id',
-    });
-  };
-
-  AuctionHistory.associate = (models) => {
-    AuctionHistory.belongsTo(models.AuctionManagement, {
-      as: 'auctionManagements',
-      foreignKey: 'product_id',
+      as: "auctionManagements",
+      foreignKey: "product_id",
     });
   };
 
