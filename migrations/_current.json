@@ -324,6 +324,17 @@
                     "onUpdate": "CASCADE",
                     "field": "user_id",
                     "seqType": "Sequelize.UUID"
+                },
+                "product_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "products",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "product_id",
+                    "seqType": "Sequelize.UUID"
                 }
             },
             "indexes": []

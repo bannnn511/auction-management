@@ -12,15 +12,15 @@ var Sequelize = require('sequelize');
  * createTable "auctionManagements", deps: [products, buyers, buyers]
  * createTable "auctionHistory", deps: [auctionManagements]
  * createTable "categoryManagment", deps: [category, products]
- * createTable "favorites", deps: [buyers]
+ * createTable "favorites", deps: [buyers, products]
  * createTable "ratings", deps: [auctionManagements, buyers, buyers]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "1594808318000-init-db",
-    "created": "2020-07-15T10:18:39.150Z",
+    "name": "1594809974000-init-db",
+    "created": "2020-07-15T10:46:15.243Z",
     "comment": ""
 };
 
@@ -448,6 +448,17 @@ var migrationCommands = function(transaction) {
                         "onDelete": "SET NULL",
                         "references": {
                             "model": "buyers",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    },
+                    "product_id": {
+                        "type": Sequelize.UUID,
+                        "field": "product_id",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "products",
                             "key": "id"
                         },
                         "allowNull": true
