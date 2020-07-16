@@ -1,72 +1,72 @@
 module.exports = (sequelize, DataTypes) => {
   const Buyers = sequelize.define(
-    "Buyers",
+    'Buyers',
     {
       id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        field: "id",
+        field: 'id',
       },
       email: {
         type: DataTypes.STRING,
-        field: "email",
+        field: 'email',
         allowNull: false,
         unique: true,
       },
       password: {
         type: DataTypes.STRING,
-        field: "password",
+        field: 'password',
         allowNull: false,
       },
       type: {
         type: DataTypes.ENUM,
-        values: ["buyer", "admin"],
-        field: "type",
+        values: ['buyer', 'admin'],
+        field: 'type',
       },
       status: {
         type: DataTypes.ENUM,
-        values: ["active", "disable", "deleted"],
-        defaultValue: "active",
-        field: "status",
+        values: ['active', 'disable', 'deleted'],
+        defaultValue: 'active',
+        field: 'status',
       },
       address: {
         type: DataTypes.TEXT,
-        field: "address",
+        field: 'address',
       },
       fullname: {
         type: DataTypes.STRING,
-        field: "fullname",
+        field: 'fullname',
       },
       isSeller: {
         type: DataTypes.BOOLEAN,
-        field: "is_seller",
+        field: 'is_seller',
         defaultValue: false,
       },
       plusPoint: {
         type: DataTypes.INTEGER,
-        field: "plus_point",
+        field: 'plus_point',
       },
       minusPoint: {
         type: DataTypes.INTEGER,
-        field: "minus_point",
+        field: 'minus_point',
       },
     },
     {
-      tableName: "buyers",
-      updatedAt: "updated_at",
-      createdAt: "created_at",
-    }
+      tableName: 'buyers',
+      updatedAt: 'updated_at',
+      createdAt: 'created_at',
+    },
   );
 
   Buyers.associate = (models) => {
     Buyers.hasMany(models.Favorite, {
-      as: "favorites",
-      foreignKey: "user_id",
+      as: 'favorites',
+      foreignKey: 'user_id',
     });
     Buyers.hasMany(models.AuctionManagement, {
-      as: "auctionManagements",
-      foreignKey: "buyer_id",
+      as: 'auctionManagements',
+      foreignKey: 'buyer_id',
     });
   };
 

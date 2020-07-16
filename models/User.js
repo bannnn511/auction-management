@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'users',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
   // User.associate = function (models) {
   //   User.hasMany(models.Comment, {

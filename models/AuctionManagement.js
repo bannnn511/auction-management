@@ -1,61 +1,61 @@
 module.exports = (sequelize, DataTypes) => {
   const AuctionManagement = sequelize.define(
-    "AuctionManagement",
+    'AuctionManagement',
     {
       id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        field: "id",
+        field: 'id',
       },
       buyerID: {
         type: DataTypes.UUID,
-        field: "buyer_id",
+        field: 'buyer_id',
       },
       sellerID: {
         type: DataTypes.UUID,
-        field: "seller_id",
+        field: 'seller_id',
       },
       auctionID: {
         type: DataTypes.UUID,
-        field: "auction_id",
+        field: 'auction_id',
       },
       productId: {
         type: DataTypes.UUID,
-        field: "product_id",
+        field: 'product_id',
       },
       description: {
         type: DataTypes.TEXT,
-        field: "description",
+        field: 'description',
       },
     },
     {
-      tableName: "auctionManagements",
-      updatedAt: "updated_at",
-      createdAt: "created_at",
-    }
+      tableName: 'auctionManagements',
+      updatedAt: 'updated_at',
+      createdAt: 'created_at',
+    },
   );
 
   AuctionManagement.associate = (models) => {
     AuctionManagement.belongsTo(models.Products, {
-      as: "products",
-      foreignKey: "product_id",
+      as: 'products',
+      foreignKey: 'product_id',
     });
     AuctionManagement.belongsTo(models.Buyers, {
-      as: "buyers",
-      foreignKey: "buyer_id",
+      as: 'buyers',
+      foreignKey: 'buyer_id',
     });
     AuctionManagement.belongsTo(models.Buyers, {
-      as: "seller",
-      foreignKey: "seller_id",
+      as: 'seller',
+      foreignKey: 'seller_id',
     });
     AuctionManagement.hasMany(models.AuctionHistory, {
-      as: "auctionHistory",
-      foreignKey: "product_id",
+      as: 'auctionHistory',
+      foreignKey: 'product_id',
     });
     AuctionManagement.hasMany(models.Rating, {
-      as: "auction",
-      foreignKey: "auction_id",
+      as: 'auction',
+      foreignKey: 'auction_id',
     });
   };
 

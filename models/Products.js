@@ -1,54 +1,54 @@
 module.exports = (sequelize, DataTypes) => {
   const Products = sequelize.define(
-    "Products",
+    'Products',
     {
       id: {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        field: "id",
+        field: 'id',
       },
       productName: {
         type: DataTypes.TEXT,
-        field: "product_name",
+        field: 'product_name',
         allowNull: false,
       },
       imgURL: {
         type: DataTypes.TEXT,
-        field: "img_url",
+        field: 'img_url',
       },
       currentPrice: {
         type: DataTypes.FLOAT,
-        field: "current_price",
+        field: 'current_price',
         allowNull: false,
       },
       buyNowPrice: {
         type: DataTypes.FLOAT,
-        field: "buy_now_price",
+        field: 'buy_now_price',
       },
       endAt: {
         type: DataTypes.DATE,
-        field: "end_at",
+        field: 'end_at',
       },
     },
     {
-      tableName: "products",
-      updatedAt: "updated_at",
-      createdAt: "created_at",
-    }
+      tableName: 'products',
+      updatedAt: 'updated_at',
+      createdAt: 'created_at',
+    },
   );
   Products.associate = (models) => {
     Products.hasMany(models.CategoryManagement, {
-      as: "categoryManagement",
-      foreignKey: "product_id",
+      as: 'categoryManagement',
+      foreignKey: 'product_id',
     });
     Products.hasMany(models.Favorite, {
-      as: "favorites",
-      foreignKey: "product_id",
+      as: 'favorites',
+      foreignKey: 'product_id',
     });
     Products.hasMany(models.AuctionManagement, {
-      as: "auctionManagements",
-      foreignKey: "product_id",
+      as: 'auctionManagements',
+      foreignKey: 'product_id',
     });
   };
 
