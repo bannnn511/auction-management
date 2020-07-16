@@ -16,12 +16,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         field: 'product_id',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'favorites',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   Favorite.associate = (models) => {

@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       type: {
         type: DataTypes.ENUM,
-        values: ['buyer', 'admin'],
+        values: ['buyer', 'seller', 'admin'],
         field: 'type',
       },
       status: {
@@ -51,12 +51,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         field: 'minus_point',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'buyers',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   Buyers.associate = (models) => {

@@ -28,12 +28,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         field: 'point',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'ratings',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   Rating.associate = (models) => {

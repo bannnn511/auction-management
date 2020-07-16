@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         field: 'seller_id',
       },
-      auctionID: {
-        type: DataTypes.UUID,
-        field: 'auction_id',
-      },
       productId: {
         type: DataTypes.UUID,
         field: 'product_id',
@@ -28,12 +24,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         field: 'description',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'auctionManagements',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   AuctionManagement.associate = (models) => {
@@ -51,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     AuctionManagement.hasMany(models.AuctionHistory, {
       as: 'auctionHistory',
-      foreignKey: 'product_id',
+      foreignKey: 'auction_id',
     });
     AuctionManagement.hasMany(models.Rating, {
       as: 'auction',

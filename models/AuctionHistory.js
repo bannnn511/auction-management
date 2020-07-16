@@ -20,22 +20,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         field: 'price',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'auctionHistory',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   AuctionHistory.associate = (models) => {
-    // AuctionHistory.belongsTo(models.AuctionManagement, {
-    //   as: "auctionManagements",
-    //   foreignKey: "user_id",
-    // });
     AuctionHistory.belongsTo(models.AuctionManagement, {
       as: 'auctionManagements',
-      foreignKey: 'product_id',
+      foreignKey: 'auction_id',
     });
   };
 

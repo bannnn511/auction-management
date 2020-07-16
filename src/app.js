@@ -6,14 +6,14 @@ require('dotenv').config();
 const { json } = require('body-parser');
 const { errorHandler } = require('./shared/middleware/error-handler');
 const { userRouter } = require('./api/user/user.router');
-const { commentRouter } = require('./api/comment');
+const { buyersRouter } = require('./api/Buyers/buyers.router');
 const { authorized } = require('./shared/middleware/authentication');
 
 const app = express();
 
 app.use(json());
 app.use('/api/users', authorized, userRouter);
-app.use('/api/comments', commentRouter);
+app.use('/api/buyers', buyersRouter);
 
 app.use(errorHandler);
 

@@ -16,12 +16,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         field: 'category_name',
       },
+      createdBy: {
+        type: DataTypes.UUID,
+        field: 'created_by',
+      },
+      updatedBy: {
+        type: DataTypes.UUID,
+        field: 'updated_by',
+      },
     },
     {
       tableName: 'category',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    },
+    }
   );
 
   Category.associate = (models) => {
