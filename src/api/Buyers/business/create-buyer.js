@@ -10,8 +10,8 @@ module.exports = {
       address: buyer.address,
       fullname: buyer.fullname,
       isSeller: false,
-      plusPoint: buyer.plusPoint,
-      minusPoint: buyer.minusPoint,
+      plusPoint: 1,
+      minusPoint: 0,
     });
   },
 };

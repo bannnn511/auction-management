@@ -19,6 +19,4 @@ buyersRouter.get('/seller', getRequestingBuyers);
 buyersRouter.put('/acceptseller', acceptBuyerReq);
 buyersRouter.put('/password', updateBuyerPassword);
 
-module.exports = {
-  buyersRouter,
-};
+export { buyersRouter };

@@ -1,19 +1,30 @@
 require('@babel/register');
 require('@babel/polyfill');
+require('dotenv').config();
 
 const express = require('express');
-require('dotenv').config();
 const { json } = require('body-parser');
+const logger = require('morgan');
 const { errorHandler } = require('./shared/middleware/error-handler');
 const { userRouter } = require('./api/user/user.router');
 const { buyersRouter } = require('./api/Buyers/buyers.router');
 const { authorized } = require('./shared/middleware/authentication');
+const {
+  clientViewRouter,
+} = require('./viewHandler/client-view-handler/client-view.router');
+const { apiRouter } = require('./api');
+const {
+  adminViewRouter,
+} = require('./viewHandler/admin-view-handler/admin-view.router');
 
 const app = express();
 
+app.use(logger('dev'));
 app.use(json());
-app.use('/api/users', authorized, userRouter);
-app.use('/api/buyers', buyersRouter);
+
+app.use('/', clientViewRouter);
+app.use('/admin', adminViewRouter);
+app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
