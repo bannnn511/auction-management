@@ -1,23 +1,20 @@
-// S1: get email pass
-// S2: if success => send jwt to client
-// S3: if fail=> send error
-
 import { AppError } from '../../utils/appError';
-import { getLoginUser, registerUser } from './business';
+import { getLoginUserId, registerUser } from './business/index';
 
 const jwt = require('jsonwebtoken');
 
 export async function login(req, res, next) {
   const { email, password } = req.body;
 
-  const user = await getLoginUser(email, password);
+  const user = await getLoginUserId(email, password);
 
   if (!user) {
     next(new AppError('Username or password does not exists.', 400));
   }
 
   console.log('🔥🔥🔥', user);
-  const token = jwt.sign({ data: req.body.email }, process.env.JWT_SECRET_KEY, {
+
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: '1h',
   });
 
@@ -36,4 +33,13 @@ export async function register(req, res, next) {
 
   console.log('🔥🔥🔥', user);
   res.status(200).json({ user: buyer });
+}
+
+export async function logout(req, res, next) {
+  try {
+    res.status(200).json({ user: req.user });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
 }

@@ -1,14 +1,12 @@
 import { Buyers } from '../../../../models/index';
 
-module.exports = {
-  acceptBuyerReq(email) {
-    return Buyers.update(
-      { type: 'seller' },
-      {
-        where: {
-          email: email,
-        },
-      }
-    );
-  },
-};
+export function acceptBuyerReq(email) {
+  return Buyers.update(
+    { type: 'seller' },
+    {
+      where: {
+        email: email,
+      },
+    }
+  );
+}

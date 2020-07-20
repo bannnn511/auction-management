@@ -1,8 +1,8 @@
 import { Buyers } from '../../../../models/index';
 
-export function getLoginUser(email, password) {
+export function getLoginUserId(email, password) {
   return Buyers.findOne({
-    attributes: ['email', 'password', 'type'],
+    attributes: ['id'],
     where: {
       email,
       password,

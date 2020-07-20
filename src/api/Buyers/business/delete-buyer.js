@@ -1,14 +1,14 @@
 import { Buyers } from '../../../../models/index';
 
-module.exports = {
-  deleteBuyer(email) {
-    return Buyers.update(
-      { status: 'deleted' },
-      {
-        where: {
-          email: email,
-        },
-      }
-    );
-  },
-};
+export function deleteBuyer(id, updatedBy) {
+  return Buyers.update(
+    { status: 'deleted', updatedBy: updatedBy },
+    {
+      where: {
+        id: id,
+      },
+    }
+  ).then(() => {
+    console.log('Update done');
+  });
+}

@@ -1,22 +1,35 @@
 import { Router } from 'express';
 import {
   getAllBuyers,
-  createBuyer,
-  deleteBuyer,
-  requestToBeSeller,
-  getRequestingBuyers,
-  acceptBuyerReq,
-  updateBuyerPassword,
+  createNewBuyer,
+  deleteABuyer,
+  requestToBeASeller,
+  getAllRequestingBuyers,
+  acceptABuyerReq,
+  updateABuyerPassword,
 } from './buyers.controller';
+
+import {
+  authorization,
+  restrictedTo,
+  validateBody,
+} from '../../shared/middleware/index';
+import { createBuyerOrSellerSchema } from './buyer.schema';
 
 const buyersRouter = Router();
 
 buyersRouter.get('/', getAllBuyers);
-buyersRouter.post('/', createBuyer);
-buyersRouter.put('/', deleteBuyer);
-buyersRouter.put('/requestseller', requestToBeSeller);
-buyersRouter.get('/seller', getRequestingBuyers);
-buyersRouter.put('/acceptseller', acceptBuyerReq);
-buyersRouter.put('/password', updateBuyerPassword);
+buyersRouter.post(
+  '/',
+  validateBody(createBuyerOrSellerSchema),
+  authorization,
+  restrictedTo,
+  createNewBuyer
+);
+buyersRouter.put('/delete', authorization, restrictedTo, deleteABuyer);
+buyersRouter.put('/requestseller', authorization, requestToBeASeller);
+buyersRouter.get('/seller', getAllRequestingBuyers);
+buyersRouter.put('/acceptseller', acceptABuyerReq);
+buyersRouter.put('/password', updateABuyerPassword);
 
 export { buyersRouter };

@@ -1,5 +1,13 @@
-import { Buyers } from '../../../../models/index';
+import { Buyers, Sequelize } from '../../../../models/index';
 
-export function getAllBuyers() {
-  return Buyers.findAll({ where: { status: 'active' } });
+export function getBuyers() {
+  const Op = Sequelize.Op;
+  return Buyers.findAll({
+    where: {
+      status: 'active',
+      type: {
+        [Op.not]: 'admin',
+      },
+    },
+  });
 }

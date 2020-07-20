@@ -1,14 +1,12 @@
 import { Buyers } from '../../../../models/index';
 
-module.exports = {
-  requestToBeSeller(email) {
-    return Buyers.update(
-      { isSeller: true },
-      {
-        where: {
-          email: email,
-        },
-      }
-    );
-  },
-};
+export function requestingToBeSeller(id, updatedBy) {
+  return Buyers.update(
+    { isSeller: true, updatedBy: updatedBy },
+    {
+      where: {
+        id: id,
+      },
+    }
+  );
+}

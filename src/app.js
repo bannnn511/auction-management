@@ -6,9 +6,6 @@ const express = require('express');
 const { json } = require('body-parser');
 const logger = require('morgan');
 const { errorHandler } = require('./shared/middleware/error-handler');
-const { userRouter } = require('./api/user/user.router');
-const { buyersRouter } = require('./api/Buyers/buyers.router');
-const { authorized } = require('./shared/middleware/authentication');
 const {
   clientViewRouter,
 } = require('./viewHandler/client-view-handler/client-view.router');
