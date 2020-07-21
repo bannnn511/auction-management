@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'favorites',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   Favorite.associate = (models) => {

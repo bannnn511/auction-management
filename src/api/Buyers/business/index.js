@@ -1,3 +1,4 @@
+/* eslint-disable import/export */
 export * from './get-buyers';
 export * from './create-buyer';
 export * from './delete-buyer';

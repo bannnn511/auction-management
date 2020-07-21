@@ -17,7 +17,9 @@ export function safeParseInt(input, defaultValue) {
 export function isEmptyObject(input) {
   return (
     !input ||
-    (typeof input === 'object' && !Array.isArray(input) && Object.keys(input).length === 0)
+    (typeof input === 'object' &&
+      !Array.isArray(input) &&
+      Object.keys(input).length === 0)
   );
 }
 

@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'category',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   Category.associate = (models) => {

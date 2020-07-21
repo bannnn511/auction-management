@@ -1,5 +1,7 @@
 import { AppError } from '../../utils/appError';
 import { getLoginUserById } from '../../api/Auth/business';
+import { responseError } from '../helpers';
+import { serializeBuyers } from '../../api/Buyers/buyers.serialize';
 
 const jwt = require('jsonwebtoken');
 
@@ -12,16 +14,18 @@ export async function authorization(req, res, next) {
       .replace('Bearer', '')
       .replace(/\s/g, '');
     console.log('token: ', token);
+
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log('Requested from ☔: ', data);
+    console.log('Requested from Authorization ☔: ', data);
+
     const user = await getLoginUserById(data.id);
     if (!user) {
       next(new AppError('User does not exist', 400));
     }
-    req.body.currentUser = user;
+
+    req.currentUser = serializeBuyers(user);
     next();
   } catch (error) {
-    console.log('Authorization Error', error);
-    res.status(400).json({ error: 'Authorization failed' });
+    responseError(res, error);
   }
 }

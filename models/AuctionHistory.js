@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'auctionHistory',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   AuctionHistory.associate = (models) => {

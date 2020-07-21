@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'ratings',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   Rating.associate = (models) => {

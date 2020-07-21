@@ -1,5 +1,21 @@
-const Joi = require('@hapi/joi');
 const { responseError } = require('../helpers');
+
+export function validateSchema(value, schema, options) {
+  return new Promise((resolve, reject) =>
+    schema
+      .validateAsync(value, options)
+      .then(() => resolve(true))
+      .catch((errors) => {
+        const firstError = errors.details[0];
+        const error = {
+          code: firstError.type,
+          message: firstError.message,
+        };
+
+        return reject(error);
+      }),
+  );
+}
 
 function commonValidator(schema, key, options) {
   return async (req, res, next) => {
@@ -13,25 +29,6 @@ function commonValidator(schema, key, options) {
       return responseError(res, error);
     }
   };
-}
-
-export function validateSchema(value, schema, options) {
-  return new Promise((resolve, reject) => {
-    return schema
-      .validateAsync(value, options)
-      .then(() => {
-        return resolve(true);
-      })
-      .catch((errors) => {
-        const firstError = errors.details[0];
-        const error = {
-          code: firstError.type,
-          message: firstError.message,
-        };
-
-        return reject(error);
-      });
-  });
 }
 
 export function validateParams(schema, options) {

@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'products',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
   Products.associate = (models) => {
     Products.hasMany(models.CategoryManagement, {

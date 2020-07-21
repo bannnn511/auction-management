@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'auctionManagements',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   AuctionManagement.associate = (models) => {

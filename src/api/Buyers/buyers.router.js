@@ -11,25 +11,57 @@ import {
 
 import {
   authorization,
-  restrictedTo,
   validateBody,
+  restrictedTo,
 } from '../../shared/middleware/index';
-import { createBuyerOrSellerSchema } from './buyer.schema';
+import {
+  createBuyerOrSellerSchema,
+  updateBuyerOrSellerSchema,
+} from './buyer.schema';
+import { UserType } from '../../shared/helpers/constant';
 
 const buyersRouter = Router();
 
 buyersRouter.get('/', getAllBuyers);
+
 buyersRouter.post(
   '/',
   validateBody(createBuyerOrSellerSchema),
   authorization,
-  restrictedTo,
-  createNewBuyer
+  restrictedTo(UserType.ADMIN),
+  createNewBuyer,
 );
-buyersRouter.put('/delete', authorization, restrictedTo, deleteABuyer);
-buyersRouter.put('/requestseller', authorization, requestToBeASeller);
-buyersRouter.get('/seller', getAllRequestingBuyers);
-buyersRouter.put('/acceptseller', acceptABuyerReq);
-buyersRouter.put('/password', updateABuyerPassword);
+
+buyersRouter.put(
+  '/delete',
+  validateBody(updateBuyerOrSellerSchema),
+  authorization,
+  restrictedTo(UserType.ADMIN),
+  deleteABuyer,
+);
+
+buyersRouter.put(
+  '/requestseller',
+  validateBody(updateBuyerOrSellerSchema),
+  authorization,
+  requestToBeASeller,
+);
+
+buyersRouter.get(
+  '/seller',
+  authorization,
+  restrictedTo(UserType.ADMIN),
+  getAllRequestingBuyers,
+);
+
+buyersRouter.put(
+  '/acceptseller',
+  validateBody(updateBuyerOrSellerSchema),
+  authorization,
+  restrictedTo(UserType.ADMIN),
+  acceptABuyerReq,
+);
+
+buyersRouter.put('/password', authorization, updateABuyerPassword);
 
 export { buyersRouter };

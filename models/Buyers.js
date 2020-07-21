@@ -1,3 +1,5 @@
+const { UserType, UserStatus } = require('../src/shared/helpers/constant');
+
 module.exports = (sequelize, DataTypes) => {
   const Buyers = sequelize.define(
     'Buyers',
@@ -21,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       type: {
         type: DataTypes.ENUM,
-        values: ['buyer', 'seller', 'admin'],
+        values: [UserType.BUYER, UserType.SELLER, UserType.ADMIN],
         field: 'type',
       },
       status: {
         type: DataTypes.ENUM,
-        values: ['active', 'disable', 'deleted'],
+        values: [UserStatus.ACTIVE, UserStatus.DISABLE, UserStatus.DELETED],
         defaultValue: 'active',
         field: 'status',
       },
@@ -64,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'buyers',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
-    }
+    },
   );
 
   Buyers.associate = (models) => {

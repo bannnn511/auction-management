@@ -1,4 +1,4 @@
-export function errorHandler(err, req, res, next) {
+export function errorHandler(err, req, res) {
   if (err.isAppError) {
     return res.status(err.statusCode || 500).json({
       message: err.message,
@@ -7,8 +7,8 @@ export function errorHandler(err, req, res, next) {
     });
   }
 
-  console.log('🔥🔥🔥', err);
-  res.status(400).json({
+  console.log('🔥🔥🔥 Error', err);
+  return res.status(400).json({
     message: 'Something went wrong...',
   });
 }

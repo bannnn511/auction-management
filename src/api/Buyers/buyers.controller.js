@@ -8,94 +8,113 @@ import {
   updateBuyerPassword,
   getUserIdNoPass,
 } from './business/index';
-import { serializeBuyers, serializedCreatedBuyer } from './buyers.serialize';
+import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
+import { responseError, responseSuccess } from '../../shared/helpers';
 
 // get buyer with status active but not admin
-export async function getAllBuyers(req, res, next) {
+export async function getAllBuyers(req, res) {
   try {
     const allBuyers = await getBuyers();
-    const data = [];
-    allBuyers.forEach((buyer) => {
-      data.push(serializeBuyers(buyer));
-    });
-    console.log(data);
-    res.status(200).json({ data: data });
+    const data = serializeAllBuyers(allBuyers);
+    console.log('Get all active buyer', data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // register user as buyer or seller by admin
-export async function createNewBuyer(req, res, next) {
+export async function createNewBuyer(req, res) {
   try {
-    const body = serializedCreatedBuyer(req.body);
-    console.log(body);
+    req.body.createdBy = req.currentUser.id;
+    req.body.updatedBy = req.currentUser.id;
+    const body = serializeBuyers(req.body, true);
+    const checkBuyerExist = await getUserIdNoPass(body);
+    if (checkBuyerExist) {
+      res.status(400).send('User already exists');
+      // next(new AppError('User already exists', 400));
+    }
     const buyer = await createBuyer(body);
-    res.status(200).json({ buyer });
+    const data = serializeBuyers(buyer, false);
+    console.log(data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // update buyer status to deleted
-export async function deleteABuyer(req, res, next) {
+export async function deleteABuyer(req, res) {
   try {
-    const body = serializedCreatedBuyer(req.body);
-    console.log(body);
+    req.body.updatedBy = req.currentUser.id;
+    const body = serializeBuyers(req.body);
     const buyer = await deleteBuyer(body.id, body.updatedBy);
-    res.status(200).json({ buyer });
+    const data = serializeBuyers(buyer, false);
+    console.log(data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log('🔥🔥🔥 Delete', error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // update buyer isSeller to true
-export async function requestToBeASeller(req, res, next) {
+export async function requestToBeASeller(req, res) {
   try {
-    const body = serializedCreatedBuyer(req.body);
-    const buyer = await requestingToBeSeller(body.id, body.updatedBy);
-    res.status(200).json({ buyer });
+    req.body.updatedBy = req.currentUser.id;
+    const { id, updatedBy } = serializeBuyers(req.body);
+    const buyer = await requestingToBeSeller(id, updatedBy);
+    const data = serializeBuyers(buyer, false);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // get buyer which isSeller is true
-export async function getAllRequestingBuyers(req, res, next) {
+export async function getAllRequestingBuyers(req, res) {
   try {
-    const body = serializeBuyers(req.body);
-    const buyer = await getRequestingBuyers(body);
-    res.status(200).json({ buyer });
+    req.body.updatedBy = req.currentUser.id;
+    const buyer = await getRequestingBuyers();
+    const data = serializeAllBuyers(buyer, false);
+    console.log(data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // update buyer type to seller
-export async function acceptABuyerReq(req, res, next) {
+export async function acceptABuyerReq(req, res) {
   try {
-    const body = serializeBuyers(req.body);
-    const buyer = await acceptBuyerReq(body);
-    res.status(200).json({ buyer });
+    req.body.updatedBy = req.currentUser.id;
+    const { id } = serializeBuyers(req.body);
+    const buyer = await acceptBuyerReq(id);
+    console.log({ myBuyer: buyer });
+    const data = serializeBuyers(buyer, false);
+    console.log(data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }
 
 // update buyer password
-export async function updateABuyerPassword(req, res, next) {
+export async function updateABuyerPassword(req, res) {
   try {
+    req.body.updatedBy = req.currentUser.id;
     const body = serializeBuyers(req.body);
     const buyer = await updateBuyerPassword(body);
-    res.status(200).json({ buyer });
+    const data = serializeBuyers(buyer);
+    console.log(data);
+
+    responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    responseError(res, error);
   }
 }

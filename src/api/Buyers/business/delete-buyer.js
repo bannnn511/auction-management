@@ -1,14 +1,25 @@
 import { Buyers } from '../../../../models/index';
+import { UserStatus } from '../../../shared/helpers/constant';
 
 export function deleteBuyer(id, updatedBy) {
-  return Buyers.update(
-    { status: 'deleted', updatedBy: updatedBy },
-    {
-      where: {
-        id: id,
+  try {
+    let buyer = Buyers.update(
+      { status: UserStatus.DELETED, updatedBy },
+      {
+        where: {
+          id,
+        },
       },
-    }
-  ).then(() => {
-    console.log('Update done');
-  });
+    );
+    buyer = Buyers.findOne({
+      attribute: ['id', 'email', 'fullname', 'type', 'status'],
+      where: {
+        id,
+      },
+    });
+    return buyer;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
