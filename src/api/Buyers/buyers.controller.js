@@ -12,6 +12,7 @@ import {
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
 import { UserType } from '../../shared/helpers/constant';
+import { getLoginUserById } from '../Auth/business';
 
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
@@ -134,6 +135,29 @@ export async function updateABuyerPassword(req, res) {
     console.log(data);
 
     responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+// update buyer info
+export async function updateBuyerInfo(req, res) {
+  try {
+    req.body.updatedBy = req.currentUser.id;
+    const body = serializeBuyers(req.body, false);
+    const userInfo = await getLoginUserById(req.currentUser.id);
+
+    if (body.fullname == null) {
+      body.fullname === userInfo.fullname;
+    } else if (body.address == null) {
+      body.address === userInfo.fullname;
+    }
+
+    const buyer = await updateBuyerInfo(body);
+    const data = serializeBuyers(buyer);
+
+    responseSuccess(res, data);
+
   } catch (error) {
     responseError(res, error);
   }

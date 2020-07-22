@@ -21,6 +21,7 @@ import {
   changeBuyerOrSellerPasswordSchema,
 } from './buyer.schema';
 import { UserType } from '../../shared/helpers/constant';
+import { requestingUpdatedInfo } from './business';
 
 const buyersRouter = Router();
 
@@ -76,6 +77,13 @@ buyersRouter.put(
   authorization,
   restrictedTo(UserType.ADMIN),
   requestBackToBuyer,
+);
+
+buyersRouter.put(
+  '/updateInfo',
+  authorization,
+  validateBody(updateBuyerOrSellerSchema),
+  requestingUpdatedInfo,
 );
 
 buyersRouter.put('/password', authorization, updateABuyerPassword);

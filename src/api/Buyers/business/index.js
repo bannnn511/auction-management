@@ -8,3 +8,5 @@ export * from './update-acceptBuyerReq';
 export * from './update-buyerPassword';
 export * from './get-buyerIdNoPass';
 export * from './update-sellerToBuyer';
+export * from './update-buyerInfo';
+export * from './get-loginUserId';
