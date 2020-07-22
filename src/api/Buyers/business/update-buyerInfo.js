@@ -1,22 +1,26 @@
 import { Buyers } from '../../../../models/index';
 
-export async function requestingUpdatedInfo(id, updatedBy, fullName, address) {
+export async function requestingUpdatedInfo(buyer) {
   try {
-    let buyer = await Buyers.update(
-      { isSeller: false, updatedBy, fullName: fullName, address: address },
+    let newbuyer = await Buyers.update(
+      {
+        updatedBy: buyer.updatedBy,
+        fullname: buyer.fullname,
+        address: buyer.address,
+      },
       {
         where: {
-          id,
+          id: buyer.id,
         },
       },
     );
-    buyer = await Buyers.findOne({
+    newbuyer = await Buyers.findOne({
       attribute: ['id', 'email', 'fullname', 'address', 'type', 'status'],
       where: {
-        id,
+        id: buyer.id,
       },
     });
-    return buyer;
+    return newbuyer;
   } catch (error) {
     console.log(error);
     return null;

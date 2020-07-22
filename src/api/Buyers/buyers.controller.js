@@ -8,6 +8,7 @@ import {
   updateBuyerPassword,
   getUserIdNoPass,
   requestingBackToBuyer,
+  requestingUpdatedInfo,
 } from './business/index';
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
@@ -147,17 +148,17 @@ export async function updateBuyerInfo(req, res) {
     const body = serializeBuyers(req.body, false);
     const userInfo = await getLoginUserById(req.currentUser.id);
 
-    if (body.fullname == null) {
-      body.fullname === userInfo.fullname;
-    } else if (body.address == null) {
-      body.address === userInfo.fullname;
+    if (body.fullname === '') {
+      body.fullname = userInfo.fullname;
+    }
+    if (body.address === '') {
+      body.address = userInfo.address;
     }
 
-    const buyer = await updateBuyerInfo(body);
+    const buyer = await requestingUpdatedInfo(body);
     const data = serializeBuyers(buyer);
 
     responseSuccess(res, data);
-
   } catch (error) {
     responseError(res, error);
   }

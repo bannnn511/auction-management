@@ -8,6 +8,7 @@ import {
   acceptABuyerReq,
   updateABuyerPassword,
   requestBackToBuyer,
+  updateBuyerInfo,
 } from './buyers.controller';
 
 import {
@@ -21,7 +22,6 @@ import {
   changeBuyerOrSellerPasswordSchema,
 } from './buyer.schema';
 import { UserType } from '../../shared/helpers/constant';
-import { requestingUpdatedInfo } from './business';
 
 const buyersRouter = Router();
 
@@ -80,10 +80,10 @@ buyersRouter.put(
 );
 
 buyersRouter.put(
-  '/updateInfo',
-  authorization,
+  '/updateinfo',
   validateBody(updateBuyerOrSellerSchema),
-  requestingUpdatedInfo,
+  authorization,
+  updateBuyerInfo,
 );
 
 buyersRouter.put('/password', authorization, updateABuyerPassword);
