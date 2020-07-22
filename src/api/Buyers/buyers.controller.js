@@ -79,11 +79,11 @@ export async function requestToBeASeller(req, res) {
 export async function requestBackToBuyer(req, res) {
   try {
     req.body.updatedBy = req.currentUser.id;
-    const {id, updatedBy} = serializeBuyers(req.body);
+    const { id, updatedBy } = serializeBuyers(req.body);
     const seller = await requestingBackToBuyer(id, updatedBy);
     const data = serializeBuyers(seller, false);
 
-    responseSuccess(res, data)
+    responseSuccess(res, data);
   } catch (error) {
     responseError(res, error);
   }

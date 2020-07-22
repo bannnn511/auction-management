@@ -68,7 +68,7 @@ buyersRouter.put(
   authorization,
   restrictedTo(UserType.ADMIN),
   requestBackToBuyer,
-)
+);
 
 buyersRouter.put('/password', authorization, updateABuyerPassword);
 
