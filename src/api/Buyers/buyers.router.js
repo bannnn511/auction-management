@@ -8,6 +8,7 @@ import {
   acceptABuyerReq,
   updateABuyerPassword,
   requestBackToBuyer,
+  updateBuyerInfo,
 } from './buyers.controller';
 
 import {
@@ -76,6 +77,13 @@ buyersRouter.put(
   authorization,
   restrictedTo(UserType.ADMIN),
   requestBackToBuyer,
+);
+
+buyersRouter.put(
+  '/updateinfo',
+  validateBody(updateBuyerOrSellerSchema),
+  authorization,
+  updateBuyerInfo,
 );
 
 buyersRouter.put('/password', authorization, updateABuyerPassword);

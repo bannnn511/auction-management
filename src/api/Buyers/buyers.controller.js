@@ -8,10 +8,12 @@ import {
   updateBuyerPassword,
   getUserIdNoPass,
   requestingBackToBuyer,
+  requestingUpdatedInfo,
 } from './business/index';
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
 import { UserType } from '../../shared/helpers/constant';
+import { getLoginUserById } from '../Auth/business';
 
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
@@ -132,6 +134,29 @@ export async function updateABuyerPassword(req, res) {
     const buyer = await updateBuyerPassword(body);
     const data = serializeBuyers(buyer);
     console.log(data);
+
+    responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+// update buyer info
+export async function updateBuyerInfo(req, res) {
+  try {
+    req.body.updatedBy = req.currentUser.id;
+    const body = serializeBuyers(req.body, false);
+    const userInfo = await getLoginUserById(req.currentUser.id);
+
+    if (body.fullname === '') {
+      body.fullname = userInfo.fullname;
+    }
+    if (body.address === '') {
+      body.address = userInfo.address;
+    }
+
+    const buyer = await requestingUpdatedInfo(body);
+    const data = serializeBuyers(buyer);
 
     responseSuccess(res, data);
   } catch (error) {
