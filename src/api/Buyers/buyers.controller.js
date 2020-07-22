@@ -10,6 +10,7 @@ import {
 } from './business/index';
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
+import { UserType } from '../../shared/helpers/constant';
 
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
@@ -49,8 +50,8 @@ export async function createNewBuyer(req, res) {
 export async function deleteABuyer(req, res) {
   try {
     req.body.updatedBy = req.currentUser.id;
-    const body = serializeBuyers(req.body);
-    const buyer = await deleteBuyer(body.id, body.updatedBy);
+    const { id, updatedBy } = serializeBuyers(req.body);
+    const buyer = await deleteBuyer(id, updatedBy);
     const data = serializeBuyers(buyer, false);
     console.log(data);
 
@@ -77,7 +78,6 @@ export async function requestToBeASeller(req, res) {
 // get buyer which isSeller is true
 export async function getAllRequestingBuyers(req, res) {
   try {
-    req.body.updatedBy = req.currentUser.id;
     const buyer = await getRequestingBuyers();
     const data = serializeAllBuyers(buyer, false);
     console.log(data);
@@ -92,8 +92,8 @@ export async function getAllRequestingBuyers(req, res) {
 export async function acceptABuyerReq(req, res) {
   try {
     req.body.updatedBy = req.currentUser.id;
-    const { id } = serializeBuyers(req.body);
-    const buyer = await acceptBuyerReq(id);
+    const { id, updatedBy } = serializeBuyers(req.body);
+    const buyer = await acceptBuyerReq(id, updatedBy);
     console.log({ myBuyer: buyer });
     const data = serializeBuyers(buyer, false);
     console.log(data);
@@ -108,7 +108,12 @@ export async function acceptABuyerReq(req, res) {
 export async function updateABuyerPassword(req, res) {
   try {
     req.body.updatedBy = req.currentUser.id;
-    const body = serializeBuyers(req.body);
+    const body = serializeBuyers(req.body, true);
+    if (req.currentUser.type !== UserType.ADMIN) {
+      if (body.id !== req.currentUser.id) {
+        res.status(400).send('Request denied');
+      }
+    }
     const buyer = await updateBuyerPassword(body);
     const data = serializeBuyers(buyer);
     console.log(data);

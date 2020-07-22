@@ -9,3 +9,8 @@ export const UserStatus = {
   DISABLE: 'disable',
   DELETED: 'deleted',
 };
+
+export const UserIsSeller = {
+  None: 0,
+  PENDING: 1,
+};

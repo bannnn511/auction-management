@@ -1,9 +1,10 @@
 import { Buyers } from '../../../../models/index';
+import { UserIsSeller, UserStatus } from '../../../shared/helpers/constant';
 
 export async function requestingToBeSeller(id, updatedBy) {
   try {
     let buyer = await Buyers.update(
-      { isSeller: true, updatedBy },
+      { isSeller: UserIsSeller.PENDING, updatedBy },
       {
         where: {
           id,
@@ -11,9 +12,10 @@ export async function requestingToBeSeller(id, updatedBy) {
       },
     );
     buyer = await Buyers.findOne({
-      attribute: ['id', 'email', 'fullname', 'type', 'status'],
+      attribute: ['id', 'email', 'fullName', 'type', 'status'],
       where: {
         id,
+        status: UserStatus.ACTIVE,
       },
     });
     return buyer;

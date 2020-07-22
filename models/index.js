@@ -51,5 +51,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.Buyers = require('./Buyers')(sequelize, Sequelize.DataTypes);
+db.Products = require('./Products')(sequelize, Sequelize.DataTypes);
 
 module.exports = db;

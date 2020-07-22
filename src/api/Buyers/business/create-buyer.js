@@ -1,4 +1,5 @@
 import { Buyers } from '../../../../models/index';
+import { UserIsSeller } from '../../../shared/helpers/constant';
 
 export function createBuyer(buyer) {
   try {
@@ -9,7 +10,7 @@ export function createBuyer(buyer) {
       status: buyer.status,
       address: buyer.address,
       fullname: buyer.fullname,
-      isSeller: false,
+      isSeller: UserIsSeller.None,
       plusPoint: 1,
       minusPoint: 0,
       createdBy: buyer.createdBy,

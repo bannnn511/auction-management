@@ -1,15 +1,30 @@
-import { Buyers, Sequelize } from '../../../../models/index';
-import { UserType, UserStatus } from '../../../shared/helpers/constant';
+import { Buyers } from '../../../../models/index';
+import {
+  UserType,
+  UserStatus,
+  UserIsSeller,
+} from '../../../shared/helpers/constant';
 
 export function getRequestingBuyers() {
-  const { Op } = Sequelize;
   try {
     const buyer = Buyers.findAll({
-      attributes: ['id', 'email', 'type', 'status', 'address', 'fullname'],
+      attributes: [
+        'id',
+        'email',
+        'type',
+        'status',
+        'address',
+        'fullname',
+        'isSeller',
+        'plusPoint',
+        'minusPoint',
+        'createdBy',
+        'updatedBy',
+      ],
       where: {
-        isSeller: true,
+        isSeller: UserIsSeller.PENDING,
         status: UserStatus.ACTIVE,
-        type: { [Op.not]: UserType.ADMIN },
+        type: UserType.BUYER,
       },
     });
     return buyer;

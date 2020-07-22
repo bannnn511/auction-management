@@ -12,3 +12,8 @@ export const createBuyerOrSellerSchema = Joi.object({
 export const updateBuyerOrSellerSchema = Joi.object({
   id: Joi.string().required(),
 });
+
+export const changeBuyerOrSellerPasswordSchema = Joi.object({
+  id: Joi.string().required(),
+  password: Joi.string().required(),
+});

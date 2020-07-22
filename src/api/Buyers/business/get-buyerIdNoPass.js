@@ -1,4 +1,5 @@
 import { Buyers } from '../../../../models/index';
+import { UserStatus } from '../../../shared/helpers/constant';
 
 export function getUserIdNoPass(buyer) {
   try {
@@ -6,6 +7,7 @@ export function getUserIdNoPass(buyer) {
       attributes: ['id'],
       where: {
         email: buyer.email,
+        status: UserStatus.ACTIVE,
       },
     });
     return newBuyer;

@@ -17,6 +17,7 @@ import {
 import {
   createBuyerOrSellerSchema,
   updateBuyerOrSellerSchema,
+  changeBuyerOrSellerPasswordSchema,
 } from './buyer.schema';
 import { UserType } from '../../shared/helpers/constant';
 
@@ -62,6 +63,11 @@ buyersRouter.put(
   acceptABuyerReq,
 );
 
-buyersRouter.put('/password', authorization, updateABuyerPassword);
+buyersRouter.put(
+  '/password',
+  validateBody(changeBuyerOrSellerPasswordSchema),
+  authorization,
+  updateABuyerPassword,
+);
 
 export { buyersRouter };

@@ -1,4 +1,5 @@
 import { Buyers } from '../../../../models/index';
+import { UserStatus } from '../../../shared/helpers/constant';
 
 export function getLoginUserById(id) {
   try {
@@ -6,7 +7,7 @@ export function getLoginUserById(id) {
       attributes: [
         'id',
         'email',
-        'fullname',
+        'fullName',
         'type',
         'status',
         'createdBy',
@@ -14,6 +15,7 @@ export function getLoginUserById(id) {
       ],
       where: {
         id,
+        status: UserStatus.ACTIVE,
       },
     });
     return buyer;

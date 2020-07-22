@@ -1,5 +1,9 @@
 import { Buyers } from '../../../../models/index';
-import { UserType, UserStatus } from '../../../shared/helpers/constant';
+import {
+  UserType,
+  UserStatus,
+  UserIsSeller,
+} from '../../../shared/helpers/constant';
 
 export function registerUser(buyer) {
   try {
@@ -10,7 +14,7 @@ export function registerUser(buyer) {
       status: UserStatus.ACTIVE,
       address: buyer.address,
       fullname: buyer.fullname,
-      isSeller: false,
+      isSeller: UserIsSeller.None,
       plusPoint: 1,
       minusPoint: 0,
     });
