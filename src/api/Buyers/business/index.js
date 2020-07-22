@@ -7,3 +7,4 @@ export * from './get-requestingBuyer';
 export * from './update-acceptBuyerReq';
 export * from './update-buyerPassword';
 export * from './get-buyerIdNoPass';
+export * from './update-sellerToBuyer';
