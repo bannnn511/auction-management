@@ -56,88 +56,6 @@
             },
             "indexes": []
         },
-        "auctionManagements": {
-            "tableName": "auctionManagements",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "buyerID": {
-                    "field": "buyer_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "sellerID": {
-                    "field": "seller_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "productId": {
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "description": {
-                    "field": "description",
-                    "seqType": "Sequelize.TEXT"
-                },
-                "createdBy": {
-                    "field": "created_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "updatedBy": {
-                    "field": "updated_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "product_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "products",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "buyer_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "buyers",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "buyer_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "seller_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "buyers",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "seller_id",
-                    "seqType": "Sequelize.UUID"
-                }
-            },
-            "indexes": []
-        },
         "category": {
             "tableName": "category",
             "schema": {
@@ -305,61 +223,6 @@
             },
             "indexes": []
         },
-        "products": {
-            "tableName": "products",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "productName": {
-                    "field": "product_name",
-                    "allowNull": false,
-                    "seqType": "Sequelize.STRING"
-                },
-                "imgURL": {
-                    "field": "img_url",
-                    "seqType": "Sequelize.STRING"
-                },
-                "currentPrice": {
-                    "field": "current_price",
-                    "allowNull": false,
-                    "seqType": "Sequelize.DECIMAL"
-                },
-                "buyNowPrice": {
-                    "field": "buy_now_price",
-                    "seqType": "Sequelize.DECIMAL"
-                },
-                "endAt": {
-                    "field": "end_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "createdBy": {
-                    "field": "created_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "updatedBy": {
-                    "field": "updated_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
         "ratings": {
             "tableName": "ratings",
             "schema": {
@@ -523,7 +386,111 @@
                 }
             },
             "indexes": []
+        },
+        "products": {
+            "tableName": "products",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "productName": {
+                    "field": "product_name",
+                    "allowNull": false,
+                    "seqType": "Sequelize.STRING"
+                },
+                "imgURL": {
+                    "field": "img_url",
+                    "seqType": "Sequelize.STRING"
+                },
+                "currentPrice": {
+                    "field": "current_price",
+                    "allowNull": false,
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "buyNowPrice": {
+                    "field": "buy_now_price",
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "endAt": {
+                    "field": "end_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "auctionManagements": {
+            "tableName": "auctionManagements",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "buyerID": {
+                    "field": "buyer_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "sellerID": {
+                    "field": "seller_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "productId": {
+                    "field": "product_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
