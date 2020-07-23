@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 const dotenv = require('dotenv');
 
 const result = dotenv.config();

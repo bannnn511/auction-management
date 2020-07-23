@@ -8,7 +8,8 @@
     "db:migrate:status": "npx sequelize db:migrate:status",
     "db:migrate": "npx sequelize db:create auctionDB && npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
-    "db:generate:migrations": "timestamp=\"$(($(date +'%s * 1000 + %-N / 1000000')))\" && fileName=\"$timestamp-$desc\" && npx makemigration --name=\"$fileName\""
+    "db:generate:migrations": "timestamp=\"$(($(date +'%s * 1000 + %-N / 1000000')))\" && fileName=\"$timestamp-$desc\" && npx makemigration --name=\"$fileName\"",
+    "build": "babel src -d lib"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +34,7 @@
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-env": "^7.10.4",
     "eslint": "^7.5.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
