@@ -14,12 +14,16 @@ import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
 import { UserType } from '../../shared/helpers/constant';
 import { getLoginUserById } from '../Auth/business';
+import { AppError } from '../../utils/appError';
 
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
   try {
     const allBuyers = await getBuyers();
     const data = serializeAllBuyers(allBuyers);
+    if (!data) {
+      throw new AppError('Cannot get Buyers', 400);
+    }
     console.log('Get all active buyer', data);
 
     responseSuccess(res, data);
@@ -40,6 +44,9 @@ export async function createNewBuyer(req, res) {
       // next(new AppError('User already exists', 400));
     }
     const buyer = await createBuyer(body);
+    if (!buyer) {
+      throw new AppError('Cannot create user', 204);
+    }
     const data = serializeBuyers(buyer, false);
     console.log(data);
 
@@ -55,6 +62,9 @@ export async function deleteABuyer(req, res) {
     req.body.updatedBy = req.currentUser.id;
     const { id, updatedBy } = serializeBuyers(req.body);
     const buyer = await deleteBuyer(id, updatedBy);
+    if (!buyer) {
+      throw new AppError('Cannot delete user', 204);
+    }
     const data = serializeBuyers(buyer, false);
     console.log(data);
 
@@ -70,6 +80,9 @@ export async function requestToBeASeller(req, res) {
     req.body.updatedBy = req.currentUser.id;
     const { id, updatedBy } = serializeBuyers(req.body);
     const buyer = await requestingToBeSeller(id, updatedBy);
+    if (!buyer) {
+      throw new AppError('Request to be a Seller failed', 204);
+    }
     const data = serializeBuyers(buyer, false);
 
     responseSuccess(res, data);
@@ -84,6 +97,9 @@ export async function requestBackToBuyer(req, res) {
     req.body.updatedBy = req.currentUser.id;
     const { id, updatedBy } = serializeBuyers(req.body);
     const seller = await requestingBackToBuyer(id, updatedBy);
+    if (!seller) {
+      throw new AppError('Request back to be a buyer failed', 204);
+    }
     const data = serializeBuyers(seller, false);
 
     responseSuccess(res, data);
@@ -96,6 +112,9 @@ export async function requestBackToBuyer(req, res) {
 export async function getAllRequestingBuyers(req, res) {
   try {
     const buyer = await getRequestingBuyers();
+    if (!buyer) {
+      throw new AppError('Get all requesting buyers failed', 204);
+    }
     const data = serializeAllBuyers(buyer, false);
     console.log(data);
 
@@ -111,7 +130,9 @@ export async function acceptABuyerReq(req, res) {
     req.body.updatedBy = req.currentUser.id;
     const { id, updatedBy } = serializeBuyers(req.body);
     const buyer = await acceptBuyerReq(id, updatedBy);
-    console.log({ myBuyer: buyer });
+    if (!buyer) {
+      throw new AppError('Buyer to be Seller failed', 204);
+    }
     const data = serializeBuyers(buyer, false);
     console.log(data);
 
@@ -132,6 +153,9 @@ export async function updateABuyerPassword(req, res) {
       }
     }
     const buyer = await updateBuyerPassword(body);
+    if (!buyer) {
+      throw new AppError("Update Buyer's password failed");
+    }
     const data = serializeBuyers(buyer);
     console.log(data);
 
@@ -156,6 +180,9 @@ export async function updateBuyerInfo(req, res) {
     }
 
     const buyer = await requestingUpdatedInfo(body);
+    if (!buyer) {
+      throw new AppError("Cannot update Buyer's info");
+    }
     const data = serializeBuyers(buyer);
 
     responseSuccess(res, data);

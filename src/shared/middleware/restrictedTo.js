@@ -9,7 +9,7 @@ export function restrictedTo(role) {
         next();
       } else {
         console.log(req.body);
-        res.status(400).send('Authority denied');
+        res.status(403).send('Authority denied');
       }
     } catch (error) {
       responseError(res, error);

@@ -4,7 +4,7 @@ import {
   authorization,
   restrictedTo,
 } from '../../shared/middleware';
-import { productSchema } from './product.schema';
+import { productAuctionSchema } from './product.schema';
 import { createNewProduct, getProducts } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
@@ -12,7 +12,7 @@ const productsRouter = Router();
 
 productsRouter.post(
   '/',
-  validateBody(productSchema),
+  validateBody(productAuctionSchema),
   authorization,
   restrictedTo(UserType.SELLER),
   createNewProduct,
