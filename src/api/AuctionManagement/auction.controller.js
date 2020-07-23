@@ -1,4 +1,4 @@
-import { getAllAuctions } from './business/get-allAuctions';
+import { getAllAuctions } from './business/index';
 import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
 import { serializeAllAuctions } from './auction.serialize';

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define(
-    'Category',
+  const Favorites = sequelize.define(
+    'Favorites',
     {
       id: {
         primaryKey: true,
@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         field: 'id',
       },
-      categoryId: {
+      userId: {
         type: DataTypes.UUID,
-        field: 'category_id',
+        field: 'user_id',
       },
-      categoryName: {
-        type: DataTypes.STRING,
-        field: 'category_name',
+      productId: {
+        type: DataTypes.UUID,
+        field: 'product_id',
       },
       createdBy: {
         type: DataTypes.UUID,
@@ -26,18 +26,22 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'category',
+      tableName: 'favorites',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
     },
   );
 
-  Category.associate = (models) => {
-    Category.hasMany(models.CategoryManagement, {
-      as: 'categoryManagement',
-      foreignKey: 'category_id',
+  Favorites.associate = (models) => {
+    Favorites.belongsTo(models.Buyers, {
+      as: 'buyers',
+      foreignKey: 'userId',
+    });
+    Favorites.belongsTo(models.Products, {
+      as: 'products',
+      foreignKey: 'productId',
     });
   };
 
-  return Category;
+  return Favorites;
 };

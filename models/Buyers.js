@@ -1,5 +1,3 @@
-// import { UserType, UserStatus } from '../src/shared/helpers/constant';
-
 module.exports = (sequelize, DataTypes) => {
   const Buyers = sequelize.define(
     'Buyers',
@@ -70,13 +68,13 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Buyers.associate = (models) => {
-    Buyers.hasMany(models.Favorite, {
+    Buyers.hasMany(models.Favorites, {
       as: 'favorites',
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
     });
-    Buyers.hasMany(models.AuctionManagement, {
-      as: 'auctionManagements',
-      foreignKey: 'buyer_id',
+    Buyers.hasMany(models.AuctionManagements, {
+      as: 'auction_managements',
+      foreignKey: 'buyerId',
     });
   };
 

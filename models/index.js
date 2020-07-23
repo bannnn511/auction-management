@@ -51,11 +51,4 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.Buyers = require('./Buyers')(sequelize, Sequelize.DataTypes);
-db.Products = require('./Products')(sequelize, Sequelize.DataTypes);
-db.AuctionManagement = require('./AuctionManagement')(
-  sequelize,
-  Sequelize.DataTypes,
-);
-
 module.exports = db;

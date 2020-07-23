@@ -1,8 +1,8 @@
-import { AuctionManagement } from '../../../../models/index';
+const db = require('../../../../models');
 
 export function createAuction(auction) {
   try {
-    const newAuction = AuctionManagement.create({
+    const newAuction = db.AuctionManagements.create({
       sellerID: auction.sellerId,
       productId: auction.productId,
       description: auction.description,

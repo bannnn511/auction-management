@@ -1,7 +1,7 @@
 {
     "tables": {
-        "auctionHistory": {
-            "tableName": "auctionHistory",
+        "auction_histories": {
+            "tableName": "auction_histories",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -16,8 +16,15 @@
                     "field": "user_id",
                     "seqType": "Sequelize.UUID"
                 },
-                "productId": {
-                    "field": "product_id",
+                "auctionId": {
+                    "field": "auction_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "auction_managements",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
                 "price": {
@@ -41,23 +48,12 @@
                     "allowNull": false,
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
-                },
-                "auction_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "auctionManagements",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "auction_id",
-                    "seqType": "Sequelize.UUID"
                 }
             },
             "indexes": []
         },
-        "category": {
-            "tableName": "category",
+        "auction_managements": {
+            "tableName": "auction_managements",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -68,193 +64,43 @@
                     "field": "id",
                     "seqType": "Sequelize.UUID"
                 },
-                "categoryId": {
-                    "field": "category_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "categoryName": {
-                    "field": "category_name",
-                    "seqType": "Sequelize.STRING"
-                },
-                "createdBy": {
-                    "field": "created_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "updatedBy": {
-                    "field": "updated_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
-        },
-        "categoryManagment": {
-            "tableName": "categoryManagment",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "categoryId": {
-                    "field": "category_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "productId": {
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "createdBy": {
-                    "field": "created_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "updatedBy": {
-                    "field": "updated_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "category_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "category",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "category_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "product_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "products",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                }
-            },
-            "indexes": []
-        },
-        "favorites": {
-            "tableName": "favorites",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "userId": {
-                    "field": "user_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "productId": {
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "createdBy": {
-                    "field": "created_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "updatedBy": {
-                    "field": "updated_by",
-                    "seqType": "Sequelize.UUID"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "user_id": {
+                "buyerId": {
+                    "field": "buyer_id",
                     "allowNull": true,
                     "references": {
                         "model": "buyers",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "CASCADE",
                     "onUpdate": "CASCADE",
-                    "field": "user_id",
                     "seqType": "Sequelize.UUID"
                 },
-                "product_id": {
+                "sellerId": {
+                    "field": "seller_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "productId": {
+                    "field": "product_id",
                     "allowNull": true,
                     "references": {
                         "model": "products",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "NO ACTION",
                     "onUpdate": "CASCADE",
-                    "field": "product_id",
-                    "seqType": "Sequelize.UUID"
-                }
-            },
-            "indexes": []
-        },
-        "ratings": {
-            "tableName": "ratings",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "raterID": {
-                    "field": "rater_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "ratedID": {
-                    "field": "rated_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "auctionID": {
-                    "field": "auction_id",
                     "seqType": "Sequelize.UUID"
                 },
                 "description": {
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
                 },
-                "point": {
-                    "field": "point",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "createdBy": {
                     "field": "created_by",
                     "seqType": "Sequelize.UUID"
@@ -273,18 +119,7 @@
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
                 },
-                "auction_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "auctionManagements",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "auction_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "rater_id": {
+                "buyerID": {
                     "allowNull": true,
                     "references": {
                         "model": "buyers",
@@ -292,18 +127,7 @@
                     },
                     "onDelete": "SET NULL",
                     "onUpdate": "CASCADE",
-                    "field": "rater_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "rated_id": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "buyers",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "rated_id",
+                    "field": "buyerID",
                     "seqType": "Sequelize.UUID"
                 }
             },
@@ -347,7 +171,7 @@
                     "field": "address",
                     "seqType": "Sequelize.TEXT"
                 },
-                "fullname": {
+                "fullame": {
                     "field": "fullname",
                     "seqType": "Sequelize.STRING"
                 },
@@ -365,6 +189,157 @@
                 "minusPoint": {
                     "field": "minus_point",
                     "seqType": "Sequelize.INTEGER"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "categories": {
+            "tableName": "categories",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "categoryId": {
+                    "field": "category_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "categoryName": {
+                    "field": "category_name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "category_managments": {
+            "tableName": "category_managments",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "categoryId": {
+                    "field": "category_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "categories",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "productId": {
+                    "field": "product_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "products",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "favorites": {
+            "tableName": "favorites",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "userId": {
+                    "field": "user_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "productId": {
+                    "field": "product_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "products",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
                 },
                 "createdBy": {
                     "field": "created_by",
@@ -442,8 +417,8 @@
             },
             "indexes": []
         },
-        "auctionManagements": {
-            "tableName": "auctionManagements",
+        "ratings": {
+            "tableName": "ratings",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -454,21 +429,32 @@
                     "field": "id",
                     "seqType": "Sequelize.UUID"
                 },
-                "buyerID": {
-                    "field": "buyer_id",
+                "raterID": {
+                    "field": "rater_id",
                     "seqType": "Sequelize.UUID"
                 },
-                "sellerID": {
-                    "field": "seller_id",
+                "ratedID": {
+                    "field": "rated_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
-                "productId": {
-                    "field": "product_id",
+                "auctionID": {
+                    "field": "auction_id",
                     "seqType": "Sequelize.UUID"
                 },
                 "description": {
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
+                },
+                "point": {
+                    "field": "point",
+                    "seqType": "Sequelize.INTEGER"
                 },
                 "createdBy": {
                     "field": "created_by",
@@ -487,10 +473,32 @@
                     "allowNull": false,
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
+                },
+                "auctionId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "auction_managements",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "auctionId",
+                    "seqType": "Sequelize.UUID"
+                },
+                "raterId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "raterId",
+                    "seqType": "Sequelize.UUID"
                 }
             },
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 1
 }

@@ -1,9 +1,10 @@
-import { Buyers } from '../../../../models/index';
 import { UserType } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export async function requestingBackToBuyer(id, updatedBy) {
   try {
-    let buyer = await Buyers.update(
+    let buyer = await db.Buyers.update(
       { isSeller: false, updatedBy, type: UserType.BUYER },
       {
         where: {
@@ -11,7 +12,7 @@ export async function requestingBackToBuyer(id, updatedBy) {
         },
       },
     );
-    buyer = await Buyers.findOne({
+    buyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullname', 'type', 'status'],
       where: {
         id,

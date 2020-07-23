@@ -2,6 +2,7 @@ import { AppError } from '../../utils/appError';
 import { getLoginUserId, registerUser } from './business/index';
 import { responseError } from '../../shared/helpers';
 import { getUserIdNoPass } from '../Buyers/business';
+import { serializeUser } from './auth.serialize';
 
 const jwt = require('jsonwebtoken');
 
@@ -31,17 +32,20 @@ export async function login(req, res, next) {
 export async function register(req, res, next) {
   try {
     const { body } = req;
+    console.log({ myuser: body });
+
     const checkUser = await getUserIdNoPass(body);
     if (checkUser) {
       res.status(400).send('User already exists');
     }
     const buyer = await registerUser(body);
-
     if (!buyer) {
       next(new AppError('Create account fail', 400));
     }
+    const buyerData = serializeUser(buyer);
+    console.log(buyerData);
 
-    res.status(200).json({ user: buyer });
+    res.status(200).json({ data: buyerData });
   } catch (error) {
     responseError(res, error);
   }

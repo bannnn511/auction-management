@@ -1,9 +1,10 @@
-import { Buyers } from '../../../../models/index';
 import { UserStatus } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export function deleteBuyer(id, updatedBy) {
   try {
-    let buyer = Buyers.update(
+    let buyer = db.Buyers.update(
       { status: UserStatus.DELETED, updatedBy },
       {
         where: {
@@ -11,7 +12,7 @@ export function deleteBuyer(id, updatedBy) {
         },
       },
     );
-    buyer = Buyers.findOne({
+    buyer = db.Buyers.findOne({
       attribute: ['id', 'email', 'fullname', 'type', 'status'],
       where: {
         id,

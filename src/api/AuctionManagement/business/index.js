@@ -1,2 +1,2 @@
-export * from './post-createAuction';
-export * from './get-allAuctions';
+export * from './post-create-auction';
+export * from './get-all-auctions';

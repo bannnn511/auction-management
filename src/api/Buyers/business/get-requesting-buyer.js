@@ -1,13 +1,14 @@
-import { Buyers } from '../../../../models/index';
 import {
   UserType,
   UserStatus,
   UserIsSeller,
 } from '../../../shared/helpers/constant';
 
+const db = require('../../../../models');
+
 export function getRequestingBuyers() {
   try {
-    const buyer = Buyers.findAll({
+    const buyer = db.Buyers.findAll({
       attributes: [
         'id',
         'email',

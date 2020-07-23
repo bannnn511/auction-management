@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const AuctionManagement = sequelize.define(
-    'AuctionManagement',
+  const AuctionManagements = sequelize.define(
+    'AuctionManagements',
     {
       id: {
         primaryKey: true,
@@ -8,11 +8,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         field: 'id',
       },
-      buyerID: {
+      buyerId: {
         type: DataTypes.UUID,
         field: 'buyer_id',
       },
-      sellerID: {
+      sellerId: {
         type: DataTypes.UUID,
         field: 'seller_id',
       },
@@ -34,34 +34,34 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'auctionManagements',
+      tableName: 'auction_managements',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
     },
   );
 
-  AuctionManagement.associate = (models) => {
-    AuctionManagement.belongsTo(models.Products, {
+  AuctionManagements.associate = (models) => {
+    AuctionManagements.belongsTo(models.Products, {
       as: 'products',
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
     });
-    AuctionManagement.belongsTo(models.Buyers, {
+    AuctionManagements.belongsTo(models.Buyers, {
       as: 'buyers',
-      foreignKey: 'buyer_id',
+      foreignKey: 'buyerID',
     });
-    AuctionManagement.belongsTo(models.Buyers, {
+    AuctionManagements.belongsTo(models.Buyers, {
       as: 'seller',
-      foreignKey: 'seller_id',
+      foreignKey: 'sellerId',
     });
-    AuctionManagement.hasMany(models.AuctionHistory, {
-      as: 'auctionHistory',
-      foreignKey: 'auction_id',
+    AuctionManagements.hasMany(models.AuctionHistories, {
+      as: 'auctionHistories',
+      foreignKey: 'auctionId',
     });
-    AuctionManagement.hasMany(models.Rating, {
+    AuctionManagements.hasMany(models.Ratings, {
       as: 'auction',
-      foreignKey: 'auction_id',
+      foreignKey: 'auctionId',
     });
   };
 
-  return AuctionManagement;
+  return AuctionManagements;
 };

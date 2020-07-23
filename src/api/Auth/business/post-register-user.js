@@ -1,13 +1,14 @@
-import { Buyers } from '../../../../models/index';
 import {
   UserType,
   UserStatus,
   UserIsSeller,
 } from '../../../shared/helpers/constant';
 
+const db = require('../../../../models');
+
 export function registerUser(buyer) {
   try {
-    const data = Buyers.create({
+    const data = db.Buyers.create({
       email: buyer.email,
       password: buyer.password,
       type: UserType.BUYER,

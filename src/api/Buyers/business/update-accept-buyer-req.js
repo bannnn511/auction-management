@@ -1,18 +1,19 @@
-import { Buyers } from '../../../../models/index';
 import { UserType, UserStatus } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export async function acceptBuyerReq(id, updatedBy) {
   try {
-    let buyer = Buyers.update(
-      { type: UserType.SELLER },
+    let buyer = db.Buyers.update(
+      { type: UserType.SELLER, updatedBy },
       {
         where: {
           id,
-          updatedBy,
         },
       },
     );
-    buyer = await Buyers.findOne({
+
+    buyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullName', 'type', 'status'],
       where: {
         id,

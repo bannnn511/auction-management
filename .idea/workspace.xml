@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="67433cae-de42-4979-b135-0f4d13b43fdc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/AuctionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/AuctionHistory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/AuctionManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/AuctionManagement.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Buyers.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Buyers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Category.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Categories.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Products/product.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/product.controller.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +36,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1f2NnWbDF4jL9vgaGvMr64vpeO9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -31,7 +54,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
   </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
@@ -63,17 +86,30 @@
       <workItem from="1595412400800" duration="206000" />
       <workItem from="1595473564337" duration="120000" />
       <workItem from="1595473731178" duration="904000" />
+      <workItem from="1595498876510" duration="264000" />
+      <workItem from="1595499148118" duration="513000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
-    <state x="2291" y="230" key="#Notifications" timestamp="1595412555329">
+    <state x="2291" y="230" key="#Notifications" timestamp="1595499156869">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
-    <state x="2291" y="230" key="#Notifications/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595412555329" />
+    <state x="2291" y="230" key="#Notifications/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595499156869" />
     <state width="1899" height="305" key="GridCell.Tab.0.bottom" timestamp="1595412609221">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
@@ -94,9 +130,9 @@
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
     <state x="1988" y="102" key="IDE.errors.dialog/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595473757789" />
-    <state x="1909" y="-1" key="SettingsEditor" timestamp="1595473976042">
+    <state x="1909" y="-1" key="SettingsEditor" timestamp="1595499266446">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
-    <state x="1909" y="-1" key="SettingsEditor/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595473976042" />
+    <state x="1909" y="-1" key="SettingsEditor/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595499266446" />
   </component>
 </project>

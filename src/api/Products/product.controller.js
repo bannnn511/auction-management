@@ -5,7 +5,7 @@ import {
   serializeAuctionFromProduct,
   serializefullActionDetail,
 } from '../AuctionManagement/auction.serialize';
-import { createAuction } from '../AuctionManagement/business/post-createAuction';
+import { createAuction } from '../AuctionManagement/business/index';
 import { AppError } from '../../utils/appError';
 
 export async function getProducts(req, res) {

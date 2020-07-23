@@ -1,11 +1,11 @@
-import { AuctionManagement, Products } from '../../../../models/index';
+const db = require('../../../../models');
 
 export async function getAllAuctions() {
   try {
-    const auctions = await AuctionManagement.findAll({
+    const auctions = await db.AuctionManagement.findAll({
       include: [
         {
-          model: Products,
+          model: db.Products,
           as: 'products',
           // through: {
           //   attributes: ['productName'],

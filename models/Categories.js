@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const AuctionHistory = sequelize.define(
-    'AuctionHistory',
+  const Categories = sequelize.define(
+    'Categories',
     {
       id: {
         primaryKey: true,
@@ -8,17 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         field: 'id',
       },
-      userId: {
+      categoryId: {
         type: DataTypes.UUID,
-        field: 'user_id',
+        field: 'category_id',
       },
-      productId: {
-        type: DataTypes.UUID,
-        field: 'product_id',
-      },
-      price: {
-        type: DataTypes.FLOAT,
-        field: 'price',
+      categoryName: {
+        type: DataTypes.STRING,
+        field: 'category_name',
       },
       createdBy: {
         type: DataTypes.UUID,
@@ -30,18 +26,18 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'auctionHistory',
+      tableName: 'categories',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
     },
   );
 
-  AuctionHistory.associate = (models) => {
-    AuctionHistory.belongsTo(models.AuctionManagement, {
-      as: 'auctionManagements',
-      foreignKey: 'auction_id',
+  Categories.associate = (models) => {
+    Categories.hasMany(models.CategoryManagements, {
+      as: 'category_managements',
+      foreignKey: 'categoryId',
     });
   };
 
-  return AuctionHistory;
+  return Categories;
 };

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Rating = sequelize.define(
-    'Rating',
+  const Ratings = sequelize.define(
+    'Ratings',
     {
       id: {
         primaryKey: true,
@@ -44,20 +44,20 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Rating.associate = (models) => {
-    Rating.belongsTo(models.AuctionManagement, {
+  Ratings.associate = (models) => {
+    Ratings.belongsTo(models.AuctionManagements, {
       as: 'auctionManagements',
-      foreignKey: 'auction_id',
+      foreignKey: 'auctionId',
     });
-    Rating.belongsTo(models.Buyers, {
+    Ratings.belongsTo(models.Buyers, {
       as: 'raterUser',
-      foreignKey: 'rater_id',
+      foreignKey: 'raterId',
     });
-    Rating.belongsTo(models.Buyers, {
+    Ratings.belongsTo(models.Buyers, {
       as: 'ratedUser',
-      foreignKey: 'rated_id',
+      foreignKey: 'ratedID',
     });
   };
 
-  return Rating;
+  return Ratings;
 };

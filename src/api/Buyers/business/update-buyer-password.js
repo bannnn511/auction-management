@@ -1,13 +1,14 @@
-import { Buyers } from '../../../../models/index';
 import { UserStatus } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export async function updateBuyerPassword(buyer) {
   try {
-    let newBuyer = await Buyers.update(
+    let newBuyer = await db.Buyers.update(
       { password: buyer.password },
       { where: { id: buyer.id } },
     );
-    newBuyer = await Buyers.findOne({
+    newBuyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullName', 'type', 'status'],
       where: {
         id: buyer.id,

@@ -1,9 +1,10 @@
-import { Buyers } from '../../../../models/index';
 import { UserStatus } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export function getLoginUserById(id) {
   try {
-    const buyer = Buyers.findOne({
+    const buyer = db.Buyers.findOne({
       attributes: [
         'id',
         'email',

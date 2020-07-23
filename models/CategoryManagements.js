@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const CategoryManagement = sequelize.define(
-    'CategoryManagement',
+  const CategoryManagements = sequelize.define(
+    'CategoryManagements',
     {
       id: {
         primaryKey: true,
@@ -26,22 +26,22 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'categoryManagment',
+      tableName: 'category_managments',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
     },
   );
 
-  CategoryManagement.associate = (models) => {
-    CategoryManagement.belongsTo(models.Category, {
-      as: 'category',
-      foreignKey: 'category_id',
+  CategoryManagements.associate = (models) => {
+    CategoryManagements.belongsTo(models.Categories, {
+      as: 'categories',
+      foreignKey: 'categoryId',
     });
-    CategoryManagement.belongsTo(models.Products, {
+    CategoryManagements.belongsTo(models.Products, {
       as: 'products',
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
     });
   };
 
-  return CategoryManagement;
+  return CategoryManagements;
 };

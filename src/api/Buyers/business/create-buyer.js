@@ -1,9 +1,10 @@
-import { Buyers } from '../../../../models/index';
 import { UserIsSeller } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export function createBuyer(buyer) {
   try {
-    const newBuyer = Buyers.create({
+    const newBuyer = db.Buyers.create({
       email: buyer.email,
       password: buyer.password,
       type: buyer.type,

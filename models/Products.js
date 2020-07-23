@@ -46,17 +46,17 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
   Products.associate = (models) => {
-    Products.hasMany(models.CategoryManagement, {
-      as: 'categoryManagement',
-      foreignKey: 'product_id',
+    Products.hasMany(models.CategoryManagements, {
+      as: 'categoryManagements',
+      foreignKey: 'productId',
     });
-    Products.hasMany(models.Favorite, {
+    Products.hasMany(models.Favorites, {
       as: 'favorites',
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
     });
-    Products.hasMany(models.AuctionManagement, {
+    Products.hasMany(models.AuctionManagements, {
       as: 'auctionManagements',
-      foreignKey: 'product_id',
+      foreignKey: 'productId',
     });
   };
 

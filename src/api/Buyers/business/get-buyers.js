@@ -1,10 +1,11 @@
-import { Buyers, Sequelize } from '../../../../models/index';
 import { UserStatus, UserType } from '../../../shared/helpers/constant';
 
+const db = require('../../../../models');
+
 export function getBuyers() {
-  const { Op } = Sequelize;
+  const { Op } = db.Sequelize;
   try {
-    const buyers = Buyers.findAll({
+    const buyers = db.Buyers.findAll({
       where: {
         status: UserStatus.ACTIVE,
         type: {
