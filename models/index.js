@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 const dotenv = require('dotenv');
 
 const result = dotenv.config();
@@ -52,5 +53,9 @@ db.Sequelize = Sequelize;
 
 db.Buyers = require('./Buyers')(sequelize, Sequelize.DataTypes);
 db.Products = require('./Products')(sequelize, Sequelize.DataTypes);
+db.AuctionManagement = require('./AuctionManagement')(
+  sequelize,
+  Sequelize.DataTypes,
+);
 
 module.exports = db;

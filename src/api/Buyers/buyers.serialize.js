@@ -1,6 +1,5 @@
+import * as _ from 'lodash';
 import { UserStatus, UserType } from '../../shared/helpers/constant';
-
-const _ = require('lodash');
 
 export function serializeBuyers(buyer, showPassword) {
   const data = {

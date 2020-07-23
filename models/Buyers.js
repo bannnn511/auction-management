@@ -1,4 +1,4 @@
-const { UserType, UserStatus } = require('../src/shared/helpers/constant');
+// import { UserType, UserStatus } from '../src/shared/helpers/constant';
 
 module.exports = (sequelize, DataTypes) => {
   const Buyers = sequelize.define(
@@ -23,12 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       type: {
         type: DataTypes.ENUM,
-        values: [UserType.BUYER, UserType.SELLER, UserType.ADMIN],
+        values: ['buyer', 'seller', 'admin'],
         field: 'type',
       },
       status: {
         type: DataTypes.ENUM,
-        values: [UserStatus.ACTIVE, UserStatus.DISABLE, UserStatus.DELETED],
+        values: ['active', 'disable', 'deleted'],
         defaultValue: 'active',
         field: 'status',
       },

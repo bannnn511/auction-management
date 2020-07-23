@@ -471,7 +471,7 @@
                 },
                 "type": {
                     "field": "type",
-                    "seqType": "Sequelize.ENUM('buyer', 'admin')"
+                    "seqType": "Sequelize.ENUM('buyer', 'seller', 'admin')"
                 },
                 "status": {
                     "defaultValue": {
@@ -525,5 +525,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }
