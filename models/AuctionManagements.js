@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     AuctionManagements.belongsTo(models.Buyers, {
       as: 'buyers',
-      foreignKey: 'buyerID',
+      foreignKey: 'buyerId',
     });
     AuctionManagements.belongsTo(models.Buyers, {
       as: 'seller',

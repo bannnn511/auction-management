@@ -8,6 +8,7 @@ export async function authorization(req, res, next) {
   // JSON web token logic right here
 
   try {
+    console.log(req.header('Authorization'));
     const token = req
       .header('Authorization')
       .replace('Bearer', '')
@@ -25,6 +26,6 @@ export async function authorization(req, res, next) {
     next();
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(400).send('Authorization failed');
   }
 }

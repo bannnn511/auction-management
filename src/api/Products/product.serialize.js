@@ -21,3 +21,11 @@ export function serializeAllProducts(products) {
   });
   return data;
 }
+
+export function serializeBidProduct(product) {
+  return {
+    id: _.get(product, 'id'),
+    price: _.get(product, 'price'),
+    updatedBy: _.get(product, 'updatedBy', ''),
+  };
+}

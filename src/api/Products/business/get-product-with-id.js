@@ -1,8 +1,8 @@
-const { Products } = require('../../../../models');
+const { db } = require('../../../../models');
 
-export function getProductWithId(product) {
+export async function getProductWithId(product) {
   try {
-    const products = Products.findOne({
+    const products = await db.Products.findOne({
       where: {
         id: product.productId,
       },

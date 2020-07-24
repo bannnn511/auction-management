@@ -10,3 +10,8 @@ export const productAuctionSchema = Joi.object({
     .empty('')
     .pattern(/^[a-zA-Z]+/),
 });
+
+export const bidProductAuctionSchema = Joi.object({
+  id: Joi.string().required(),
+  price: Joi.number().required(),
+});

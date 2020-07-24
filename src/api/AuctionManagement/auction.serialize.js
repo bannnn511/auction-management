@@ -13,7 +13,7 @@ export function serializeAuctionFromProduct(product) {
 
 export function serializefullActionDetail(product, auction) {
   const fullAuctionDetail = {
-    sellerId: _.get(auction, 'sellerID', ''),
+    sellerId: _.get(auction, 'sellerId', ''),
     productId: _.get(auction, 'productId', ''),
     productName: _.get(product, 'productName', ''),
     imgUrl: _.get(product, 'imgUrl', ''),
@@ -27,13 +27,13 @@ export function serializefullActionDetail(product, auction) {
 
 export function serializefullAction(data) {
   const fullAuctionDetail = {
-    sellerId: _.get(data, 'sellerID', ''),
+    sellerId: _.get(data, 'sellerId', ''),
     productId: _.get(data, 'productId', ''),
-    productName: _.get(data, 'productName', ''),
-    imgUrl: _.get(data, 'imgUrl', ''),
+    productName: _.get(data, 'products.productName', ''),
+    imgUrl: _.get(data, 'products.imgUrl', ''),
     description: _.get(data, 'description', ''),
-    currentPrice: _.get(data, 'currentPrice', 0),
-    buyNowPrice: _.get(data, 'buyNowPrice', 1),
+    currentPrice: _.get(data, 'products.currentPrice', 0),
+    buyNowPrice: _.get(data, 'products.buyNowPrice', 1),
     endAt: _.get(data, 'endAt', _.now()),
   };
   return fullAuctionDetail;
@@ -41,8 +41,9 @@ export function serializefullAction(data) {
 
 export function serializeAuction(auction) {
   const newAuction = {
+    id: _.get(auction, 'id', ''),
     buyerId: _.get(auction, 'buyerId', ''),
-    sellerId: _.get(auction, 'sellerID', ''),
+    sellerId: _.get(auction, 'sellerId', ''),
     productId: _.get(auction, 'productId', ''),
   };
   return newAuction;
@@ -51,7 +52,7 @@ export function serializeAuction(auction) {
 export function serializeAllAuctions(auctions) {
   const newAuctions = [];
   auctions.forEach((auction) => {
-    newAuctions.push(serializeAuction(auction));
+    newAuctions.push(serializefullAction(auction));
   });
   return newAuctions;
 }
