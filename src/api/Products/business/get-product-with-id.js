@@ -1,13 +1,14 @@
-const { db } = require('../../../../models');
+const { Products } = require('../../../../models');
 
 export async function getProductWithId(product) {
   try {
-    const products = await db.Products.findOne({
+    console.log('🚒🚒🚒', product);
+    const productData = await Products.findOne({
       where: {
-        id: product.productId,
+        id: product.id,
       },
     });
-    return products;
+    return productData;
   } catch (error) {
     console.log(error);
     return null;

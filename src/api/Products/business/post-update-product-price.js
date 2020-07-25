@@ -1,10 +1,10 @@
-const db = require('../../../../models');
+const { Products } = require('../../../../models');
 
 export async function updateProductPrice(body) {
   try {
-    let product = await db.Products.update(
+    let product = await Products.update(
       {
-        price: body.price,
+        currentPrice: body.price,
         updatedBy: body.updatedBy,
       },
       {
@@ -13,7 +13,7 @@ export async function updateProductPrice(body) {
         },
       },
     );
-    product = await db.Products.findOne({
+    product = await Products.findOne({
       attribute: [
         'productName',
         'imgUrl',
