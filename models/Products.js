@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         field: 'buy_now_price',
       },
-      endAt: {
-        type: DataTypes.DATE,
-        field: 'end_at',
-      },
       createdBy: {
         type: DataTypes.UUID,
         field: 'created_by',

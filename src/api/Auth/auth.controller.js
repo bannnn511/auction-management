@@ -16,7 +16,7 @@ export async function login(req, res, next) {
       next(new AppError('Username or password does not exists.', 400));
     }
 
-    console.log('🔥🔥🔥', user);
+    console.log('🔥🔥🔥', serializeUser(user));
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
       expiresIn: '1h',

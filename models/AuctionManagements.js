@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         field: 'description',
       },
+      endAt: {
+        type: DataTypes.DATE,
+        field: 'end_at',
+      },
       createdBy: {
         type: DataTypes.UUID,
         field: 'created_by',
@@ -47,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     AuctionManagements.belongsTo(models.Buyers, {
       as: 'buyers',
-      foreignKey: 'buyerID',
+      foreignKey: 'buyerId',
     });
     AuctionManagements.belongsTo(models.Buyers, {
       as: 'seller',

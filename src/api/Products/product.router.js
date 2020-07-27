@@ -4,8 +4,15 @@ import {
   authorization,
   restrictedTo,
 } from '../../shared/middleware';
-import { productAuctionSchema } from './product.schema';
-import { createNewProduct, getProducts } from './product.controller';
+import {
+  productAuctionSchema,
+  bidProductAuctionSchema,
+} from './product.schema';
+import {
+  createNewProduct,
+  getProducts,
+  updateProductCurrentPrice,
+} from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
 const productsRouter = Router();
@@ -16,6 +23,13 @@ productsRouter.post(
   authorization,
   restrictedTo(UserType.SELLER),
   createNewProduct,
+);
+
+productsRouter.put(
+  '/updateprice',
+  validateBody(bidProductAuctionSchema),
+  authorization,
+  updateProductCurrentPrice,
 );
 
 productsRouter.get('/', getProducts);

@@ -7,7 +7,6 @@ export function serializeProducts(product) {
     imgUrl: _.get(product, 'imgUrl', ''),
     currentPrice: _.get(product, 'currentPrice', 1),
     buyNowPrice: _.get(product, 'buyNowPrice', 1),
-    endAt: _.get(product, 'endAt', _.now()),
     createdBy: _.get(product, 'createdBy', ''),
     updatedBy: _.get(product, 'updatedBy', ''),
   };
@@ -20,4 +19,12 @@ export function serializeAllProducts(products) {
     data.push(serializeProducts(product));
   });
   return data;
+}
+
+export function serializeBidProduct(product) {
+  return {
+    id: _.get(product, 'id'),
+    price: _.get(product, 'price'),
+    updatedBy: _.get(product, 'updatedBy', ''),
+  };
 }

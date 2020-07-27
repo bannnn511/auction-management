@@ -21,11 +21,16 @@
   <component name="ChangeListManager">
     <list default="true" id="67433cae-de42-4979-b135-0f4d13b43fdc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/AuctionHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/AuctionHistory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/AuctionManagement.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/AuctionManagement.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Buyers.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Buyers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Category.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Categories.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/_current.json" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/_current.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/_current_bak.json" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/_current_bak.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/AuctionManagements.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/AuctionManagements.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Categories.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Categories.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/Products.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/AuctionManagement/auction.serialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionManagement/auction.serialize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Auth/auth.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Auth/auth.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Auth/business/get-login-user-id.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Auth/business/get-login-user-id.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Products/product.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/product.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Products/product.serialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/product.serialize.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +59,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
   </component>
   <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
@@ -88,6 +93,10 @@
       <workItem from="1595473731178" duration="904000" />
       <workItem from="1595498876510" duration="264000" />
       <workItem from="1595499148118" duration="513000" />
+      <workItem from="1595577042682" duration="227000" />
+      <workItem from="1595771555891" duration="364000" />
+      <workItem from="1595771983488" duration="593000" />
+      <workItem from="1595820181856" duration="2285000" />
     </task>
     <servers />
   </component>
@@ -104,35 +113,45 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2291" y="230" key="#Notifications" timestamp="1595499156869">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
     <state x="2291" y="230" key="#Notifications/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595499156869" />
-    <state width="1899" height="305" key="GridCell.Tab.0.bottom" timestamp="1595412609221">
-      <screen x="1440" y="-180" width="1920" height="1080" />
+    <state width="1419" height="240" key="GridCell.Tab.0.bottom" timestamp="1595772580289">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.bottom/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595412609221" />
-    <state width="1899" height="305" key="GridCell.Tab.0.center" timestamp="1595412609220">
-      <screen x="1440" y="-180" width="1920" height="1080" />
+    <state width="1419" height="240" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1595772580289" />
+    <state width="1419" height="240" key="GridCell.Tab.0.center" timestamp="1595772580287">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.center/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595412609220" />
-    <state width="1899" height="305" key="GridCell.Tab.0.left" timestamp="1595412609219">
-      <screen x="1440" y="-180" width="1920" height="1080" />
+    <state width="1419" height="240" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1595772580287" />
+    <state width="1419" height="240" key="GridCell.Tab.0.left" timestamp="1595772580287">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.left/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595412609219" />
-    <state width="1899" height="305" key="GridCell.Tab.0.right" timestamp="1595412609220">
-      <screen x="1440" y="-180" width="1920" height="1080" />
+    <state width="1419" height="240" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1595772580287" />
+    <state width="1419" height="240" key="GridCell.Tab.0.right" timestamp="1595772580288">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1899" height="305" key="GridCell.Tab.0.right/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595412609220" />
-    <state x="1988" y="102" key="IDE.errors.dialog" timestamp="1595473757789">
+    <state width="1419" height="240" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1595772580288" />
+    <state x="1988" y="102" key="IDE.errors.dialog" timestamp="1595577148783">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
-    <state x="1988" y="102" key="IDE.errors.dialog/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595473757789" />
-    <state x="1909" y="-1" key="SettingsEditor" timestamp="1595499266446">
+    <state x="1988" y="102" key="IDE.errors.dialog/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595577148783" />
+    <state x="540" y="23" width="900" height="722" key="SettingsEditor" timestamp="1595772528618">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="1909" y="-1" key="SettingsEditor/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595577245997" />
+    <state x="540" y="23" width="900" height="722" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1595772528618" />
+    <state x="2108" y="-32" width="584" height="783" key="find.popup" timestamp="1595823533639">
       <screen x="1440" y="-180" width="1920" height="1080" />
     </state>
-    <state x="1909" y="-1" key="SettingsEditor/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595499266446" />
+    <state x="2108" y="-32" width="584" height="783" key="find.popup/0.0.1440.900/1440.-180.1920.1080@1440.-180.1920.1080" timestamp="1595823533639" />
   </component>
 </project>
