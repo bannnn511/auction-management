@@ -5,7 +5,6 @@ const db = require('../../../../models');
 export function getLoginUserId(email, password) {
   try {
     const buyer = db.Buyers.findOne({
-      attributes: ['id'],
       where: {
         email,
         password,

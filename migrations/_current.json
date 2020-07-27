@@ -101,6 +101,10 @@
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
                 },
+                "endAt": {
+                    "field": "end_at",
+                    "seqType": "Sequelize.DATE"
+                },
                 "createdBy": {
                     "field": "created_by",
                     "seqType": "Sequelize.UUID"
@@ -210,10 +214,6 @@
                         "value": "Sequelize.UUIDV4"
                     },
                     "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "categoryId": {
-                    "field": "category_id",
                     "seqType": "Sequelize.UUID"
                 },
                 "categoryName": {
@@ -381,10 +381,6 @@
                     "field": "buy_now_price",
                     "seqType": "Sequelize.DECIMAL"
                 },
-                "endAt": {
-                    "field": "end_at",
-                    "seqType": "Sequelize.DATE"
-                },
                 "createdBy": {
                     "field": "created_by",
                     "seqType": "Sequelize.UUID"
@@ -489,5 +485,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }

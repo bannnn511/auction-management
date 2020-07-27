@@ -7,7 +7,6 @@ export function serializeProducts(product) {
     imgUrl: _.get(product, 'imgUrl', ''),
     currentPrice: _.get(product, 'currentPrice', 1),
     buyNowPrice: _.get(product, 'buyNowPrice', 1),
-    endAt: _.get(product, 'endAt', _.now()),
     createdBy: _.get(product, 'createdBy', ''),
     updatedBy: _.get(product, 'updatedBy', ''),
   };

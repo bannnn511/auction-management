@@ -45,6 +45,7 @@ export function serializeAuction(auction) {
     buyerId: _.get(auction, 'buyerId', ''),
     sellerId: _.get(auction, 'sellerId', ''),
     productId: _.get(auction, 'productId', ''),
+    endAt: _.get(auction, 'endAt', _.now()),
   };
   return newAuction;
 }

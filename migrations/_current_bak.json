@@ -71,7 +71,7 @@
                         "model": "buyers",
                         "key": "id"
                     },
-                    "onDelete": "CASCADE",
+                    "onDelete": "NO ACTION",
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
@@ -118,17 +118,6 @@
                     "allowNull": false,
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
-                },
-                "buyerID": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "buyers",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "buyerID",
-                    "seqType": "Sequelize.UUID"
                 }
             },
             "indexes": []
@@ -171,7 +160,7 @@
                     "field": "address",
                     "seqType": "Sequelize.TEXT"
                 },
-                "fullame": {
+                "fullname": {
                     "field": "fullname",
                     "seqType": "Sequelize.STRING"
                 },
@@ -500,5 +489,5 @@
             "indexes": []
         }
     },
-    "revision": 1
+    "revision": 2
 }

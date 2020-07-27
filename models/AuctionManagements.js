@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         field: 'description',
       },
+      endAt: {
+        type: DataTypes.DATE,
+        field: 'end_at',
+      },
       createdBy: {
         type: DataTypes.UUID,
         field: 'created_by',
