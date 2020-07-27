@@ -30,8 +30,6 @@ export async function createNewCategory(req, res) {
     const body = serializeCategory(req.body);
     console.log(body);
 
-    //if(body.categoryName)
-
     const category = await createCategory(body);
     const data = serializeCategory(category);
     responseSuccess(res, data);

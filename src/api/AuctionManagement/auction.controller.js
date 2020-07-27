@@ -3,7 +3,6 @@ import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
 import {
   serializeAllAuctions,
-  serializeAuctionHistory,
   serializeAllBuyerInAuction,
 } from './auction.serialize';
 
