@@ -4,7 +4,7 @@ const db = require('../../../../models');
 
 export async function requestingBackToBuyer(id, updatedBy) {
   try {
-    let buyer = await db.Buyers.update(
+    await db.Buyers.update(
       { isSeller: false, updatedBy, type: UserType.BUYER },
       {
         where: {
@@ -12,7 +12,7 @@ export async function requestingBackToBuyer(id, updatedBy) {
         },
       },
     );
-    buyer = await db.Buyers.findOne({
+    const buyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullname', 'type', 'status'],
       where: {
         id,

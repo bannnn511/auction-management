@@ -7,6 +7,7 @@ import {
   createProduct,
   getAllProducts,
   getProductWithId,
+  updateProductPrice,
 } from './business/index';
 import {
   serializeProducts,
@@ -18,12 +19,23 @@ import {
   serializefullActionDetail,
   serializeAuction,
 } from '../AuctionManagement/auction.serialize';
-import { createAuction } from '../AuctionManagement/business/index';
+import {
+  createAuction,
+  getAuctionWithProductId,
+  updateAuctionBuyerId,
+} from '../AuctionManagement/business/index';
 import { AppError } from '../../utils/appError';
-import { updateProductPrice } from './business/post-update-product-price';
-import { getAuctionWithProductId } from '../AuctionManagement/business/get-auction-with-product-id';
-import { createAuctionHistory } from '../AuctionHistories/business/post-create-auction-history';
-import { serializeAuctionHistory } from '../AuctionHistories/history.serialize';
+import {
+  createAuctionHistory,
+  getWinningBuyerIdFromHistory,
+} from '../AuctionHistories/business';
+import {
+  serializeAuctionHistory,
+  serializedAuctionHistory,
+} from '../AuctionHistories/history.serialize';
+
+const cron = require('node-cron');
+const _ = require('lodash');
 
 export async function getProducts(req, res) {
   try {
@@ -37,7 +49,22 @@ export async function getProducts(req, res) {
   }
 }
 
-export async function createNewProduct(req, res) {
+// TODO: get winning id -> update auctionBuyerId
+async function onAuctionEnded(auctionId, productId) {
+  const winningData = await getWinningBuyerIdFromHistory(auctionId);
+  if (!winningData) {
+    throw new AppError('There is no winning data', 204);
+  }
+  const serializedWinningData = serializedAuctionHistory(winningData);
+  serializedWinningData.productId = productId;
+  const updatedAuction = await updateAuctionBuyerId(serializedWinningData);
+  if (!updatedAuction) {
+    throw new AppError('Cannot update winning Buye', 204);
+  }
+  return updatedAuction;
+}
+
+export async function createNewProduct(req, res, next) {
   try {
     req.body.createdBy = req.currentUser.id;
     req.body.updatedBy = req.currentUser.id;
@@ -48,8 +75,7 @@ export async function createNewProduct(req, res) {
     }
     const data = serializeProducts(product);
     data.description = req.body.description;
-    const date = toDateString(req.body.endAt);
-    data.endAt = date;
+    data.endAt = toDateString(req.body.endAt);
     console.log('✨✨✨ Product datas', data);
 
     const auction = serializeAuctionFromProduct(data);
@@ -61,6 +87,25 @@ export async function createNewProduct(req, res) {
 
     const fullActionDetail = serializefullActionDetail(data, newAuction);
     console.log('Full Auction Detail', fullActionDetail);
+
+    // cron job to check if auction has ended
+    const task = cron.schedule('*/1 * * * *', async () => {
+      const currentTime = toDateString(_.now());
+      const endTime = toDateString(fullActionDetail.endAt);
+      console.log('🤖🤖🤖', 'Checking Auction remaining time');
+      console.log('Current time:', currentTime);
+      console.log('End time:', endTime);
+      if (currentTime >= endTime) {
+        console.log('🤖', 'Auction has ended');
+        const auctionEnded = await onAuctionEnded(
+          fullActionDetail.auctionId,
+          fullActionDetail.productId,
+        );
+        task.destroy();
+        next(responseSuccess(res, auctionEnded));
+      }
+    });
+
     responseSuccess(res, fullActionDetail);
   } catch (error) {
     responseError(res, error);
@@ -71,6 +116,8 @@ export async function updateProductCurrentPrice(req, res) {
   try {
     req.body.updatedBy = req.currentUser.id;
     const serializedBody = serializeBidProduct(req.body);
+
+    // check product exist
     const checkProduct = await getProductWithId(serializedBody);
     if (!checkProduct) {
       res.status(204).send('Product does not exist');
@@ -78,33 +125,46 @@ export async function updateProductCurrentPrice(req, res) {
     const currentProduct = serializeProducts(checkProduct);
     console.log({ currentProduct });
 
-    if (currentProduct.currentPrice >= serializedBody.price) {
-      res.status(406).send('Bidding price must be higher than current price');
-    } else {
-      const auction = await getAuctionWithProductId(currentProduct);
-      if (!auction) {
-        res.status(204).send('There is no auction with this product');
-      }
-      const serializedAuction = serializeAuction(auction);
-      console.log({ currentProduct: serializedAuction });
-
-      const newProduct = await updateProductPrice(serializedBody);
-      if (!newProduct) {
-        res.status(204).send('Bid product failed');
-      }
-      const serializedProduct = serializeProducts(newProduct);
-      console.log('New product detail', serializedProduct);
-      const fullAuctionDetail = serializeAuctionHistory(
-        serializedBody,
-        serializedProduct,
-        serializedAuction,
-      );
-      const history = await createAuctionHistory(fullAuctionDetail);
-      if (!history) {
-        res.status(204).send('Cannot create Auction History');
-      }
-      responseSuccess(res, newProduct);
+    // check auction exist
+    const auction = await getAuctionWithProductId(currentProduct);
+    if (!auction) {
+      throw new AppError('There is no auction with this product', 204);
     }
+
+    // check if bidding price is valid
+    if (currentProduct.currentPrice >= serializedBody.price) {
+      throw new AppError(
+        'Bidding price must be higher than current price',
+        406,
+      );
+    }
+
+    // check if bidding time is till valid
+    if (toDateString(currentProduct.endAt) < toDateString(_.now())) {
+      throw new AppError('Bidding time has expired', 204);
+    }
+
+    const serializedAuction = serializeAuction(auction);
+    console.log({ currentProduct: serializedAuction });
+
+    const newProduct = await updateProductPrice(serializedBody);
+    if (!newProduct) {
+      throw new AppError('Bid product failed', 204);
+    }
+    const serializedProduct = serializeProducts(newProduct);
+    console.log('New product detail', serializedProduct);
+    const fullAuctionDetail = serializeAuctionHistory(
+      serializedBody,
+      serializedProduct,
+      serializedAuction,
+    );
+
+    // create auction history
+    const history = await createAuctionHistory(fullAuctionDetail);
+    if (!history) {
+      throw new AppError('Cannot create Auction History', 204);
+    }
+    responseSuccess(res, newProduct);
   } catch (error) {
     console.log(error);
     responseError(res, error);

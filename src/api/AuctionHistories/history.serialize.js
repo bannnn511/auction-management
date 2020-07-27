@@ -9,3 +9,11 @@ export function serializeAuctionHistory(buyer, product, auction) {
     updatedBy: _.get(product, 'updatedBy', ''),
   };
 }
+
+export function serializedAuctionHistory(auction) {
+  return {
+    userId: _.get(auction, 'userId', ''),
+    price: _.get(auction, 'price', 0),
+    auctionId: _.get(auction, 'auctionId', ''),
+  };
+}

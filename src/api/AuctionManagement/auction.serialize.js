@@ -14,6 +14,7 @@ export function serializeAuctionFromProduct(product) {
 
 export function serializefullActionDetail(product, auction) {
   const fullAuctionDetail = {
+    auctionId: _.get(auction, 'id', ''),
     sellerId: _.get(auction, 'sellerId', ''),
     productId: _.get(auction, 'productId', ''),
     productName: _.get(product, 'productName', ''),

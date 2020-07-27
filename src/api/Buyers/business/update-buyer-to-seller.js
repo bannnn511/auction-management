@@ -4,7 +4,7 @@ const db = require('../../../../models');
 
 export async function requestingToBeSeller(id, updatedBy) {
   try {
-    let buyer = await db.Buyers.update(
+    await db.Buyers.update(
       { isSeller: UserIsSeller.PENDING, updatedBy },
       {
         where: {
@@ -12,7 +12,7 @@ export async function requestingToBeSeller(id, updatedBy) {
         },
       },
     );
-    buyer = await db.Buyers.findOne({
+    const buyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullName', 'type', 'status'],
       where: {
         id,
