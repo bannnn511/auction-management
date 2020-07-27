@@ -2,7 +2,7 @@ const db = require('../../../../models');
 
 export async function getAllAuctions() {
   try {
-    const auctions = await db.AuctionManagement.findAll({
+    const auctions = await db.AuctionManagements.findAll({
       include: [
         {
           model: db.Products,
