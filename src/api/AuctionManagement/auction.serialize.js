@@ -7,6 +7,7 @@ export function serializeAuctionFromProduct(product) {
     description: _.get(product, 'description', ''),
     createdBy: _.get(product, 'createdBy', ''),
     updatedBy: _.get(product, 'updatedBy', ''),
+    endAt: _.get(product, 'endAt', ''),
   };
   return auction;
 }
@@ -20,7 +21,7 @@ export function serializefullActionDetail(product, auction) {
     description: _.get(auction, 'description', ''),
     currentPrice: _.get(product, 'currentPrice', 0),
     buyNowPrice: _.get(product, 'buyNowPrice', 1),
-    endAt: _.get(product, 'endAt', _.now()),
+    endAt: _.get(auction, 'endAt', _.now()),
   };
   return fullAuctionDetail;
 }

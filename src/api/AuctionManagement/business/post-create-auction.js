@@ -8,6 +8,7 @@ export function createAuction(auction) {
       description: auction.description,
       createdBy: auction.createdBy,
       updatedBy: auction.updatedBy,
+      endAt: auction.endAt,
     });
     return newAuction;
   } catch (error) {

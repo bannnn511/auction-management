@@ -7,7 +7,6 @@ export function createProduct(product) {
       imgUrl: product.imgUrl,
       currentPrice: product.currentPrice,
       buyNowPrice: product.buyNowPrice,
-      endAt: product.endAt,
       createdBy: product.createdBy,
       updatedBy: product.updatedBy,
     });

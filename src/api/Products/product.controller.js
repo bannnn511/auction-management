@@ -1,4 +1,8 @@
-import { responseError, responseSuccess } from '../../shared/helpers';
+import {
+  responseError,
+  responseSuccess,
+  toDateString,
+} from '../../shared/helpers';
 import {
   createProduct,
   getAllProducts,
@@ -43,7 +47,9 @@ export async function createNewProduct(req, res) {
       throw new AppError('Cannot create product', 204);
     }
     const data = serializeProducts(product);
-    Object.assign(data, req.body.description);
+    data.description = req.body.description;
+    const date = toDateString(req.body.endAt);
+    data.endAt = date;
     console.log('✨✨✨ Product datas', data);
 
     const auction = serializeAuctionFromProduct(data);
