@@ -58,3 +58,17 @@ export function serializeAllAuctions(auctions) {
   });
   return newAuctions;
 }
+
+export function serializeAuctionHistory(auction) {
+  return {
+    userId: _.get(auction, 'userId', ''),
+  };
+}
+
+export function serializeAllBuyerInAuction(auctions) {
+  const buyers = [];
+  auctions.forEach((auction) => {
+    buyers.push(serializeAuctionHistory(auction));
+  });
+  return buyers;
+}
