@@ -18,6 +18,7 @@ import {
   serializeAuctionFromProduct,
   serializefullActionDetail,
   serializeAuction,
+  serializefullAction,
 } from '../AuctionManagement/auction.serialize';
 import {
   createAuction,
@@ -27,7 +28,7 @@ import {
 import { AppError } from '../../utils/appError';
 import {
   createAuctionHistory,
-  getWinningBuyerIdFromHistory,
+  getWinningHistoryFromAuctionWithAuctionId,
 } from '../AuctionHistories/business';
 import {
   serializeAuctionHistory,
@@ -49,19 +50,23 @@ export async function getProducts(req, res) {
   }
 }
 
-// TODO: get winning id -> update auctionBuyerId
 async function onAuctionEnded(auctionId, productId) {
-  const winningData = await getWinningBuyerIdFromHistory(auctionId);
+  const winningData = await getWinningHistoryFromAuctionWithAuctionId(
+    auctionId,
+  );
   if (!winningData) {
     throw new AppError('There is no winning data', 204);
   }
   const serializedWinningData = serializedAuctionHistory(winningData);
+  console.log('The winners: ', serializedWinningData);
   serializedWinningData.productId = productId;
   const updatedAuction = await updateAuctionBuyerId(serializedWinningData);
   if (!updatedAuction) {
-    throw new AppError('Cannot update winning Buye', 204);
+    throw new AppError('Cannot update winning Buyer', 204);
   }
-  return updatedAuction;
+  const serializedUpdatedAuction = serializeAuction(updatedAuction);
+  console.log('Updated post-Auction data:', serializedUpdatedAuction);
+  return serializedUpdatedAuction;
 }
 
 export async function createNewProduct(req, res, next) {
@@ -101,8 +106,9 @@ export async function createNewProduct(req, res, next) {
           fullActionDetail.auctionId,
           fullActionDetail.productId,
         );
+        const serializedPostAuction = serializefullAction(auctionEnded);
+        console.log(serializedPostAuction);
         task.destroy();
-        next(responseSuccess(res, auctionEnded));
       }
     });
 

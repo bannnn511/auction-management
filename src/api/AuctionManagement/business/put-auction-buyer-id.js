@@ -10,12 +10,11 @@ export async function updateAuctionBuyerId(data) {
         },
       },
     );
-    const auction = db.AuctionManagements.findOne({
+    return db.AuctionManagements.findOne({
       where: {
         id: data.auctionId,
       },
     });
-    return auction;
   } catch (error) {
     console.log(error);
     return null;

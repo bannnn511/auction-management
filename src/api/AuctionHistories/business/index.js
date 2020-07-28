@@ -1,2 +1,2 @@
-export * from './get-winning-buyer';
+export * from './get-winning-histoy';
 export * from './post-create-auction-history';

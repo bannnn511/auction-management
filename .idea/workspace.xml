@@ -20,19 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67433cae-de42-4979-b135-0f4d13b43fdc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/api/AuctionHistories/business/get-winning-histoy.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/AuctionHistories/history.serialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionHistories/history.serialize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/AuctionManagement/auction.serialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionManagement/auction.serialize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/AuctionManagement/business/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionManagement/business/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-info.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-info.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-password.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-password.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-to-seller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Buyers/business/update-buyer-to-seller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Buyers/business/update-seller-to-buyer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Buyers/business/update-seller-to-buyer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Products/business/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/business/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/AuctionHistories/business/get-winning-buyer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/AuctionHistories/business/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionHistories/business/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/AuctionManagement/business/put-auction-buyer-id.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuctionManagement/business/put-auction-buyer-id.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Categories/category.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Categories/category-router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/Products/product.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/product.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Products/product.serialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Products/product.serialize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +102,7 @@
       <workItem from="1595577042682" duration="227000" />
       <workItem from="1595771555891" duration="364000" />
       <workItem from="1595771983488" duration="593000" />
-      <workItem from="1595820181856" duration="16397000" />
+      <workItem from="1595820181856" duration="23180000" />
     </task>
     <servers />
   </component>

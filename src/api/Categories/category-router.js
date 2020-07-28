@@ -4,19 +4,19 @@ import { UserType } from '../../shared/helpers/constant';
 
 const { Router } = require('express');
 
-const categoryRouter = Router();
+const categoriesRouter = Router();
 
-categoryRouter.get(
+categoriesRouter.get(
   '/',
   authorization,
   restrictedTo(UserType.ADMIN),
   getListCategory,
 );
 
-categoryRouter.post(
+categoriesRouter.post(
   '/newcategory',
   authorization,
   restrictedTo(UserType.ADMIN),
   createNewCategory,
 );
-export { categoryRouter };
+export { categoriesRouter };
