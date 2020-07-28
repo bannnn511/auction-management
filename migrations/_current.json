@@ -414,11 +414,18 @@
                     "field": "id",
                     "seqType": "Sequelize.UUID"
                 },
-                "raterID": {
+                "raterId": {
                     "field": "rater_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
-                "ratedID": {
+                "ratedId": {
                     "field": "rated_id",
                     "allowNull": true,
                     "references": {
@@ -429,8 +436,15 @@
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
-                "auctionID": {
+                "auctionId": {
                     "field": "auction_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "auction_managements",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
                 "description": {
@@ -459,18 +473,7 @@
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
                 },
-                "auctionId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "auction_managements",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "auctionId",
-                    "seqType": "Sequelize.UUID"
-                },
-                "raterId": {
+                "rater_id": {
                     "allowNull": true,
                     "references": {
                         "model": "buyers",
@@ -478,12 +481,23 @@
                     },
                     "onDelete": "SET NULL",
                     "onUpdate": "CASCADE",
-                    "field": "raterId",
+                    "field": "rater_id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "rated_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rated_id",
                     "seqType": "Sequelize.UUID"
                 }
             },
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 1
 }

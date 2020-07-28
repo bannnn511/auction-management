@@ -8,18 +8,18 @@ var Sequelize = require('sequelize');
  * createTable "buyers", deps: []
  * createTable "categories", deps: []
  * createTable "products", deps: []
- * createTable "auction_managements", deps: [buyers, buyers, products, buyers]
+ * createTable "auction_managements", deps: [buyers, buyers, products]
  * createTable "auction_histories", deps: [auction_managements]
  * createTable "category_managments", deps: [categories, products]
  * createTable "favorites", deps: [buyers, products]
- * createTable "ratings", deps: [buyers, auction_managements, buyers]
+ * createTable "ratings", deps: [buyers, buyers, auction_managements, buyers, buyers]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "1595501105000-init-db",
-    "created": "2020-07-23T10:45:06.130Z",
+    "name": "1595921427000-init-db",
+    "created": "2020-07-28T07:30:29.025Z",
     "comment": ""
 };
 
@@ -59,7 +59,7 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.TEXT,
                         "field": "address"
                     },
-                    "fullame": {
+                    "fullname": {
                         "type": Sequelize.STRING,
                         "field": "fullname"
                     },
@@ -110,10 +110,6 @@ var migrationCommands = function(transaction) {
                         "field": "id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
-                    },
-                    "categoryId": {
-                        "type": Sequelize.UUID,
-                        "field": "category_id"
                     },
                     "categoryName": {
                         "type": Sequelize.STRING,
@@ -172,10 +168,6 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.DECIMAL,
                         "field": "buy_now_price"
                     },
-                    "endAt": {
-                        "type": Sequelize.DATE,
-                        "field": "end_at"
-                    },
                     "createdBy": {
                         "type": Sequelize.UUID,
                         "field": "created_by"
@@ -214,7 +206,7 @@ var migrationCommands = function(transaction) {
                     "buyerId": {
                         "type": Sequelize.UUID,
                         "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
+                        "onDelete": "NO ACTION",
                         "references": {
                             "model": "buyers",
                             "key": "id"
@@ -248,6 +240,10 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.TEXT,
                         "field": "description"
                     },
+                    "endAt": {
+                        "type": Sequelize.DATE,
+                        "field": "end_at"
+                    },
                     "createdBy": {
                         "type": Sequelize.UUID,
                         "field": "created_by"
@@ -265,17 +261,6 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.DATE,
                         "field": "updated_at",
                         "allowNull": false
-                    },
-                    "buyerID": {
-                        "type": Sequelize.UUID,
-                        "field": "buyerID",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "SET NULL",
-                        "references": {
-                            "model": "buyers",
-                            "key": "id"
-                        },
-                        "allowNull": true
                     }
                 },
                 {
@@ -462,11 +447,18 @@ var migrationCommands = function(transaction) {
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
                     },
-                    "raterID": {
+                    "raterId": {
                         "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "buyers",
+                            "key": "id"
+                        },
+                        "allowNull": true,
                         "field": "rater_id"
                     },
-                    "ratedID": {
+                    "ratedId": {
                         "type": Sequelize.UUID,
                         "onUpdate": "CASCADE",
                         "onDelete": "NO ACTION",
@@ -477,8 +469,15 @@ var migrationCommands = function(transaction) {
                         "allowNull": true,
                         "field": "rated_id"
                     },
-                    "auctionID": {
+                    "auctionId": {
                         "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "auction_managements",
+                            "key": "id"
+                        },
+                        "allowNull": true,
                         "field": "auction_id"
                     },
                     "description": {
@@ -507,20 +506,20 @@ var migrationCommands = function(transaction) {
                         "field": "updated_at",
                         "allowNull": false
                     },
-                    "auctionId": {
+                    "rater_id": {
                         "type": Sequelize.UUID,
-                        "field": "auctionId",
+                        "field": "rater_id",
                         "onUpdate": "CASCADE",
                         "onDelete": "SET NULL",
                         "references": {
-                            "model": "auction_managements",
+                            "model": "buyers",
                             "key": "id"
                         },
                         "allowNull": true
                     },
-                    "raterId": {
+                    "rated_id": {
                         "type": Sequelize.UUID,
-                        "field": "raterId",
+                        "field": "rated_id",
                         "onUpdate": "CASCADE",
                         "onDelete": "SET NULL",
                         "references": {

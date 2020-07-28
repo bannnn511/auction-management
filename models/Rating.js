@@ -8,15 +8,15 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         field: 'id',
       },
-      raterID: {
+      raterId: {
         type: DataTypes.UUID,
         field: 'rater_id',
       },
-      ratedID: {
+      ratedId: {
         type: DataTypes.UUID,
         field: 'rated_id',
       },
-      auctionID: {
+      auctionId: {
         type: DataTypes.UUID,
         field: 'auction_id',
       },
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Ratings.belongsTo(models.Buyers, {
       as: 'ratedUser',
-      foreignKey: 'ratedID',
+      foreignKey: 'ratedId',
     });
   };
 

@@ -76,6 +76,14 @@ module.exports = (sequelize, DataTypes) => {
       as: 'auction_managements',
       foreignKey: 'buyerId',
     });
+    Buyers.hasMany(models.Ratings, {
+      as: 'rater',
+      foreignKey: 'rater_id',
+    });
+    Buyers.hasMany(models.Ratings, {
+      as: 'rated',
+      foreignKey: 'rated_id',
+    });
   };
 
   return Buyers;
