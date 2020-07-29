@@ -148,11 +148,7 @@ export async function updateProductCurrentPrice(req, res) {
         406,
       );
     }
-    console.log(
-      toDateString(auction.endAt),
-      '==========',
-      toDateString(_.now()),
-    );
+
     // check if bidding time is till valid
     if (toDateString(auction.endAt) <= toDateString(_.now())) {
       throw new AppError('Bidding time has expired', 204);
