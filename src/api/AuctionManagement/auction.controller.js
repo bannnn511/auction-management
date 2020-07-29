@@ -1,4 +1,9 @@
-import { getAllAuctions, getAllBuyerInAuction } from './business/index';
+import {
+  getAllAuctions,
+  getAllBuyerInAuction,
+  getAuctionsSortByBiddingCount,
+  getAuctionsWithTopNProducts,
+} from './business/index';
 import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
 import {
@@ -16,7 +21,30 @@ export async function getListAuction(req, res) {
     console.log(auctionData);
     responseSuccess(res, auctionData);
   } catch (error) {
-    console.log(error);
+    responseError(res, error);
+  }
+}
+
+export async function getListAuctionWithHighestPrice(req, res) {
+  try {
+    const { max } = req.query;
+    const auctions = await getAuctionsWithTopNProducts(max);
+    if (!auctions) {
+      throw new AppError('Cannot get Auction list', 204);
+    }
+    const auctionData = serializeAllAuctions(auctions);
+    console.log(auctionData);
+    responseSuccess(res, auctionData);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+export async function getListAuctionSortByBiddingCount(req, res) {
+  try {
+    // const { max } = req.query;
+    const auction = await getAuctionsSortByBiddingCount();
+    responseSuccess(res, auction);
+  } catch (error) {
     responseError(res, error);
   }
 }

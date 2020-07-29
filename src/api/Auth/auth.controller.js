@@ -1,6 +1,6 @@
 import { AppError } from '../../utils/appError';
 import { getLoginUserId, registerUser } from './business/index';
-import { responseError } from '../../shared/helpers';
+import { responseError, responseSuccess } from '../../shared/helpers';
 import { getUserIdNoPass } from '../Buyers/business';
 import { serializeUser } from './auth.serialize';
 
@@ -13,10 +13,10 @@ export async function login(req, res, next) {
     const user = await getLoginUserId(email, password);
 
     if (!user) {
-      next(new AppError('Username or password does not exists.', 400));
+      throw new AppError('Username or password does not exists.', 400);
     }
 
-    console.log('🔥🔥🔥', serializeUser(user));
+    console.log(serializeUser(user));
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
       expiresIn: '1h',
@@ -36,11 +36,11 @@ export async function register(req, res, next) {
 
     const checkUser = await getUserIdNoPass(body);
     if (checkUser) {
-      res.status(400).send('User already exists');
+      throw new AppError('User already exists', 204);
     }
     const buyer = await registerUser(body);
     if (!buyer) {
-      next(new AppError('Create account fail', 400));
+      throw new AppError('Create account fail', 400);
     }
     const buyerData = serializeUser(buyer);
     console.log(buyerData);
@@ -53,7 +53,7 @@ export async function register(req, res, next) {
 
 export async function logout(req, res) {
   try {
-    res.status(200).json({ user: req.user });
+    responseSuccess(res, req.currentUser);
   } catch (error) {
     responseError(res, error);
   }

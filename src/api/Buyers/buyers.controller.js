@@ -40,8 +40,7 @@ export async function createNewBuyer(req, res) {
     const body = serializeBuyers(req.body, true);
     const checkBuyerExist = await getUserIdNoPass(body);
     if (checkBuyerExist) {
-      res.status(400).send('User already exists');
-      // next(new AppError('User already exists', 400));
+      throw new AppError('User already exists', 400);
     }
     const buyer = await createBuyer(body);
     if (!buyer) {
@@ -149,7 +148,7 @@ export async function updateABuyerPassword(req, res) {
     const body = serializeBuyers(req.body, true);
     if (req.currentUser.type !== UserType.ADMIN) {
       if (body.id !== req.currentUser.id) {
-        res.status(400).send('Request denied');
+        throw new AppError('Request denied', 406);
       }
     }
     const buyer = await updateBuyerPassword(body);
