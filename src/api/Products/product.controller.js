@@ -97,7 +97,11 @@ export async function createNewProduct(req, res, next) {
     const task = cron.schedule('*/1 * * * *', async () => {
       const currentTime = toDateString(_.now());
       const endTime = toDateString(fullActionDetail.endAt);
-      console.log('🤖🤖🤖', 'Checking Auction remaining time');
+      console.log(
+        '🤖🤖🤖',
+        'Checking Auction remaining time',
+        fullActionDetail,
+      );
       console.log('Current time:', currentTime);
       console.log('End time:', endTime);
       if (currentTime >= endTime) {
@@ -144,9 +148,13 @@ export async function updateProductCurrentPrice(req, res) {
         406,
       );
     }
-
+    console.log(
+      toDateString(auction.endAt),
+      '==========',
+      toDateString(_.now()),
+    );
     // check if bidding time is till valid
-    if (toDateString(currentProduct.endAt) >= toDateString(_.now())) {
+    if (toDateString(auction.endAt) <= toDateString(_.now())) {
       throw new AppError('Bidding time has expired', 204);
     }
 

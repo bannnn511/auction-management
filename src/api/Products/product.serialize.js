@@ -9,7 +9,6 @@ export function serializeProducts(product) {
     buyNowPrice: _.get(product, 'buyNowPrice', 1),
     createdBy: _.get(product, 'createdBy', ''),
     updatedBy: _.get(product, 'updatedBy', ''),
-    endAt: _.get(product, 'endAt', _.now()),
   };
   return data;
 }
