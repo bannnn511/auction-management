@@ -7,5 +7,5 @@ const auctionRouter = Router();
 
 auctionRouter.get('/', getListAuction);
 
-auctionRouter.get('/', authorization, getListBuyerInAuction);
+auctionRouter.get('/history', authorization, getListBuyerInAuction);
 export { auctionRouter };

@@ -28,6 +28,7 @@ export async function getListBuyerInAuction(req, res) {
     if (!buyers) {
       throw new AppError('Cannot get list buyer', 204);
     }
+    console.log(buyers);
 
     const data = serializeAllBuyerInAuction(buyers);
     responseSuccess(res, data);

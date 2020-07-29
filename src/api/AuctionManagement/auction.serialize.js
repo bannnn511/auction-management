@@ -63,6 +63,8 @@ export function serializeAllAuctions(auctions) {
 export function serializeAuctionHistory(auction) {
   return {
     userId: _.get(auction, 'userId', ''),
+    price: _.get(auction, 'price', ''),
+    fullname: _.get(auction, 'fullname', ''),
   };
 }
 

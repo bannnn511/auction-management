@@ -66,9 +66,9 @@ export async function ratingPointForUser(req, res) {
 
     // update user plus/minus point
     if (ratingData.point > 0) {
-      updateUserPlusPoint(ratingData.ratedId);
+      await updateUserPlusPoint(ratingData.ratedId);
     } else {
-      updateUserMinusPoint(ratingData.ratedId);
+      await updateUserMinusPoint(ratingData.ratedId);
     }
     responseSuccess(res, ratingData);
   } catch (error) {
