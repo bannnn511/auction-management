@@ -5,7 +5,12 @@ import {
 } from '../../shared/helpers';
 import { AppError } from '../../utils/appError';
 import { serializeRating } from './rating.serialize';
-import { ratingUser, findUserAlreadyRate } from './business';
+import {
+  ratingUser,
+  findUserAlreadyRate,
+  updateUserPlusPoint,
+  updateUserMinusPoint,
+} from './business';
 import { getAuctionWithAuctionId } from '../AuctionManagement/business';
 import { serializeAuction } from '../AuctionManagement/auction.serialize';
 
@@ -25,14 +30,14 @@ export async function ratingPointForUser(req, res) {
       throw new AppError('Bidding time has not ended yet', 204);
     }
 
-    //check user already rated or not
+    // check user already rated or not
     const user = await findUserAlreadyRate(auctionData.id, raterUser);
     if (user) {
       throw new AppError('You can only rate 1 time', 204);
     }
 
     let data;
-    //check raterUser is Seller or Buyer
+    // check raterUser is Seller or Buyer
     if (raterUser === auctionData.buyerId) {
       data = await ratingUser(
         auctionData.id,
@@ -56,7 +61,15 @@ export async function ratingPointForUser(req, res) {
     } else {
       throw new AppError('You are not allow to rate in this auction');
     }
+
     const ratingData = serializeRating(data);
+
+    // update user plus/minus point
+    if (ratingData.point > 0) {
+      updateUserPlusPoint(ratingData.ratedId);
+    } else {
+      updateUserMinusPoint(ratingData.ratedId);
+    }
     responseSuccess(res, ratingData);
   } catch (error) {
     console.log(error);
