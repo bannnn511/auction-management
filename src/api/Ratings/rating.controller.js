@@ -5,7 +5,7 @@ import {
 } from '../../shared/helpers';
 import { AppError } from '../../utils/appError';
 import { serializeRating } from './rating.serialize';
-import { ratingUser } from './business';
+import { ratingUser, findUserAlreadyRate } from './business';
 import { getAuctionWithAuctionId } from '../AuctionManagement/business';
 import { serializeAuction } from '../AuctionManagement/auction.serialize';
 
@@ -14,8 +14,6 @@ const _ = require('lodash');
 export async function ratingPointForUser(req, res) {
   try {
     const raterUser = req.currentUser.id;
-    req.body.createdBy = raterUser;
-    req.body.updatedBy = raterUser;
     const auction = await getAuctionWithAuctionId(req.body.auctionId);
     const auctionData = serializeAuction(auction);
     console.log(
@@ -26,7 +24,15 @@ export async function ratingPointForUser(req, res) {
     if (toDateString(auctionData.endAt) >= toDateString(_.now())) {
       throw new AppError('Bidding time has not ended yet', 204);
     }
+
+    //check user already rated or not
+    const user = await findUserAlreadyRate(auctionData.id, raterUser);
+    if (user) {
+      throw new AppError('You can only rate 1 time', 204);
+    }
+
     let data;
+    //check raterUser is Seller or Buyer
     if (raterUser === auctionData.buyerId) {
       data = await ratingUser(
         auctionData.id,
@@ -34,14 +40,18 @@ export async function ratingPointForUser(req, res) {
         auctionData.sellerId,
         req.body.point,
         req.body.description,
+        raterUser,
+        raterUser,
       );
-    } else if (raterUser === auction.sellerId) {
+    } else if (raterUser === auctionData.sellerId) {
       data = await ratingUser(
         auctionData.id,
         raterUser,
         auctionData.buyerId,
         req.body.point,
         req.body.description,
+        raterUser,
+        raterUser,
       );
     } else {
       throw new AppError('You are not allow to rate in this auction');

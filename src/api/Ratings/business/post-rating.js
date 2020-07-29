@@ -6,6 +6,8 @@ export async function ratingUser(
   ratedId,
   point,
   description,
+  createdBy,
+  updatedBy,
 ) {
   try {
     const rating = db.Ratings.create({
@@ -14,6 +16,8 @@ export async function ratingUser(
       description,
       auctionId,
       point,
+      createdBy,
+      updatedBy,
     });
     return rating;
   } catch (error) {
