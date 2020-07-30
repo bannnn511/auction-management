@@ -1,5 +1,9 @@
 import { getListCategory, createNewCategory } from './category.controller';
-import { restrictedTo, authorization } from '../../shared/middleware';
+import {
+  restrictedTo,
+  authentication,
+  redisValidation,
+} from '../../shared/middleware';
 import { UserType } from '../../shared/helpers/constant';
 
 const { Router } = require('express');
@@ -8,14 +12,16 @@ const categoriesRouter = Router();
 
 categoriesRouter.get(
   '/',
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   getListCategory,
 );
 
 categoriesRouter.post(
   '/newcategory',
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   createNewCategory,
 );

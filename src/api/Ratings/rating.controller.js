@@ -21,11 +21,6 @@ export async function ratingPointForUser(req, res) {
     const raterUser = req.currentUser.id;
     const auction = await getAuctionWithAuctionId(req.body.auctionId);
     const auctionData = serializeAuction(auction);
-    console.log(
-      toDateString(auctionData.endAt),
-      '==========',
-      toDateString(_.now()),
-    );
     if (toDateString(auctionData.endAt) >= toDateString(_.now())) {
       throw new AppError('Bidding time has not ended yet', 204);
     }
@@ -72,7 +67,6 @@ export async function ratingPointForUser(req, res) {
     }
     responseSuccess(res, ratingData);
   } catch (error) {
-    console.log(error);
     responseError(res, error);
   }
 }

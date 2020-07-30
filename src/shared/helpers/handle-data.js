@@ -45,3 +45,11 @@ export function toDateString(input) {
 
   return input.toLocaleString();
 }
+
+export function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
+}
+
+export function getToken(req) {
+  return req.header('Authorization').replace('Bearer', '').replace(/\s/g, '');
+}

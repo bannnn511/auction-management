@@ -1,21 +1,21 @@
 import { safeParseInt } from '../../../shared/helpers';
+import { defaultLimit } from '../../../shared/helpers/constant';
 
 const _ = require('lodash');
 const db = require('../../../../models');
 
 const { Op } = db.Sequelize;
-
-export async function getAuctionsWithTopNProducts(option) {
+export async function getAuctionsSortByRemaingTime(option) {
   try {
     return await db.AuctionManagements.findAll({
       include: [{ model: db.Products, as: 'products' }],
-      order: [[{ model: db.Products, as: 'products' }, 'currentPrice', 'DESC']],
-      limit: safeParseInt(option, 5),
       where: {
         endAt: {
           [Op.gt]: _.now(),
         },
       },
+      limit: safeParseInt(option, defaultLimit),
+      order: [['end_at', 'DESC']],
     });
   } catch (error) {
     console.log(error);

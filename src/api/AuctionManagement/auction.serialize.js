@@ -75,3 +75,19 @@ export function serializeAllBuyerInAuction(auctions) {
   });
   return buyers;
 }
+
+export function serializeAuctionSortByBiddingCount(auctions) {
+  const data = [];
+  auctions.forEach((auction) => {
+    data.push({
+      productId: _.get(auction, 'product_id', ''),
+      count: _.get(auction, 'count', 0),
+      productName: _.get(auction, 'product_name', ''),
+      imgUrl: _.get(auction, 'img_url', ''),
+      currentPrice: _.get(auction, 'current_price', 0),
+      buyNowPrice: _.get(auction, 'buy_now_price', 0),
+      endAt: _.get(auction, 'end_at', ''),
+    });
+  });
+  return data;
+}

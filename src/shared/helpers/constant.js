@@ -14,3 +14,5 @@ export const UserIsSeller = {
   None: 0,
   PENDING: 1,
 };
+
+export const defaultLimit = 5;

@@ -1,4 +1,5 @@
 import {
+  isValidDate,
   responseError,
   responseSuccess,
   toDateString,
@@ -69,6 +70,27 @@ async function onAuctionEnded(auctionId, productId) {
   return serializedUpdatedAuction;
 }
 
+async function createCronJobForAutoEndAuction(auction) {
+  // cron job to check if auction has ended
+  const task = cron.schedule('*/1 * * * *', async () => {
+    const currentTime = toDateString(_.now());
+    const endTime = toDateString(auction.endAt);
+    console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
+    console.log('Current time:', currentTime);
+    console.log('End time:', endTime);
+    if (currentTime >= endTime) {
+      console.log('🤖', 'Auction has ended');
+      const auctionEnded = await onAuctionEnded(
+        auction.auctionId,
+        auction.productId,
+      );
+      const serializedPostAuction = serializefullAction(auctionEnded);
+      console.log(serializedPostAuction);
+      task.destroy();
+    }
+  });
+}
+
 export async function createNewProduct(req, res, next) {
   try {
     req.body.createdBy = req.currentUser.id;
@@ -88,33 +110,13 @@ export async function createNewProduct(req, res, next) {
     if (!newAuction) {
       throw new AppError('Cannot start auction', 204);
     }
-    console.log('👌👌👌 Auction data', newAuction.dataValues);
 
     const fullActionDetail = serializefullActionDetail(data, newAuction);
     console.log('Full Auction Detail', fullActionDetail);
 
-    // cron job to check if auction has ended
-    const task = cron.schedule('*/1 * * * *', async () => {
-      const currentTime = toDateString(_.now());
-      const endTime = toDateString(fullActionDetail.endAt);
-      console.log(
-        '🤖🤖🤖',
-        'Checking Auction remaining time',
-        fullActionDetail,
-      );
-      console.log('Current time:', currentTime);
-      console.log('End time:', endTime);
-      if (currentTime >= endTime) {
-        console.log('🤖', 'Auction has ended');
-        const auctionEnded = await onAuctionEnded(
-          fullActionDetail.auctionId,
-          fullActionDetail.productId,
-        );
-        const serializedPostAuction = serializefullAction(auctionEnded);
-        console.log(serializedPostAuction);
-        task.destroy();
-      }
-    });
+    if (isValidDate(fullActionDetail.endAt)) {
+      await createCronJobForAutoEndAuction(fullActionDetail);
+    }
 
     responseSuccess(res, fullActionDetail);
   } catch (error) {
@@ -176,7 +178,6 @@ export async function updateProductCurrentPrice(req, res) {
     }
     responseSuccess(res, newProduct);
   } catch (error) {
-    console.log(error);
     responseError(res, error);
   }
 }

@@ -4,6 +4,7 @@ require('@babel/polyfill');
 require('dotenv').config();
 
 const express = require('express');
+
 const { json } = require('body-parser');
 const logger = require('morgan');
 const { errorHandler } = require('./shared/middleware/error-handler');
@@ -16,6 +17,14 @@ const {
 } = require('./viewHandler/admin-view-handler/admin-view.router');
 
 const app = express();
+const { client } = require('./shared/helpers/redis');
+
+client.on('connect', () => {
+  console.log('Redis client connected');
+});
+client.on('error', (error) => {
+  console.log('Redis not connected', error);
+});
 
 app.use(logger('dev'));
 app.use(json());

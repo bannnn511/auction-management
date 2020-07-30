@@ -12,7 +12,8 @@ import {
 } from './buyers.controller';
 
 import {
-  authorization,
+  authentication,
+  redisValidation,
   validateBody,
   restrictedTo,
 } from '../../shared/middleware/index';
@@ -30,7 +31,8 @@ buyersRouter.get('/', getAllBuyers);
 buyersRouter.post(
   '/',
   validateBody(createBuyerOrSellerSchema),
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   createNewBuyer,
 );
@@ -38,7 +40,8 @@ buyersRouter.post(
 buyersRouter.put(
   '/delete',
   validateBody(updateBuyerOrSellerSchema),
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   deleteABuyer,
 );
@@ -46,13 +49,15 @@ buyersRouter.put(
 buyersRouter.put(
   '/requestseller',
   validateBody(updateBuyerOrSellerSchema),
-  authorization,
+  redisValidation,
+  authentication,
   requestToBeASeller,
 );
 
 buyersRouter.get(
   '/seller',
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   getAllRequestingBuyers,
 );
@@ -60,7 +65,8 @@ buyersRouter.get(
 buyersRouter.put(
   '/acceptseller',
   validateBody(updateBuyerOrSellerSchema),
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   acceptABuyerReq,
 );
@@ -68,13 +74,15 @@ buyersRouter.put(
 buyersRouter.put(
   '/password',
   validateBody(changeBuyerOrSellerPasswordSchema),
-  authorization,
+  redisValidation,
+  authentication,
   updateABuyerPassword,
 );
 
 buyersRouter.put(
   '/backtobuyer',
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.ADMIN),
   requestBackToBuyer,
 );
@@ -82,9 +90,10 @@ buyersRouter.put(
 buyersRouter.put(
   '/updateinfo',
   validateBody(updateBuyerOrSellerSchema),
-  authorization,
+  authentication,
+  redisValidation,
   updateBuyerInfo,
 );
 
-buyersRouter.put('/password', authorization, updateABuyerPassword);
+buyersRouter.put('/password', authentication, updateABuyerPassword);
 export { buyersRouter };

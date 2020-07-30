@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import {
   validateBody,
-  authorization,
+  authentication,
   restrictedTo,
+  redisValidation,
 } from '../../shared/middleware';
 import {
   productAuctionSchema,
@@ -20,7 +21,8 @@ const productsRouter = Router();
 productsRouter.post(
   '/',
   validateBody(productAuctionSchema),
-  authorization,
+  authentication,
+  redisValidation,
   restrictedTo(UserType.SELLER),
   createNewProduct,
 );
@@ -28,7 +30,8 @@ productsRouter.post(
 productsRouter.put(
   '/updateprice',
   validateBody(bidProductAuctionSchema),
-  authorization,
+  authentication,
+  redisValidation,
   updateProductCurrentPrice,
 );
 
