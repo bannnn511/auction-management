@@ -7,7 +7,7 @@ export function errorHandler(err, req, res) {
     });
   }
 
-  console.log('🔥🔥🔥 Error', err);
+  console.log('🔥🔥🔥 Error', err.message);
   return res.status(400).json({
     message: 'Something went wrong...',
   });

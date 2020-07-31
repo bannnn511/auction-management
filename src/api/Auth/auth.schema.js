@@ -6,7 +6,7 @@ import { UserType, UserStatus } from '../../shared/helpers/constant';
 // });
 export const AccountLoginSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().required().length(8),
+  password: Joi.string().required().length(6),
 });
 
 export const AccountRegisterSchema = Joi.object({

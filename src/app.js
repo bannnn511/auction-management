@@ -4,6 +4,7 @@ require('@babel/polyfill');
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 
 const { json } = require('body-parser');
 const logger = require('morgan');
@@ -17,6 +18,15 @@ const {
 } = require('./viewHandler/admin-view-handler/admin-view.router');
 
 const app = express();
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  exposedHeaders: ['X-Total-Count'],
+};
+app.use(cors(corsOptions));
+
 const { client } = require('./shared/helpers/redis');
 
 client.on('connect', () => {
@@ -35,7 +45,7 @@ app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server listing on port: ${PORT}`);
