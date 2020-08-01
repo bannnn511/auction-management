@@ -43,6 +43,9 @@ app.use('/', clientViewRouter);
 app.use('/admin', adminViewRouter);
 app.use('/api', apiRouter);
 
+app.use('*', (req, res) => {
+  res.status(400).json({ error: 'Invalid address' });
+});
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;

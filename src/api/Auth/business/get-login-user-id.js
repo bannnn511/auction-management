@@ -13,7 +13,7 @@ export function getLoginUserId(email, password) {
     });
     return buyer;
   } catch (error) {
-    console.log(error);
+    console.log('fasdfasdfasfasfasd', error);
     return null;
   }
 }

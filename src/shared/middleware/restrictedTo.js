@@ -1,4 +1,4 @@
-import { responseError } from '../helpers';
+import { responseError, responseSuccess } from '../helpers';
 
 export function restrictedTo(role) {
   return (req, res, next) => {
@@ -9,7 +9,7 @@ export function restrictedTo(role) {
         next();
       } else {
         console.log(req.body);
-        res.status(403).send('Authority denied');
+        responseSuccess(res, { message: 'Authority denied' }, 403);
       }
     } catch (error) {
       responseError(res, error);

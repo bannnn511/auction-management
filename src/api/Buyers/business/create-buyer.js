@@ -1,10 +1,13 @@
 import { UserIsSeller } from '../../../shared/helpers/constant';
 
+const bcrypt = require('bcrypt');
 const db = require('../../../../models');
 
-export function createBuyer(buyer) {
+export async function createBuyer(buyer) {
   try {
-    const newBuyer = db.Buyers.create({
+    const hash = await bcrypt.hash(buyer.password, 10);
+    console.log(hash);
+    return await db.Buyers.create({
       email: buyer.email,
       password: buyer.password,
       type: buyer.type,
@@ -17,7 +20,6 @@ export function createBuyer(buyer) {
       createdBy: buyer.createdBy,
       updatedBy: buyer.updatedBy,
     });
-    return newBuyer;
   } catch (error) {
     console.log(error);
     return null;

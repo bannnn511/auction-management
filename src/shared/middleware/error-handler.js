@@ -7,8 +7,8 @@ export function errorHandler(err, req, res) {
     });
   }
 
-  console.log('🔥🔥🔥 Error', err.message);
-  return res.status(400).json({
+  console.log('🔥🔥🔥 Error handler: ', err);
+  return res.status(err.status || 500).json({
     message: 'Something went wrong...',
   });
 }
