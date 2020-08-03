@@ -12,11 +12,12 @@ export const createBuyerOrSellerSchema = Joi.object({
 });
 
 export const updateBuyerOrSellerSchema = Joi.object({
-  id: Joi.string().required(),
   fullname: Joi.string()
     .empty('')
     .pattern(/^[a-zA-Z]+/),
   address: Joi.any(),
+  type: Joi.valid(UserType.BUYER, UserType.SELLER),
+  status: Joi.valid(UserStatus.ACTIVE),
 });
 
 export const changeBuyerOrSellerPasswordSchema = Joi.object({

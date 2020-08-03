@@ -2,9 +2,9 @@ import { UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function deleteBuyer(id, updatedBy) {
+export async function deleteBuyer(id, updatedBy) {
   try {
-    let buyer = db.Buyers.update(
+    let buyer = await db.Buyers.update(
       { status: UserStatus.DELETED, updatedBy },
       {
         where: {
@@ -12,7 +12,7 @@ export function deleteBuyer(id, updatedBy) {
         },
       },
     );
-    buyer = db.Buyers.findOne({
+    buyer = await db.Buyers.findOne({
       attribute: ['id', 'email', 'fullname', 'type', 'status'],
       where: {
         id,

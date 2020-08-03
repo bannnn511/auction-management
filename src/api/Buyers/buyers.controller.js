@@ -67,8 +67,9 @@ export async function createNewBuyer(req, res) {
 // update buyer status to deleted
 export async function deleteABuyer(req, res) {
   try {
-    req.body.updatedBy = req.currentUser.id;
-    const { id, updatedBy } = serializeBuyers(req.body);
+    const updatedBy = req.currentUser.id;
+    const { id } = req.params;
+    console.log(id);
     const buyer = await deleteBuyer(id, updatedBy);
     if (!buyer) {
       throw new AppError('Cannot delete user', 204);
