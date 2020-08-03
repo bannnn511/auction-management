@@ -20,21 +20,27 @@ import { AppError } from '../../utils/appError';
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
   try {
-    let data;
-    const { id } = req.params;
-    if (id === undefined) {
-      const allBuyers = await getBuyers();
-      if (!allBuyers) {
-        throw new AppError('Cannot get Buyers', 400);
-      }
-      data = serializeAllBuyers(allBuyers);
-    } else {
-      const buyer = await getBuyerDetailWithId(id);
-      if (!buyer) {
-        throw new AppError(`Cannt get Buyer with id: ${id}`);
-      }
-      data = serializeBuyers(buyer);
+    const allBuyers = await getBuyers();
+    if (!allBuyers) {
+      throw new AppError('Cannot get Buyers', 400);
     }
+    const data = serializeAllBuyers(allBuyers);
+
+    responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function getABuyerDetailWithId(req, res) {
+  try {
+    const { id } = req.params;
+    const buyer = await getBuyerDetailWithId(id);
+    if (!buyer) {
+      throw new AppError(`Cannt get Buyer with id: ${id}`);
+    }
+    const data = serializeBuyers(buyer);
+
     responseSuccess(res, data);
   } catch (error) {
     responseError(res, error);

@@ -18,6 +18,7 @@ export const updateBuyerOrSellerSchema = Joi.object({
   address: Joi.any(),
   type: Joi.valid(UserType.BUYER, UserType.SELLER),
   status: Joi.valid(UserStatus.ACTIVE),
+  isSeller: Joi.bool(),
 });
 
 export const changeBuyerOrSellerPasswordSchema = Joi.object({

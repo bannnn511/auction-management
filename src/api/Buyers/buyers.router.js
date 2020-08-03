@@ -9,6 +9,7 @@ import {
   updateABuyerPassword,
   requestBackToBuyer,
   updateBuyerInfo,
+  getABuyerDetailWithId,
 } from './buyers.controller';
 
 import {
@@ -27,7 +28,7 @@ import { UserType } from '../../shared/helpers/constant';
 const buyersRouter = Router();
 
 buyersRouter.get('/', getAllBuyers);
-buyersRouter.get('/:id', getAllBuyers);
+buyersRouter.get('/:id', getABuyerDetailWithId);
 buyersRouter.post(
   '/',
   validateBody(createBuyerOrSellerSchema),
@@ -46,6 +47,7 @@ buyersRouter.put(
   deleteABuyer,
 );
 
+// buyer request to be a seller
 buyersRouter.put(
   '/:id/request-seller',
   validateBody(updateBuyerOrSellerSchema),
