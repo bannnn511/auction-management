@@ -26,7 +26,7 @@ import { UserType } from '../../shared/helpers/constant';
 
 const buyersRouter = Router();
 
-buyersRouter.get('/', getAllBuyers);
+buyersRouter.get('/:id', getAllBuyers);
 
 buyersRouter.post(
   '/',
@@ -38,7 +38,7 @@ buyersRouter.post(
 );
 
 buyersRouter.put(
-  '/delete',
+  '/:id/delete',
   validateBody(updateBuyerOrSellerSchema),
   authentication,
   redisValidation,

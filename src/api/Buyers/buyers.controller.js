@@ -21,7 +21,7 @@ import { AppError } from '../../utils/appError';
 export async function getAllBuyers(req, res) {
   try {
     let data;
-    const { id } = req.query;
+    const { id } = req.params;
     if (id === undefined) {
       const allBuyers = await getBuyers();
       if (!allBuyers) {
