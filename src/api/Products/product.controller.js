@@ -91,7 +91,7 @@ async function createCronJobForAutoEndAuction(auction) {
   });
 }
 
-export async function createNewProduct(req, res, next) {
+export async function createNewProduct(req, res) {
   try {
     req.body.createdBy = req.currentUser.id;
     req.body.updatedBy = req.currentUser.id;

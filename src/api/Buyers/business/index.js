@@ -9,3 +9,4 @@ export * from './update-buyer-password';
 export * from './get-buyer-id-no-pass';
 export * from './update-seller-to-buyer';
 export * from './update-buyer-info';
+export * from './get-buyer-detail-with-id';

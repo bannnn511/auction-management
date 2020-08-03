@@ -9,6 +9,7 @@ import {
   getUserIdNoPass,
   requestingBackToBuyer,
   requestingUpdatedInfo,
+  getBuyerDetailWithId,
 } from './business/index';
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
 import { responseError, responseSuccess } from '../../shared/helpers';
@@ -19,13 +20,21 @@ import { AppError } from '../../utils/appError';
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
   try {
-    const allBuyers = await getBuyers();
-    const data = serializeAllBuyers(allBuyers);
-    if (!data) {
-      throw new AppError('Cannot get Buyers', 400);
+    let data;
+    const { id } = req.query;
+    if (id === undefined) {
+      const allBuyers = await getBuyers();
+      if (!allBuyers) {
+        throw new AppError('Cannot get Buyers', 400);
+      }
+      data = serializeAllBuyers(allBuyers);
+    } else {
+      const buyer = await getBuyerDetailWithId(id);
+      if (!buyer) {
+        throw new AppError(`Cannt get Buyer with id: ${id}`);
+      }
+      data = serializeBuyers(buyer);
     }
-    console.log('Get all active buyer', data);
-
     responseSuccess(res, data);
   } catch (error) {
     responseError(res, error);
