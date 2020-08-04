@@ -2,6 +2,7 @@ import {
   UserType,
   UserStatus,
   UserIsSeller,
+  Hash,
 } from '../../../shared/helpers/constant';
 
 const bcrypt = require('bcrypt');
@@ -13,7 +14,7 @@ export async function registerUser(buyer) {
     console.log(hash);
     const data = await db.Buyers.create({
       email: buyer.email,
-      password: hash,
+      password: Hash.SALT,
       type: UserType.BUYER,
       status: UserStatus.ACTIVE,
       address: buyer.address,

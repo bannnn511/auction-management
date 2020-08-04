@@ -16,7 +16,7 @@ export async function updateProductPrice(body) {
     product = await Products.findOne({
       attribute: [
         'productName',
-        'imgUrl',
+        'imgURL',
         'currentPrice',
         'buyNowPrice',
         'endAt',

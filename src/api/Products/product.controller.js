@@ -51,6 +51,19 @@ export async function getProducts(req, res) {
   }
 }
 
+export async function getProductsById(req, res) {
+  try {
+    const { id } = req.params;
+    const product = await getProductWithId(id);
+    const data = serializeProducts(product);
+    console.log(data);
+
+    responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
 async function onAuctionEnded(auctionId, productId) {
   const winningData = await getWinningHistoryFromAuctionWithAuctionId(
     auctionId,
@@ -130,7 +143,7 @@ export async function updateProductCurrentPrice(req, res) {
     const serializedBody = serializeBidProduct(req.body);
 
     // check product exist
-    const checkProduct = await getProductWithId(serializedBody);
+    const checkProduct = await getProductWithId(serializedBody.id);
     if (!checkProduct) {
       res.status(204).send('Product does not exist');
     }

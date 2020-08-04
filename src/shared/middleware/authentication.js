@@ -4,7 +4,6 @@ import { serializeBuyers } from '../../api/Buyers/buyers.serialize';
 import { getToken, responseError } from '../helpers';
 
 const jwt = require('jsonwebtoken');
-const { client } = require('../helpers/redis');
 
 export async function authentication(req, res, next) {
   // JSON web token logic right here

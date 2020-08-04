@@ -9,6 +9,7 @@ export function getLoginUserById(id) {
         'id',
         'email',
         'fullName',
+        'address',
         'type',
         'status',
         'createdBy',

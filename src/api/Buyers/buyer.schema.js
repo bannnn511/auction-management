@@ -15,13 +15,21 @@ export const updateBuyerOrSellerSchema = Joi.object({
   fullname: Joi.string()
     .empty('')
     .pattern(/^[a-zA-Z]+/),
-  address: Joi.any(),
+  address: Joi.string(),
+  isSeller: Joi.bool(),
+  password: Joi.string().min(6),
+});
+
+export const updateBuyerOrSellerSchemaByAdmin = Joi.object({
+  fullname: Joi.string()
+    .empty('')
+    .pattern(/^[a-zA-Z]+/),
+  address: Joi.string(),
   type: Joi.valid(UserType.BUYER, UserType.SELLER),
   status: Joi.valid(UserStatus.ACTIVE),
   isSeller: Joi.bool(),
 });
 
 export const changeBuyerOrSellerPasswordSchema = Joi.object({
-  id: Joi.string().required(),
   password: Joi.string().required(),
 });

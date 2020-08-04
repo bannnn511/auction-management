@@ -4,6 +4,7 @@ import {
   getAuctionsSortByBiddingCount,
   getAuctionsSortByRemaingTime,
   getAuctionsWithTopNProducts,
+  getAuctionById,
 } from './business/index';
 import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
@@ -11,6 +12,7 @@ import {
   serializeAllAuctions,
   serializeAllBuyerInAuction,
   serializeAuctionSortByBiddingCount,
+  serializefullAction,
 } from './auction.serialize';
 
 export async function getListAuction(req, res) {
@@ -20,6 +22,21 @@ export async function getListAuction(req, res) {
       throw new AppError('Cannot get Auction list', 204);
     }
     const auctionData = serializeAllAuctions(auctions);
+    console.log(auctionData);
+    responseSuccess(res, auctionData);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function getAnAuctionById(req, res) {
+  try {
+    const { id } = req.params;
+    const auctions = await getAuctionById(id);
+    if (!auctions) {
+      throw new AppError('Cannot get Auction list', 204);
+    }
+    const auctionData = serializefullAction(auctions);
     console.log(auctionData);
     responseSuccess(res, auctionData);
   } catch (error) {

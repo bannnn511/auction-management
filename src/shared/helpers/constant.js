@@ -16,3 +16,7 @@ export const UserIsSeller = {
 };
 
 export const defaultLimit = 5;
+
+export const Hash = {
+  SALT: 10,
+};

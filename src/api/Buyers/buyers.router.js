@@ -3,13 +3,10 @@ import {
   getAllBuyers,
   createNewBuyer,
   deleteABuyer,
-  requestToBeASeller,
-  getAllRequestingBuyers,
-  acceptABuyerReq,
   updateABuyerPassword,
-  requestBackToBuyer,
   updateBuyerInfo,
   getABuyerDetailWithId,
+  updateUserInfoByAdmin,
 } from './buyers.controller';
 
 import {
@@ -22,13 +19,28 @@ import {
   createBuyerOrSellerSchema,
   updateBuyerOrSellerSchema,
   changeBuyerOrSellerPasswordSchema,
+  updateBuyerOrSellerSchemaByAdmin,
 } from './buyer.schema';
 import { UserType } from '../../shared/helpers/constant';
 
 const buyersRouter = Router();
 
+/*
+ * Get list of user
+ * buyers or sellers
+ * sort with type and status
+ */
 buyersRouter.get('/', getAllBuyers);
+
+/*
+ * Get User detail with theirs ID
+ */
 buyersRouter.get('/:id', getABuyerDetailWithId);
+
+/*
+ * Create new User by Admin
+ * as Buyer or Seller
+ */
 buyersRouter.post(
   '/',
   validateBody(createBuyerOrSellerSchema),
@@ -38,6 +50,35 @@ buyersRouter.post(
   createNewBuyer,
 );
 
+/*
+ * Update buyer info
+ * Used for common user
+ * change fullname
+ * change address
+ * request to be a seller
+ */
+buyersRouter.put(
+  '/:id',
+  validateBody(updateBuyerOrSellerSchema),
+  redisValidation,
+  authentication,
+  updateBuyerInfo,
+);
+
+/*
+ * Change User password
+ */
+buyersRouter.post(
+  '/:id/password',
+  validateBody(changeBuyerOrSellerPasswordSchema),
+  redisValidation,
+  authentication,
+  updateABuyerPassword,
+);
+
+/*
+ * Delete User by Admin
+ */
 buyersRouter.put(
   '/:id/delete',
   // validateBody(updateBuyerOrSellerSchema),
@@ -47,55 +88,21 @@ buyersRouter.put(
   deleteABuyer,
 );
 
-// buyer request to be a seller
+/*
+ * Update buyer info
+ * Used for common user
+ * change fullname
+ * change address
+ * request to be a seller
+ * accept buyer request
+ */
 buyersRouter.put(
-  '/:id/request-seller',
-  validateBody(updateBuyerOrSellerSchema),
-  redisValidation,
-  authentication,
-  requestToBeASeller,
-);
-
-buyersRouter.get(
-  '/seller',
+  '/:id/admin',
+  validateBody(updateBuyerOrSellerSchemaByAdmin),
   authentication,
   redisValidation,
   restrictedTo(UserType.ADMIN),
-  getAllRequestingBuyers,
+  updateUserInfoByAdmin,
 );
 
-buyersRouter.put(
-  '/acceptseller',
-  validateBody(updateBuyerOrSellerSchema),
-  authentication,
-  redisValidation,
-  restrictedTo(UserType.ADMIN),
-  acceptABuyerReq,
-);
-
-buyersRouter.put(
-  '/password',
-  validateBody(changeBuyerOrSellerPasswordSchema),
-  redisValidation,
-  authentication,
-  updateABuyerPassword,
-);
-
-buyersRouter.put(
-  '/backtobuyer',
-  authentication,
-  redisValidation,
-  restrictedTo(UserType.ADMIN),
-  requestBackToBuyer,
-);
-
-buyersRouter.put(
-  '/updateinfo',
-  validateBody(updateBuyerOrSellerSchema),
-  authentication,
-  redisValidation,
-  updateBuyerInfo,
-);
-
-buyersRouter.put('/password', authentication, updateABuyerPassword);
 export { buyersRouter };

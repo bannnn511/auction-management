@@ -8,3 +8,4 @@ export * from './get-buyer-fullname';
 export * from './get-all-auctions-with-top-priciest-products';
 export * from './get-all-auctions-sort-by-bidding-count';
 export * from './get-all-auctions-sort-by-remaining-time';
+export * from './get-auction-by-id';

@@ -13,10 +13,14 @@ import {
   createNewProduct,
   getProducts,
   updateProductCurrentPrice,
+  getProductsById,
 } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
 const productsRouter = Router();
+
+productsRouter.get('/', getProducts);
+productsRouter.get('/:id', getProductsById);
 
 productsRouter.post(
   '/',
@@ -34,7 +38,5 @@ productsRouter.put(
   redisValidation,
   updateProductCurrentPrice,
 );
-
-productsRouter.get('/', getProducts);
 
 export { productsRouter };
