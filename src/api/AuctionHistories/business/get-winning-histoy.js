@@ -3,9 +3,13 @@ const db = require('../../../../models');
 export async function getWinningHistoryFromAuctionWithAuctionId(auctionId) {
   try {
     return db.AuctionHistories.findOne({
+      include: [
+        {
+          model: db.AuctionManagements,
+          as: 'auction_managements',
+        },
+      ],
       attributes: [
-        'userId',
-        'auctionId',
         [db.sequelize.fn('MAX', db.sequelize.col('price')), 'price'],
       ],
       where: {

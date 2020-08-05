@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { client } = require('../../shared/helpers/redis');
 
-export async function login(req, res, next) {
+export async function login(req, res) {
   try {
     const { email, password } = req.body;
 
@@ -43,7 +43,7 @@ export async function login(req, res, next) {
   }
 }
 
-export async function register(req, res, next) {
+export async function register(req, res) {
   try {
     const { body } = req;
     console.log({ myuser: body });

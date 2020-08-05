@@ -15,7 +15,7 @@ export async function getAuctionsSortByBiddingCount(option) {
         'join auctionDB.products as products \n' +
         'where data.product_id like products.id and end_at>=curdate()\n' +
         'order by count desc\n' +
-        `limit ${safeParseInt(option, defaultLimit)};`,
+        `limit ${safeParseInt(option, defaultLimit.MAX)};`,
       {
         raw: true,
         type: db.sequelize.QueryTypes.SELECT,

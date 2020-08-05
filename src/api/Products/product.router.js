@@ -13,11 +13,20 @@ import {
   createNewProduct,
   getProducts,
   updateProductCurrentPrice,
+  getProductsById,
 } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
 const productsRouter = Router();
 
+productsRouter.get('/', getProducts);
+productsRouter.get('/:id', getProductsById);
+
+/*
+ * Create new Product
+ * Also create Auction for this product
+ * Used for seller only
+ */
 productsRouter.post(
   '/',
   validateBody(productAuctionSchema),
@@ -28,13 +37,11 @@ productsRouter.post(
 );
 
 productsRouter.put(
-  '/updateprice',
+  '/:id',
   validateBody(bidProductAuctionSchema),
   authentication,
   redisValidation,
   updateProductCurrentPrice,
 );
-
-productsRouter.get('/', getProducts);
 
 export { productsRouter };

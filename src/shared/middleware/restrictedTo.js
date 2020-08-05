@@ -8,7 +8,7 @@ export function restrictedTo(role) {
         console.log('😎😎😎', 'Access granted');
         next();
       } else {
-        console.log(req.body);
+        console.log('🚫🚫🚫', 'Access denied');
         responseSuccess(res, { message: 'Authority denied' }, 403);
       }
     } catch (error) {

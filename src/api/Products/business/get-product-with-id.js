@@ -1,11 +1,10 @@
 const { Products } = require('../../../../models');
 
-export async function getProductWithId(product) {
+export async function getProductWithId(id) {
   try {
-    console.log('🚒🚒🚒', product);
     const productData = await Products.findOne({
       where: {
-        id: product.id,
+        id,
       },
     });
     return productData;

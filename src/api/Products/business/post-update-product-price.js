@@ -2,7 +2,7 @@ const { Products } = require('../../../../models');
 
 export async function updateProductPrice(body) {
   try {
-    let product = await Products.update(
+    await Products.update(
       {
         currentPrice: body.price,
         updatedBy: body.updatedBy,
@@ -13,10 +13,10 @@ export async function updateProductPrice(body) {
         },
       },
     );
-    product = await Products.findOne({
+    return await Products.findOne({
       attribute: [
         'productName',
-        'imgUrl',
+        'imgURL',
         'currentPrice',
         'buyNowPrice',
         'endAt',
@@ -25,7 +25,6 @@ export async function updateProductPrice(body) {
         id: body.id,
       },
     });
-    return product;
   } catch (error) {
     console.log(error);
     return null;

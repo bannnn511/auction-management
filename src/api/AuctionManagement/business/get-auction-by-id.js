@@ -1,16 +1,13 @@
 import * as _ from 'lodash';
-import { pagination } from '../../../shared/helpers';
 
 const db = require('../../../../models');
 
 const { Op } = db.Sequelize;
 
 // get data of auction + products with JOIN
-export async function getAllAuctions(page, pagesize) {
+export async function getAuctionById(id) {
   try {
-    const { offset, limit } = pagination(page, pagesize);
-    console.log(offset, limit);
-    const auctions = await db.AuctionManagements.findAll({
+    const auctions = await db.AuctionManagements.findOne({
       include: [
         {
           model: db.Products,
@@ -21,10 +18,8 @@ export async function getAllAuctions(page, pagesize) {
         endAt: {
           [Op.gt]: _.now(),
         },
+        id,
       },
-      order: [['created_at', 'DESC']],
-      limit,
-      offset,
     });
     return auctions;
   } catch (error) {

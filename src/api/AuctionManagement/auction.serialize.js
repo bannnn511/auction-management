@@ -18,7 +18,7 @@ export function serializefullActionDetail(product, auction) {
     sellerId: _.get(auction, 'sellerId', ''),
     productId: _.get(auction, 'productId', ''),
     productName: _.get(product, 'productName', ''),
-    imgUrl: _.get(product, 'imgUrl', ''),
+    imgURL: _.get(product, 'imgURL', ''),
     description: _.get(auction, 'description', ''),
     currentPrice: _.get(product, 'currentPrice', 0),
     buyNowPrice: _.get(product, 'buyNowPrice', 1),
@@ -29,10 +29,11 @@ export function serializefullActionDetail(product, auction) {
 
 export function serializefullAction(data) {
   const fullAuctionDetail = {
+    id: _.get(data, 'id', ''),
     sellerId: _.get(data, 'sellerId', ''),
     productId: _.get(data, 'productId', ''),
     productName: _.get(data, 'products.productName', ''),
-    imgUrl: _.get(data, 'products.imgUrl', ''),
+    imgURL: _.get(data, 'products.imgURL', ''),
     description: _.get(data, 'description', ''),
     currentPrice: _.get(data, 'products.currentPrice', 0),
     buyNowPrice: _.get(data, 'products.buyNowPrice', 1),

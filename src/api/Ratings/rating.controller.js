@@ -21,7 +21,7 @@ export async function ratingPointForUser(req, res) {
     const raterUser = req.currentUser.id;
     const auction = await getAuctionWithAuctionId(req.body.auctionId);
     const auctionData = serializeAuction(auction);
-    if (toDateString(auctionData.endAt) >= toDateString(_.now())) {
+    if (auctionData.endAt >= new Date(_.now())) {
       throw new AppError('Bidding time has not ended yet', 204);
     }
 

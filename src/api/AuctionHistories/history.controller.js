@@ -8,7 +8,6 @@ export async function getWinningHistoryFromAuction(req, res) {
     const { auctionId } = req.query;
     console.log(req.query);
     const history = await getWinningHistoryFromAuctionWithAuctionId(auctionId);
-    console.log(history);
     if (!history) {
       throw new AppError('There is no history from this auction', 204);
     }

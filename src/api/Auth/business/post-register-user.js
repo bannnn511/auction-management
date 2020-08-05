@@ -2,6 +2,7 @@ import {
   UserType,
   UserStatus,
   UserIsSeller,
+  Hash,
 } from '../../../shared/helpers/constant';
 
 const bcrypt = require('bcrypt');

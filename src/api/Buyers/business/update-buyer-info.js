@@ -1,26 +1,28 @@
+import * as _ from 'lodash';
+
 const db = require('../../../../models');
 
-export async function requestingUpdatedInfo(buyer) {
+export async function requestingUpdatedInfo(buyer, defaultInfo) {
   try {
     await db.Buyers.update(
       {
-        updatedBy: buyer.updatedBy,
-        fullname: buyer.fullname,
-        address: buyer.address,
+        fullname: _.defaultTo(buyer.fullname, defaultInfo.fullname),
+        address: _.defaultTo(buyer.address, defaultInfo.address),
+        isSeller: _.defaultTo(buyer.isSeller, defaultInfo.isSeller),
+        updatedBy: _.defaultTo(buyer.updatedBy, defaultInfo.updatedBy),
       },
       {
         where: {
-          id: buyer.id,
+          id: buyer.updatedBy,
         },
       },
     );
-    const newbuyer = await db.Buyers.findOne({
-      attribute: ['id', 'email', 'fullname', 'address', 'type', 'status'],
+
+    return await db.Buyers.findOne({
       where: {
-        id: buyer.id,
+        id: buyer.updatedBy,
       },
     });
-    return newbuyer;
   } catch (error) {
     console.log(error);
     return null;

@@ -4,7 +4,7 @@ export function createProduct(product) {
   try {
     const newProduct = Products.create({
       productName: product.productName,
-      imgUrl: product.imgUrl,
+      imgURL: product.imgURL,
       currentPrice: product.currentPrice,
       buyNowPrice: product.buyNowPrice,
       createdBy: product.createdBy,

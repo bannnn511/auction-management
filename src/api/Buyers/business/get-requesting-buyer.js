@@ -1,33 +1,37 @@
-import {
-  UserType,
-  UserStatus,
-  UserIsSeller,
-} from '../../../shared/helpers/constant';
+import { UserType, UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function getRequestingBuyers() {
+export function getRequestingBuyers(isSeller, type) {
   try {
-    const buyer = db.Buyers.findAll({
-      attributes: [
-        'id',
-        'email',
-        'type',
-        'status',
-        'address',
-        'fullname',
-        'isSeller',
-        'plusPoint',
-        'minusPoint',
-        'createdBy',
-        'updatedBy',
-      ],
-      where: {
-        isSeller: UserIsSeller.PENDING,
-        status: UserStatus.ACTIVE,
-        type: UserType.BUYER,
-      },
-    });
+    let defaultType = type;
+    if (isSeller === true && type === UserType.SELLER) {
+      defaultType = UserType.BUYER;
+    }
+    let buyer;
+    if (type === undefined && isSeller !== undefined) {
+      buyer = db.Buyers.findAll({
+        where: {
+          isSeller,
+          status: UserStatus.ACTIVE,
+        },
+      });
+    } else if (isSeller === undefined && type !== undefined) {
+      buyer = db.Buyers.findAll({
+        where: {
+          status: UserStatus.ACTIVE,
+          type: defaultType,
+        },
+      });
+    } else {
+      buyer = db.Buyers.findAll({
+        where: {
+          isSeller,
+          status: UserStatus.ACTIVE,
+          type: defaultType,
+        },
+      });
+    }
     return buyer;
   } catch (error) {
     console.log(error);
