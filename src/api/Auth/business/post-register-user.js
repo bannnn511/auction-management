@@ -14,7 +14,7 @@ export async function registerUser(buyer) {
     console.log(hash);
     const data = await db.Buyers.create({
       email: buyer.email,
-      password: Hash.SALT,
+      password: hash,
       type: UserType.BUYER,
       status: UserStatus.ACTIVE,
       address: buyer.address,

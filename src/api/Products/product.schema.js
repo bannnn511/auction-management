@@ -12,6 +12,5 @@ export const productAuctionSchema = Joi.object({
 });
 
 export const bidProductAuctionSchema = Joi.object({
-  id: Joi.string().required(),
   price: Joi.number().required(),
 });

@@ -19,13 +19,12 @@ import { client } from '../../shared/helpers/redis';
 // get buyer with status active but not admin
 export async function getAllBuyers(req, res) {
   try {
-    const { isseller, type } = req.query;
-    console.log(req.query);
+    const { isseller, type, page, pagesize } = req.query;
     let data;
     if (isseller !== undefined || type !== undefined) {
       data = await getRequestingBuyers(isseller, type);
     } else {
-      data = await getBuyers();
+      data = await getBuyers(page, pagesize);
     }
     if (!data) {
       throw new AppError('Cannot get Buyers', 400);

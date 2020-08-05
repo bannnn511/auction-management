@@ -12,8 +12,11 @@ export function serializeAuctionHistory(buyer, product, auction) {
 
 export function serializedAuctionHistory(auction) {
   return {
-    userId: _.get(auction, 'userId', ''),
+    auctionId: _.get(auction, 'auction_managements.id', ''),
     price: _.get(auction, 'price', 0),
-    auctionId: _.get(auction, 'auctionId', ''),
+    buyerId: _.get(auction, 'auction_managements.buyerId', ''),
+    sellerId: _.get(auction, 'auction_managements.sellerId', ''),
+    description: _.get(auction, 'auction_managements.description', 0),
+    endAt: _.get(auction, 'auction_managements.endAt', ''),
   };
 }

@@ -11,7 +11,7 @@ export async function getAuctionsWithTopNProducts(option) {
     return await db.AuctionManagements.findAll({
       include: [{ model: db.Products, as: 'products' }],
       order: [[{ model: db.Products, as: 'products' }, 'currentPrice', 'DESC']],
-      limit: safeParseInt(option, defaultLimit),
+      limit: safeParseInt(option, defaultLimit.MAX),
       where: {
         endAt: {
           [Op.gt]: _.now(),

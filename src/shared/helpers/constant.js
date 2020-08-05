@@ -15,7 +15,11 @@ export const UserIsSeller = {
   PENDING: 1,
 };
 
-export const defaultLimit = 5;
+export const defaultLimit = {
+  MAX: 5,
+  LIMIT: 50,
+  OFFSET: 0,
+};
 
 export const Hash = {
   SALT: 10,

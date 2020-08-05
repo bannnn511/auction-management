@@ -14,6 +14,7 @@ import {
   redisValidation,
   validateBody,
   restrictedTo,
+  validateQuery,
 } from '../../shared/middleware/index';
 import {
   createBuyerOrSellerSchema,
@@ -22,6 +23,7 @@ import {
   updateBuyerOrSellerSchemaByAdmin,
 } from './buyer.schema';
 import { UserType } from '../../shared/helpers/constant';
+import { paginationSchema } from '../../utils/pagination.schema';
 
 const buyersRouter = Router();
 
@@ -30,7 +32,7 @@ const buyersRouter = Router();
  * buyers or sellers
  * sort with type and status
  */
-buyersRouter.get('/', getAllBuyers);
+buyersRouter.get('/', validateQuery(paginationSchema), getAllBuyers);
 
 /*
  * Get User detail with theirs ID

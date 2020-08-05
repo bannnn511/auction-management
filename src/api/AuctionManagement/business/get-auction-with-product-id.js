@@ -1,13 +1,12 @@
 const db = require('../../../../models');
 
-export async function getAuctionWithProductId(product) {
+export async function getAuctionWithProductId(id) {
   try {
-    const auction = await db.AuctionManagements.findOne({
+    return await db.AuctionManagements.findOne({
       where: {
-        productId: product.id,
+        productId: id,
       },
     });
-    return auction;
   } catch (error) {
     console.log(error);
     return null;

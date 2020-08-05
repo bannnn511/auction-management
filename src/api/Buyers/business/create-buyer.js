@@ -9,7 +9,7 @@ export async function createBuyer(buyer) {
     console.log(hash);
     return await db.Buyers.create({
       email: buyer.email,
-      password: buyer.password,
+      password: hash,
       type: buyer.type,
       status: buyer.status,
       address: buyer.address,

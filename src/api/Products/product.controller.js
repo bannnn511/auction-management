@@ -41,7 +41,8 @@ const _ = require('lodash');
 
 export async function getProducts(req, res) {
   try {
-    const product = await getAllProducts();
+    const { page, pagesize } = req.query;
+    const product = await getAllProducts(page, pagesize);
     const data = serializeAllProducts(product);
     console.log(data);
 
@@ -86,12 +87,11 @@ async function onAuctionEnded(auctionId, productId) {
 async function createCronJobForAutoEndAuction(auction) {
   // cron job to check if auction has ended
   const task = cron.schedule('*/1 * * * *', async () => {
-    const currentTime = toDateString(_.now());
-    const endTime = toDateString(auction.endAt);
+    const currentTime = new Date(_.now());
     console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
-    console.log('Current time:', currentTime);
-    console.log('End time:', endTime);
-    if (currentTime >= endTime) {
+    console.log('Current time:', toDateString(currentTime));
+    console.log('End time:', toDateString(auction.endAt));
+    if (currentTime >= auction.endAt) {
       console.log('🤖', 'Auction has ended');
       const auctionEnded = await onAuctionEnded(
         auction.auctionId,
@@ -104,6 +104,11 @@ async function createCronJobForAutoEndAuction(auction) {
   });
 }
 
+/*
+ * Create new Product
+ * Start a cronjob to check when auction ended
+ * update buyerId for auction if there was a bid
+ */
 export async function createNewProduct(req, res) {
   try {
     req.body.createdBy = req.currentUser.id;
@@ -127,6 +132,7 @@ export async function createNewProduct(req, res) {
     const fullActionDetail = serializefullActionDetail(data, newAuction);
     console.log('Full Auction Detail', fullActionDetail);
 
+    // cronjob start here
     if (isValidDate(fullActionDetail.endAt)) {
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
@@ -137,13 +143,20 @@ export async function createNewProduct(req, res) {
   }
 }
 
+/*
+ * Bidding action
+ * New price must be higher than current price
+ * When succeed create a history for the bidding transaction
+ */
 export async function updateProductCurrentPrice(req, res) {
   try {
+    const { id } = req.params;
     req.body.updatedBy = req.currentUser.id;
+    req.body.id = id;
     const serializedBody = serializeBidProduct(req.body);
 
     // check product exist
-    const checkProduct = await getProductWithId(serializedBody.id);
+    const checkProduct = await getProductWithId(id);
     if (!checkProduct) {
       res.status(204).send('Product does not exist');
     }
@@ -151,7 +164,7 @@ export async function updateProductCurrentPrice(req, res) {
     console.log({ currentProduct });
 
     // check auction exist
-    const auction = await getAuctionWithProductId(currentProduct);
+    const auction = await getAuctionWithProductId(id);
     if (!auction) {
       throw new AppError('There is no auction with this product', 204);
     }
@@ -165,7 +178,7 @@ export async function updateProductCurrentPrice(req, res) {
     }
 
     // check if bidding time is till valid
-    if (toDateString(auction.endAt) <= toDateString(_.now())) {
+    if (auction.endAt <= new Date(_.now())) {
       throw new AppError('Bidding time has expired', 204);
     }
 

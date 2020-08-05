@@ -8,3 +8,4 @@ export * from './update-buyer-password';
 export * from './get-buyer-id-no-pass';
 export * from './update-buyer-info';
 export * from './get-buyer-detail-with-id';
+export * from '../../AuctionManagement/business/get-user-winning-auction';

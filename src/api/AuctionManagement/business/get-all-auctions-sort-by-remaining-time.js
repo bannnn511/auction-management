@@ -14,7 +14,7 @@ export async function getAuctionsSortByRemaingTime(option) {
           [Op.gt]: _.now(),
         },
       },
-      limit: safeParseInt(option, defaultLimit),
+      limit: safeParseInt(option, defaultLimit.MAX),
       order: [['end_at', 'DESC']],
     });
   } catch (error) {

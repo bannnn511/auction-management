@@ -4,7 +4,6 @@ export * from './get-auction-with-product-id';
 export * from './put-auction-buyer-id';
 export * from './get-auction-history';
 export * from './get-aution-with-auction-id';
-export * from './get-buyer-fullname';
 export * from './get-all-auctions-with-top-priciest-products';
 export * from './get-all-auctions-sort-by-bidding-count';
 export * from './get-all-auctions-sort-by-remaining-time';
