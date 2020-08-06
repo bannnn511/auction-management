@@ -1,12 +1,13 @@
 import * as _ from 'lodash';
+import { safeParseFloat } from '../../shared/helpers';
 
 export function serializeProducts(product) {
   const data = {
     id: _.get(product, 'id', ''),
     productName: _.get(product, 'productName', ''),
     imgURL: _.get(product, 'imgURL', ''),
-    currentPrice: _.get(product, 'currentPrice', 1),
-    buyNowPrice: _.get(product, 'buyNowPrice', 1),
+    currentPrice: safeParseFloat(product.currentPrice, 0),
+    buyNowPrice: safeParseFloat(product.buyNowPrice, 0),
     createdBy: _.get(product, 'createdBy', ''),
     updatedBy: _.get(product, 'updatedBy', ''),
   };
