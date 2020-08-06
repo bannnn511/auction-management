@@ -15,6 +15,7 @@ COPY ./ ./
 
 RUN apk --no-cache add --virtual builds-deps build-base python
 RUN npm rebuild bcrypt --build-from-source
+RUN npm install -g nodemon
+
 #Default command
 CMD ["npm","start"]
-#CMD npm rebuild bcrypt --build-from-source ; npm start
