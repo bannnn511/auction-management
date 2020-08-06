@@ -21,9 +21,6 @@ services:
       MYSQL_USER: "root"
       MYSQL_PASSWORD: "123456"
       MYSQL_DATABASE: "auctionDB"
-    volumes:
-      -
-      - db_data:/Users/apple/dumps/Dump20200806
     ports:
       - "3306:3306"
   phpmyadmin:
