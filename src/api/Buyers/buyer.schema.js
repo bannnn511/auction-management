@@ -1,4 +1,4 @@
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
 import { UserType, UserStatus } from '../../shared/helpers/constant';
 
 export const createBuyerOrSellerSchema = Joi.object({

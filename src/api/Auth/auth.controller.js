@@ -22,7 +22,6 @@ export async function login(req, res) {
       if (!user) {
         throw new AppError('Username or password does not exists.', 400);
       }
-
       console.log(serializeUser(user));
 
       const token = jwt.sign(

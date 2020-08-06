@@ -1,18 +1,20 @@
-FROM node:14
-# Create app directory
-WORKDIR /usr/src/app
+#Specify a base image
+FROM node:alpine
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+#Specify a working directory
+WORKDIR /usr/app
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
+#Copy the dependencies file
+COPY ./package.json ./
 
-# Bundle app source
-COPY . .
+#Install dependencies
+#RUN npm install 
 
-EXPOSE 4000
-CMD [ "node", "app.js" ]
+#Copy remaining files
+COPY ./ ./
+
+RUN apk --no-cache add --virtual builds-deps build-base python
+RUN npm rebuild bcrypt --build-from-source
+#Default command
+CMD ["npm","start"]
+#CMD npm rebuild bcrypt --build-from-source ; npm start

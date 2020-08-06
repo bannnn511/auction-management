@@ -1,4 +1,4 @@
-import * as Joi from '@hapi/joi';
+import * as Joi from 'joi';
 
 export const ratingSchema = Joi.object({
   auctionId: Joi.string().required(),

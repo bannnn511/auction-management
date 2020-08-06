@@ -1,0 +1,48 @@
+version: "3"
+services:
+  redis-server:
+    image: redis
+  # mysql:
+  #   image: mysql:8.0.21
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: "auctionDB"
+  #     MYSQL_USER: "root"
+  #     MYSQL_PASSWORD: "123456"
+  #     MYSQL_ROOT_PASSWORD: "123456"
+  #     MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  #     MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+  #   ports:
+  #     - "3306:3306"
+  mysql:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "123456"
+      MYSQL_DATABASE: "auctionDB"
+    volumes:
+      -
+      - db_data:/Users/apple/dumps/Dump20200806
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "123456"
+      PMA_HOST: "mysql"
+      MYSQL_ROOT_PASSWORD: "123456"
+    ports:
+      - "8080:80"
+    links:
+      - mysql
+  node-app:
+    build: .
+    restart: always
+    ports:
+      - "4000:4000"
+    links:
+      - mysql
+      - redis-server
