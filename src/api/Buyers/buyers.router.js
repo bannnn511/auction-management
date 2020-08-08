@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-  getAllBuyers,
-  createNewBuyer,
-  deleteABuyer,
-  updateABuyerPassword,
-  updateBuyerInfo,
-  getABuyerDetailWithId,
+  getAllUsers,
+  createNewUser,
+  deleteUser,
+  updateUserPassword,
+  updateUserInfo,
+  getUserDetailWithId,
   updateUserInfoByAdmin,
 } from './buyers.controller';
 
@@ -30,14 +30,14 @@ const buyersRouter = Router();
 /*
  * Get list of user
  * buyers or sellers
- * sort with type and status
+ * filter with type and status
  */
-buyersRouter.get('/', validateQuery(paginationSchema), getAllBuyers);
+buyersRouter.get('/', validateQuery(paginationSchema), getAllUsers);
 
 /*
  * Get User detail with theirs ID
  */
-buyersRouter.get('/:id', getABuyerDetailWithId);
+buyersRouter.get('/:id', getUserDetailWithId);
 
 /*
  * Create new User by Admin
@@ -49,7 +49,7 @@ buyersRouter.post(
   authentication,
   redisValidation,
   restrictedTo(UserType.ADMIN),
-  createNewBuyer,
+  createNewUser,
 );
 
 /*
@@ -64,7 +64,7 @@ buyersRouter.put(
   validateBody(updateBuyerOrSellerSchema),
   redisValidation,
   authentication,
-  updateBuyerInfo,
+  updateUserInfo,
 );
 
 /*
@@ -75,7 +75,7 @@ buyersRouter.post(
   validateBody(changeBuyerOrSellerPasswordSchema),
   redisValidation,
   authentication,
-  updateABuyerPassword,
+  updateUserPassword,
 );
 
 /*
@@ -87,12 +87,12 @@ buyersRouter.put(
   authentication,
   redisValidation,
   restrictedTo(UserType.ADMIN),
-  deleteABuyer,
+  deleteUser,
 );
 
 /*
  * Update buyer info
- * Used for common user
+ * Used for admin
  * change fullname
  * change address
  * request to be a seller

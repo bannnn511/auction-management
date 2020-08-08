@@ -2,7 +2,7 @@ import { UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function getUserIdNoPass(buyer) {
+export function getUserIdWithEmail(buyer) {
   try {
     const newBuyer = db.Buyers.findOne({
       attributes: ['id'],

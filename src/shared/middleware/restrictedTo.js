@@ -9,7 +9,11 @@ export function restrictedTo(role) {
         next();
       } else {
         console.log('🚫🚫🚫', 'Access denied');
-        responseSuccess(res, { message: 'Authority denied' }, 403);
+        responseSuccess(
+          res,
+          { message: `Authority denied, you are not ${role}` },
+          403,
+        );
       }
     } catch (error) {
       responseError(res, error);

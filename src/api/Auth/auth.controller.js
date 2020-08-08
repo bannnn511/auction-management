@@ -1,42 +1,12 @@
-import { AppError } from '../../utils/appError';
-import { getLoginUserId, getPassOfUser, registerUser } from './business/index';
-import { getToken, responseError, responseSuccess } from '../../shared/helpers';
-import { getUserIdNoPass } from '../Buyers/business';
-import { serializeUser } from './auth.serialize';
+import { responseError, responseSuccess } from '../../shared/helpers';
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { client } = require('../../shared/helpers/redis');
+import { serializeUser } from './auth.serialize';
+import { loginBusiness, logoutBusiness, registerBusiness } from './business';
 
 export async function login(req, res) {
   try {
-    const { email, password } = req.body;
-
-    const passOfUser = await getPassOfUser(email);
-
-    console.log(password, passOfUser.password);
-    const match = await bcrypt.compare(password, passOfUser.password);
-    if (match) {
-      const user = await getLoginUserId(email, passOfUser.password);
-
-      if (!user) {
-        throw new AppError('Username or password does not exists.', 400);
-      }
-      console.log(serializeUser(user));
-
-      const token = jwt.sign(
-        { id: user.id, permissions: user.type },
-        process.env.JWT_SECRET_KEY,
-        {
-          expiresIn: '1h',
-        },
-      );
-
-      console.log(token);
-      responseSuccess(res, { token });
-    } else {
-      responseSuccess(res, { error: 'Invalid Input' }, 401);
-    }
+    const token = await loginBusiness(req, res);
+    responseSuccess(res, { token });
   } catch (error) {
     responseError(res, error);
   }
@@ -44,21 +14,9 @@ export async function login(req, res) {
 
 export async function register(req, res) {
   try {
-    const { body } = req;
-    console.log({ myuser: body });
-
-    const checkUser = await getUserIdNoPass(body);
-    if (checkUser) {
-      throw new AppError('User already exists', 204);
-    }
-    const buyer = await registerUser(body);
-    if (!buyer) {
-      throw new AppError('Create account fail', 400);
-    }
-    const buyerData = serializeUser(buyer);
-    console.log(buyerData);
-
-    res.status(200).json({ data: buyerData });
+    const data = await registerBusiness(req, res);
+    const serializedData = serializeUser(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -66,11 +24,9 @@ export async function register(req, res) {
 
 export async function logout(req, res) {
   try {
-    const token = getToken(req);
-    await client.rpush('token', token, (err, reply) => {
-      console.log({ reply });
-    });
-    responseSuccess(res, req.currentUser);
+    const data = await logoutBusiness(req, res);
+    const serializedData = serializeUser(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }

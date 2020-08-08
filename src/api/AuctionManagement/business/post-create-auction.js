@@ -1,8 +1,8 @@
 const db = require('../../../../models');
 
-export function createAuction(auction) {
+export async function createAuction(auction) {
   try {
-    const newAuction = db.AuctionManagements.create({
+    return await db.AuctionManagements.create({
       sellerId: auction.sellerId,
       productId: auction.productId,
       description: auction.description,
@@ -10,7 +10,6 @@ export function createAuction(auction) {
       updatedBy: auction.updatedBy,
       endAt: auction.endAt,
     });
-    return newAuction;
   } catch (error) {
     console.log(error);
     return null;

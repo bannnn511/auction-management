@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { UserStatus, UserType } from '../../shared/helpers/constant';
+import { safeParseInt } from '../../shared/helpers';
 
 export function serializeBuyers(buyer, showPassword) {
   const data = {
@@ -10,8 +11,8 @@ export function serializeBuyers(buyer, showPassword) {
     address: _.get(buyer, 'address', null),
     fullname: _.get(buyer, 'fullname', null),
     isSeller: _.get(buyer, 'isSeller', null),
-    plusPoint: _.get(buyer, 'plusPoint', 0),
-    minusPoint: _.get(buyer, 'minusPoint', 0),
+    plusPoint: safeParseInt(_.get(buyer, 'plusPoint', 0)),
+    minusPoint: safeParseInt(_.get(buyer, 'minusPoint', 0)),
     createdBy: _.get(buyer, 'createdBy', ''),
     updatedBy: _.get(buyer, 'updatedBy', ''),
   };

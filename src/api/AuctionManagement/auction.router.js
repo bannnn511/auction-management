@@ -6,8 +6,15 @@ import {
   getListBuyerInAuction,
   getAnAuctionById,
   getAUserWinningAuction,
+  getAuctionOnMarketOfASeller,
+  getAuctionSoldOnMarketOfASeller,
 } from './auction.controller';
-import { authentication, redisValidation } from '../../shared/middleware';
+import {
+  authentication,
+  redisValidation,
+  restrictedTo,
+} from '../../shared/middleware';
+import { UserType } from '../../shared/helpers/constant';
 
 const { Router } = require('express');
 
@@ -18,6 +25,20 @@ auctionRouter.get('/history', getListBuyerInAuction);
 auctionRouter.get('/highestbiddingcount', getListAuctionSortByBiddingCount);
 auctionRouter.get('/highestprice', getListAuctionWithHighestPrice);
 auctionRouter.get('/remainingtime', getListAuctionsSortByRemainingTime);
+auctionRouter.get(
+  '/selling',
+  authentication,
+  redisValidation,
+  restrictedTo(UserType.SELLER),
+  getAuctionOnMarketOfASeller,
+);
+auctionRouter.get(
+  '/sold',
+  authentication,
+  redisValidation,
+  restrictedTo(UserType.SELLER),
+  getAuctionSoldOnMarketOfASeller,
+);
 auctionRouter.get('/:id/buyers', getListBuyerInAuction);
 
 /*

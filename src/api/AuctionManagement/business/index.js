@@ -8,3 +8,5 @@ export * from './get-all-auctions-with-top-priciest-products';
 export * from './get-all-auctions-sort-by-bidding-count';
 export * from './get-all-auctions-sort-by-remaining-time';
 export * from './get-auction-by-id';
+export * from './get-auction-on-marker';
+export * from './get-auction-sold';

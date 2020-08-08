@@ -1,9 +1,11 @@
 import { UserType, UserStatus } from '../../../shared/helpers/constant';
+import { pagination } from '../../../shared/helpers';
 
 const db = require('../../../../models');
 
-export function getRequestingBuyers(isSeller, type) {
+export function getBuyersWithOptions(page, pagesize, isSeller, type) {
   try {
+    const { offset, limit } = pagination(page, pagesize);
     let defaultType = type;
     if (isSeller === true && type === UserType.SELLER) {
       defaultType = UserType.BUYER;
@@ -15,6 +17,8 @@ export function getRequestingBuyers(isSeller, type) {
           isSeller,
           status: UserStatus.ACTIVE,
         },
+        offset,
+        limit,
       });
     } else if (isSeller === undefined && type !== undefined) {
       buyer = db.Buyers.findAll({
@@ -22,6 +26,8 @@ export function getRequestingBuyers(isSeller, type) {
           status: UserStatus.ACTIVE,
           type: defaultType,
         },
+        offset,
+        limit,
       });
     } else {
       buyer = db.Buyers.findAll({
@@ -30,6 +36,8 @@ export function getRequestingBuyers(isSeller, type) {
           status: UserStatus.ACTIVE,
           type: defaultType,
         },
+        offset,
+        limit,
       });
     }
     return buyer;

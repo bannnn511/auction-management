@@ -9,7 +9,7 @@ import {
   getAllProducts,
   getProductWithId,
   updateProductPrice,
-} from './business/index';
+} from './database/index';
 import {
   serializeProducts,
   serializeAllProducts,
@@ -35,18 +35,16 @@ import {
   serializeAuctionHistory,
   serializedAuctionHistory,
 } from '../AuctionHistories/history.serialize';
+import { getAllProductsBusiness, getProductByIdBusiness } from './business';
+import { createNewProductBusiness } from './business/createNewProductBusiness';
 
-const cron = require('node-cron');
 const _ = require('lodash');
 
 export async function getProducts(req, res) {
   try {
-    const { page, pagesize } = req.query;
-    const product = await getAllProducts(page, pagesize);
-    const data = serializeAllProducts(product);
-    console.log(data);
-
-    responseSuccess(res, data);
+    const data = getAllProductsBusiness(req, res);
+    const serializedData = serializeAllProducts(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -54,54 +52,12 @@ export async function getProducts(req, res) {
 
 export async function getProductsById(req, res) {
   try {
-    const { id } = req.params;
-    const product = await getProductWithId(id);
-    const data = serializeProducts(product);
-    console.log(data);
-
-    responseSuccess(res, data);
+    const data = await getProductByIdBusiness(req, res);
+    const serializedProduct = serializeProducts(data);
+    responseSuccess(res, serializedProduct);
   } catch (error) {
     responseError(res, error);
   }
-}
-
-async function onAuctionEnded(auctionId, productId) {
-  const winningData = await getWinningHistoryFromAuctionWithAuctionId(
-    auctionId,
-  );
-  if (!winningData) {
-    throw new AppError('There is no winning data', 204);
-  }
-  const serializedWinningData = serializedAuctionHistory(winningData);
-  console.log('The winners: ', serializedWinningData);
-  serializedWinningData.productId = productId;
-  const updatedAuction = await updateAuctionBuyerId(serializedWinningData);
-  if (!updatedAuction) {
-    throw new AppError('Cannot update winning Buyer', 204);
-  }
-  const serializedUpdatedAuction = serializeAuction(updatedAuction);
-  console.log('Updated post-Auction data:', serializedUpdatedAuction);
-  return serializedUpdatedAuction;
-}
-
-async function createCronJobForAutoEndAuction(auction) {
-  // cron job to check if auction has ended
-  const task = cron.schedule('*/1 * * * *', async () => {
-    const currentTime = new Date(_.now());
-    console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
-    console.log('Current time:', toDateString(currentTime));
-    console.log('End time:', toDateString(auction.endAt));
-    if (currentTime >= auction.endAt) {
-      console.log('🤖', 'Auction has ended');
-      const auctionEnded = await onAuctionEnded(
-        auction.auctionId,
-        auction.productId,
-      );
-      const serializedPostAuction = serializefullAction(auctionEnded);
-      console.log(serializedPostAuction);
-      task.destroy();
-    }
-  });
 }
 
 /*
@@ -111,33 +67,8 @@ async function createCronJobForAutoEndAuction(auction) {
  */
 export async function createNewProduct(req, res) {
   try {
-    req.body.createdBy = req.currentUser.id;
-    req.body.updatedBy = req.currentUser.id;
-    const body = serializeProducts(req.body);
-    const product = await createProduct(body);
-    if (!product) {
-      throw new AppError('Cannot create product', 204);
-    }
-    const data = serializeProducts(product);
-    data.description = req.body.description;
-    data.endAt = toDateString(req.body.endAt);
-    console.log('✨✨✨ Product datas', data);
-
-    const auction = serializeAuctionFromProduct(data);
-    const newAuction = await createAuction(auction);
-    if (!newAuction) {
-      throw new AppError('Cannot start auction', 204);
-    }
-
-    const fullActionDetail = serializefullActionDetail(data, newAuction);
-    console.log('Full Auction Detail', fullActionDetail);
-
-    // cronjob start here
-    if (isValidDate(fullActionDetail.endAt)) {
-      await createCronJobForAutoEndAuction(fullActionDetail);
-    }
-
-    responseSuccess(res, fullActionDetail);
+    const data = createNewProductBusiness(req, res);
+    responseSuccess(res, data);
   } catch (error) {
     responseError(res, error);
   }

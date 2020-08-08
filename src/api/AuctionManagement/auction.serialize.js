@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { toDateString, safeParseFloat } from '../../shared/helpers';
 
 export function serializeAuctionFromProduct(product) {
   const auction = {
@@ -30,14 +31,15 @@ export function serializefullActionDetail(product, auction) {
 export function serializefullAction(data) {
   const fullAuctionDetail = {
     id: _.get(data, 'id', ''),
+    buyerId: _.get(data, 'buyerId', ''),
     sellerId: _.get(data, 'sellerId', ''),
     productId: _.get(data, 'productId', ''),
     productName: _.get(data, 'products.productName', ''),
     imgURL: _.get(data, 'products.imgURL', ''),
     description: _.get(data, 'description', ''),
-    currentPrice: _.get(data, 'products.currentPrice', 0),
-    buyNowPrice: _.get(data, 'products.buyNowPrice', 1),
-    endAt: _.get(data, 'endAt', _.now()),
+    currentPrice: safeParseFloat(_.get(data, 'products.currentPrice', 0)),
+    buyNowPrice: safeParseFloat(_.get(data, 'products.buyNowPrice', 1)),
+    endAt: toDateString(_.get(data, 'endAt', _.now())),
   };
   return fullAuctionDetail;
 }

@@ -5,6 +5,8 @@ import {
   getAuctionsSortByRemaingTime,
   getAuctionsWithTopNProducts,
   getAuctionById,
+  getAuctionOnMarketOfASellerBusiness,
+  getAuctionSoldBySellerBusiness,
 } from './business/index';
 import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
@@ -118,6 +120,34 @@ export async function getAUserWinningAuction(req, res) {
       throw new AppError('This Buyer has not won any auction', 204);
     }
     responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function getAuctionOnMarketOfASeller(req, res) {
+  try {
+    const { id } = req.currentUser;
+    const data = await getAuctionOnMarketOfASellerBusiness(id);
+    if (!data) {
+      throw new AppError('This seller is not selling anything on market', 204);
+    }
+    const serializedData = serializeAllAuctions(data);
+    responseSuccess(res, serializedData);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function getAuctionSoldOnMarketOfASeller(req, res) {
+  try {
+    const { id } = req.currentUser;
+    const data = await getAuctionSoldBySellerBusiness(id);
+    if (!data) {
+      throw new AppError('This seller is not selling anything on market', 204);
+    }
+    const serializedData = serializeAllAuctions(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }

@@ -22,7 +22,7 @@ export async function getAllAuctions(page, pagesize) {
           [Op.gt]: _.now(),
         },
       },
-      order: [['created_at', 'DESC']],
+      order: [['endAt', 'ASC']],
       limit,
       offset,
     });

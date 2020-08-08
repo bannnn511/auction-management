@@ -1,5 +1,5 @@
 import { AppError } from '../../utils/appError';
-import { getLoginUserById } from '../../api/Auth/business';
+import { getLoginUserById } from '../../api/Auth/database';
 import { serializeBuyers } from '../../api/Buyers/buyers.serialize';
 import { getToken, responseError } from '../helpers';
 
