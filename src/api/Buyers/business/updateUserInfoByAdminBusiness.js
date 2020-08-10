@@ -25,6 +25,7 @@ export async function updateUserInfoByAdminBusiness(req, res) {
     if (!buyer) {
       throw new AppError("Cannot update Buyer's info");
     }
+    return buyer;
   } catch (error) {
     responseError(res, error);
   }
