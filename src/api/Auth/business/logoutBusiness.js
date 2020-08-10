@@ -8,8 +8,8 @@ export async function logoutBusiness(req, res) {
     await client.rpush('token', token, (err, reply) => {
       console.log({ reply });
     });
+    return req.currentUser;
   } catch (error) {
     responseError(res, error);
-    return null;
   }
 }

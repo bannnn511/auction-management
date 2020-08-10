@@ -18,7 +18,6 @@ import {
   updateAuctionBuyerId,
 } from '../../AuctionManagement/business';
 import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistories/business';
-import { serializedAuctionHistory } from '../../AuctionHistories/history.serialize';
 
 const cron = require('node-cron');
 
@@ -29,16 +28,14 @@ async function onAuctionEnded(auctionId, productId) {
   if (!winningData) {
     throw new AppError('There is no winning data', 204);
   }
-  const serializedWinningData = serializedAuctionHistory(winningData);
-  console.log('The winners: ', serializedWinningData);
-  serializedWinningData.productId = productId;
-  const updatedAuction = await updateAuctionBuyerId(serializedWinningData);
+
+  winningData.productId = productId;
+  const updatedAuction = await updateAuctionBuyerId(winningData);
   if (!updatedAuction) {
     throw new AppError('Cannot update winning Buyer', 204);
   }
-  const serializedUpdatedAuction = serializeAuction(updatedAuction);
-  console.log('Updated post-Auction data:', serializedUpdatedAuction);
-  return serializedUpdatedAuction;
+
+  return updatedAuction;
 }
 
 async function createCronJobForAutoEndAuction(auction) {
@@ -63,9 +60,9 @@ async function createCronJobForAutoEndAuction(auction) {
 
 export async function createNewProductBusiness(req, res) {
   try {
-    req.body.createdBy = req.currentUser.id;
-    req.body.updatedBy = req.currentUser.id;
-    const body = serializeProducts(req.body);
+    const { body } = req;
+    body.createdBy = req.currentUser.id;
+    body.updatedBy = req.currentUser.id;
     const product = await createProduct(body);
     if (!product) {
       throw new AppError('Cannot create product', 204);
@@ -86,7 +83,6 @@ export async function createNewProductBusiness(req, res) {
     if (!newAuction) {
       throw new AppError('Cannot start auction', 204);
     }
-    console.log(product, newAuction);
     const fullActionDetail = serializefullActionDetail(product, newAuction);
 
     // cronjob start here

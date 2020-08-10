@@ -2,16 +2,16 @@ import { UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function getPassOfUser(email) {
+export async function getPassOfUser(email) {
   try {
-    const buyer = db.Buyers.findOne({
+    const buyer = await db.Buyers.findOne({
       where: {
         email,
         status: UserStatus.ACTIVE,
       },
       attributes: ['password'],
     });
-    return buyer;
+    return buyer.password;
   } catch (error) {
     console.log(error);
     return null;

@@ -2,9 +2,9 @@ import { UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function getUserIdWithEmail(buyer) {
+export async function getUserIdWithEmail(buyer) {
   try {
-    const newBuyer = db.Buyers.findOne({
+    const newBuyer = await db.Buyers.findOne({
       attributes: ['id'],
       where: {
         email: buyer.email,

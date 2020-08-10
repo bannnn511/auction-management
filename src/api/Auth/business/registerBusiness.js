@@ -18,6 +18,5 @@ export async function registerBusiness(req, res) {
     return buyer;
   } catch (error) {
     responseError(res, error);
-    return null;
   }
 }

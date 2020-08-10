@@ -7,8 +7,8 @@ import { responseError } from '../../../shared/helpers';
 export async function updateUserInfoBusiness(req, res) {
   try {
     const { id } = req.params;
-    req.body.updatedBy = req.currentUser.id;
-    const body = serializeBuyers(req.body, false);
+    const { body } = req;
+    body.updatedBy = req.currentUser.id;
     const userInfo = await getLoginUserById(req.currentUser.id);
     if (!userInfo) {
       throw new AppError(
@@ -26,6 +26,5 @@ export async function updateUserInfoBusiness(req, res) {
     return buyer;
   } catch (error) {
     responseError(res, error);
-    return null;
   }
 }

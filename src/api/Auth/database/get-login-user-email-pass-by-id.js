@@ -8,7 +8,7 @@ export function getLoginUserById(id) {
       attributes: [
         'id',
         'email',
-        'fullName',
+        'fullname',
         'address',
         'type',
         'status',

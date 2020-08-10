@@ -17,6 +17,5 @@ export async function getAllUserBusinness(req, res) {
     return data;
   } catch (error) {
     responseError(res, error);
-    return null;
   }
 }

@@ -128,7 +128,8 @@ export async function getAUserWinningAuction(req, res) {
 export async function getAuctionOnMarketOfASeller(req, res) {
   try {
     const { id } = req.currentUser;
-    const data = await getAuctionOnMarketOfASellerBusiness(id);
+    const { page, pagesize } = req.query;
+    const data = await getAuctionOnMarketOfASellerBusiness(page, pagesize, id);
     if (!data) {
       throw new AppError('This seller is not selling anything on market', 204);
     }
@@ -142,7 +143,8 @@ export async function getAuctionOnMarketOfASeller(req, res) {
 export async function getAuctionSoldOnMarketOfASeller(req, res) {
   try {
     const { id } = req.currentUser;
-    const data = await getAuctionSoldBySellerBusiness(id);
+    const { page, pagesize } = req.query;
+    const data = await getAuctionSoldBySellerBusiness(page, pagesize, id);
     if (!data) {
       throw new AppError('This seller is not selling anything on market', 204);
     }

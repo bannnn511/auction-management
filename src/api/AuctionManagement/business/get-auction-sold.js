@@ -1,11 +1,13 @@
 import * as _ from 'lodash';
+import { pagination } from '../../../shared/helpers';
 
 const db = require('../../../../models');
 
 const { Op } = db.Sequelize;
 
-export async function getAuctionSoldBySellerBusiness(id) {
+export async function getAuctionSoldBySellerBusiness(page, pagesize, id) {
   try {
+    const { offset, limit } = pagination(page, pagesize);
     return await db.AuctionManagements.findAll({
       include: [
         {
@@ -19,6 +21,8 @@ export async function getAuctionSoldBySellerBusiness(id) {
           [Op.not]: null,
         },
       },
+      offset,
+      limit,
     });
   } catch (error) {
     console.log(error);

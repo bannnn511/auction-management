@@ -9,11 +9,9 @@ export async function loginBusiness(req, res) {
   const { email, password } = req.body;
 
   const passOfUser = await getPassOfUser(email);
-
-  console.log(password, passOfUser.password);
-  const match = await bcrypt.compare(password, passOfUser.password);
+  const match = await bcrypt.compare(password, passOfUser);
   if (match) {
-    const user = await getLoginUserId(email, passOfUser.password);
+    const user = await getLoginUserId(email, passOfUser);
 
     if (!user) {
       throw new AppError('Username or password does not exists.', 400);
@@ -28,5 +26,4 @@ export async function loginBusiness(req, res) {
     return token;
   }
   responseSuccess(res, { error: 'Invalid Input' }, 401);
-  return null;
 }

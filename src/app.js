@@ -9,13 +9,7 @@ const cors = require('cors');
 const { json } = require('body-parser');
 const logger = require('morgan');
 const { errorHandler } = require('./shared/middleware/error-handler');
-const {
-  clientViewRouter,
-} = require('./viewHandler/client-view-handler/client-view.router');
 const { apiRouter } = require('./api');
-const {
-  adminViewRouter,
-} = require('./viewHandler/admin-view-handler/admin-view.router');
 
 const app = express();
 const corsOptions = {
@@ -39,8 +33,6 @@ client.on('error', (error) => {
 app.use(logger('dev'));
 app.use(json());
 
-app.use('/', clientViewRouter);
-app.use('/admin', adminViewRouter);
 app.use('/api', apiRouter);
 
 app.use('*', (req, res) => {

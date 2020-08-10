@@ -83,7 +83,6 @@ buyersRouter.post(
  */
 buyersRouter.put(
   '/:id/delete',
-  // validateBody(updateBuyerOrSellerSchema),
   authentication,
   redisValidation,
   restrictedTo(UserType.ADMIN),

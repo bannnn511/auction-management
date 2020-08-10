@@ -1,5 +1,4 @@
 import { responseError, responseSuccess } from '../../shared/helpers';
-
 import { serializeUser } from './auth.serialize';
 import { loginBusiness, logoutBusiness, registerBusiness } from './business';
 
