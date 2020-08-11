@@ -1,8 +1,8 @@
 const { Categories } = require('../../../../models');
 
-export function createCategory(category) {
+export async function createCategory(category) {
   try {
-    const data = Categories.create({
+    const data = await Categories.create({
       categoryName: category.categoryName,
       createdBy: category.createdBy,
       updatedBy: category.updatedBy,

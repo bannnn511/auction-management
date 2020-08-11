@@ -31,7 +31,7 @@ categoriesRouter.post(
 );
 
 categoriesRouter.put(
-  './:id',
+  '/:id',
   authentication,
   redisValidation,
   restrictedTo(UserType.ADMIN),

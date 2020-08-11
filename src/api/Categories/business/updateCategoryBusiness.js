@@ -4,13 +4,13 @@ import { AppError } from '../../../utils/appError';
 
 export async function updateCategoryBusiness(req, res) {
   try {
-    const { params } = req.params;
-    const { body } = req.body;
-    const existedCategory = await getCategory(params);
+    const { body } = req;
+    const { id } = req.params;
+    const existedCategory = await getCategory(id);
     if (!existedCategory) {
       throw new AppError('This category is not existed', 400);
     }
-    const category = await updateCategory(params, body.categoryName);
+    const category = await updateCategory(id, body.categoryName);
     return category;
   } catch (error) {
     console.log(error);

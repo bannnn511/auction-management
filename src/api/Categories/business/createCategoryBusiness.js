@@ -5,7 +5,7 @@ export async function createNewCategoryBusiness(req, res) {
   try {
     req.body.createdBy = req.currentUser.id;
     req.body.updatedBy = req.currentUser.id;
-    const { body } = req.body;
+    const { body } = req;
 
     const category = await createCategory(body);
     return category;
