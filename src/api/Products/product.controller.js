@@ -4,6 +4,7 @@ import {
   getAllProductsBusiness,
   getProductByIdBusiness,
   updateProductCurrentPriceBusiness,
+  updateProductDetailBusiness,
 } from './business';
 import { createNewProductBusiness } from './business/createNewProductBusiness';
 
@@ -60,10 +61,11 @@ export async function updateProductPrice(req, res) {
 /*
  * Update product detail
  * Request should only be sent by who created this product
+ * Update auction detail field for endAt and desciption if exists
  */
 export async function updateProductDetail(req, res) {
   try {
-    const data = await updateProductCurrentPriceBusiness(req, res);
+    const data = await updateProductDetailBusiness(req, res);
     const serializedData = serializeProducts(data);
     responseSuccess(res, serializedData);
   } catch (error) {

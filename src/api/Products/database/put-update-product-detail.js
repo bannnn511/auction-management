@@ -1,22 +1,42 @@
-const { Products } = require('../../../../models');
+import * as _ from 'lodash';
 
-export async function updateProductDetail(body) {
+const { Products, AuctionManagements } = require('../../../../models');
+
+export async function updateProductDetail(
+  body,
+  defaultProduct,
+  defaultAuction,
+) {
   try {
     await Products.update(
       {
-        productnname: body.productName,
-        endAt: body.endAt,
-        updatedBy: body.updatedBy,
+        productName: _.defaultTo(body.productName, defaultProduct.productName),
+        endAt: _.defaultTo(body.endAt, defaultProduct.endAt),
+        updatedBy: _.defaultTo(body.updatedBy, defaultProduct.updatedBy),
+        imgURL: _.defaultTo(body.imgURL, defaultProduct.imgURL),
       },
       {
         where: {
-          id: body.id,
+          id: body.productId,
         },
       },
     );
+
+    await AuctionManagements.update(
+      {
+        description: _.defaultTo(body.description, defaultAuction.description),
+        endAt: _.defaultTo(body.endAt, defaultAuction.endAt),
+      },
+      {
+        where: {
+          productId: body.productId,
+        },
+      },
+    );
+
     return await Products.findOne({
       where: {
-        id: body.id,
+        id: body.productId,
       },
     });
   } catch (error) {

@@ -2,7 +2,7 @@ const db = require('../../../../models');
 
 export async function updateAuctionBuyerId(data) {
   try {
-    db.AuctionManagements.update(
+    await db.AuctionManagements.update(
       { buyerId: data.userId },
       {
         where: {
@@ -10,7 +10,7 @@ export async function updateAuctionBuyerId(data) {
         },
       },
     );
-    return db.AuctionManagements.findOne({
+    return await db.AuctionManagements.findOne({
       where: {
         id: data.auctionId,
       },

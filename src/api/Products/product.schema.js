@@ -15,6 +15,7 @@ export const updateProductAuctionSchema = Joi.object({
   productName: Joi.string(),
   buyNowPrice: Joi.number(),
   endAt: Joi.date(),
+  imgURL: Joi.string(),
   description: Joi.string()
     .empty('')
     .pattern(/^[a-zA-Z]+/),

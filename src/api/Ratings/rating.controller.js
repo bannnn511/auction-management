@@ -11,7 +11,7 @@ import {
   updateUserPlusPoint,
   updateUserMinusPoint,
 } from './business';
-import { getAuctionWithAuctionId } from '../AuctionManagement/business';
+import { getAuctionWithAuctionId } from '../AuctionManagement/database';
 import { serializeAuction } from '../AuctionManagement/auction.serialize';
 
 const _ = require('lodash');

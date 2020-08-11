@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { getProductWithId, updateProductPrice } from '../database';
-import { getAuctionWithProductId } from '../../AuctionManagement/business';
+import { getAuctionWithProductId } from '../../AuctionManagement/database';
 import { AppError } from '../../../utils/appError';
 import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/business';
@@ -16,7 +16,6 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     // check product exist
     const checkProduct = await getProductWithId(id);
     if (!checkProduct) {
-      res.status(204).send('Product does not exist');
       throw new AppError('Product does not exist', 204);
     }
 
