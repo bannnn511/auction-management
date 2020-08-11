@@ -5,7 +5,10 @@ import {
   redisValidation,
 } from '../../shared/middleware';
 import { FavouriteProductSchema } from './favourite.schema';
-import { createNewFavouriteProduct } from './favourite.controller';
+import {
+  createNewFavouriteProduct,
+  getListFavouriteProducts,
+} from './favourite.controller';
 
 const favouriteRouter = Router();
 
@@ -15,6 +18,13 @@ favouriteRouter.post(
   authentication,
   redisValidation,
   createNewFavouriteProduct,
+);
+
+favouriteRouter.get(
+  '/',
+  authentication,
+  redisValidation,
+  getListFavouriteProducts,
 );
 
 export { favouriteRouter };

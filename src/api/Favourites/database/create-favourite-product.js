@@ -7,6 +7,13 @@ export async function createFavouriteProduct(userId, productId) {
       productId,
       createdBy: userId,
       updatedBy: userId,
+      include: [
+        {
+          model: db.Products,
+          as: 'products',
+          attributes: ['productName'],
+        },
+      ],
     });
     return product;
   } catch (error) {
