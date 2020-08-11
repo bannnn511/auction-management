@@ -1,12 +1,12 @@
 const db = require('../../../../models');
 
-export async function createFavouriteProduct(body) {
+export async function createFavouriteProduct(userId, productId) {
   try {
-    const product = db.Favourite.create({
-      userId: body.userId,
-      productId: body.productId,
-      createdBy: body.createdBy,
-      updatedBy: body.updatedBy,
+    const product = await db.Favorites.create({
+      userId,
+      productId,
+      createdBy: userId,
+      updatedBy: userId,
     });
     return product;
   } catch (error) {

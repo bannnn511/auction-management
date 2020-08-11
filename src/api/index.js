@@ -16,6 +16,6 @@ apiRouter.use('/auctions', auctionRouter);
 apiRouter.use('/categories', categoriesRouter);
 apiRouter.use('/histories', historiesRouter);
 apiRouter.use('/ratings', ratingsRouter);
-apiRouter.use('./favourites', favouriteRouter);
+apiRouter.use('/favourites', favouriteRouter);
 
 export { apiRouter };

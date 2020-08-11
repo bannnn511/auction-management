@@ -18,7 +18,7 @@ const dbUserName = process.env.MYSQL_USERNAME;
 const dbPassword = process.env.MYSQL_PASSWORD;
 
 const sequelize = new Sequelize(dbName, dbUserName, dbPassword, {
-  host: 'mysql',
+  host: 'localhost',
   dialect: 'mysql',
 });
 
