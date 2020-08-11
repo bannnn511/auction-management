@@ -13,10 +13,13 @@ export const createProductAuctionSchema = Joi.object({
 
 export const updateProductAuctionSchema = Joi.object({
   productName: Joi.string(),
-  price: Joi.number(),
   buyNowPrice: Joi.number(),
   endAt: Joi.date(),
   description: Joi.string()
     .empty('')
     .pattern(/^[a-zA-Z]+/),
+});
+
+export const updateProductPriceAuctionSchema = Joi.object({
+  price: Joi.number().required(),
 });

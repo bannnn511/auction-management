@@ -8,12 +8,14 @@ import {
 import {
   createProductAuctionSchema,
   updateProductAuctionSchema,
+  updateProductPriceAuctionSchema,
 } from './product.schema';
 import {
   createNewProduct,
   getProducts,
-  updateProductDetail,
+  updateProductPrice,
   getProductsById,
+  updateProductDetail,
 } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
@@ -38,14 +40,25 @@ productsRouter.post(
 
 /*
  * Update product price
- * New price must be higher than current price
- * Create auction history if update price succeed
+ */
+productsRouter.put(
+  '/:id/price',
+  validateBody(updateProductPriceAuctionSchema),
+  authentication,
+  redisValidation,
+  updateProductPrice,
+);
+
+/*
+ * Update product detail
+ * Product name, description, endDate, imgurl
  */
 productsRouter.put(
   '/:id',
   validateBody(updateProductAuctionSchema),
   authentication,
   redisValidation,
+  restrictedTo(UserType.SELLER),
   updateProductDetail,
 );
 

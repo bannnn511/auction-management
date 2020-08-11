@@ -47,6 +47,20 @@ export async function createNewProduct(req, res) {
  * New price must be higher than current price
  * When succeed create a history for the bidding transaction
  */
+export async function updateProductPrice(req, res) {
+  try {
+    const data = await updateProductCurrentPriceBusiness(req, res);
+    const serializedData = serializeProducts(data);
+    responseSuccess(res, serializedData);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+/*
+ * Update product detail
+ * Request should only be sent by who created this product
+ */
 export async function updateProductDetail(req, res) {
   try {
     const data = await updateProductCurrentPriceBusiness(req, res);
