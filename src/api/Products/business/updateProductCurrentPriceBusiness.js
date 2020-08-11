@@ -3,7 +3,7 @@ import { getProductWithId, updateProductPrice } from '../database';
 import { getAuctionWithProductId } from '../../AuctionManagement/database';
 import { AppError } from '../../../utils/appError';
 import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
-import { createAuctionHistory } from '../../AuctionHistories/business';
+import { createAuctionHistory } from '../../AuctionHistories/database';
 import { responseError } from '../../../shared/helpers';
 
 export async function updateProductCurrentPriceBusiness(req, res) {

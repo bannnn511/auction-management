@@ -17,7 +17,7 @@ import {
   createAuction,
   updateAuctionBuyerId,
 } from '../../AuctionManagement/database';
-import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistories/business';
+import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistories/database';
 
 const cron = require('node-cron');
 
