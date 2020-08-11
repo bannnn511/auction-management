@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 
 export function serializeCategory(category) {
   const data = {
+    id: _.get(category, 'id', ''),
     categoryName: _.get(category, 'categoryName', ''),
     createdBy: _.get(category, 'createdBy', ''),
     updatedBy: _.get(category, 'updatedBy', ''),
