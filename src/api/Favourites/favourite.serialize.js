@@ -4,7 +4,7 @@ export function serializeFavouriteProduct(product) {
   return {
     userId: _.get(product, 'userId', ''),
     productId: _.get(product, 'productId', ''),
-    productName: _.get(product, 'productName', ''),
+    productName: _.get(product, 'products.productName', ''),
   };
 }
 

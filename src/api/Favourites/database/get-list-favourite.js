@@ -19,6 +19,7 @@ export async function getFavouriteProducts(userId, page, pagesize) {
         },
       ],
     });
+    console.log(products);
     return products;
   } catch (error) {
     console.log(error);
