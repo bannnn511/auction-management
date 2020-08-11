@@ -1,11 +1,7 @@
 import * as _ from 'lodash';
 import { safeParseInt } from '../../shared/helpers';
 
-export function serializeAuctionHistoryFromProductAndAuction(
-  buyer,
-  product,
-  auction,
-) {
+export function serializeAuctionHistoryFromProductAndAuction(product, auction) {
   return {
     userId: _.get(product, 'updatedBy', ''),
     auctionId: _.get(auction, 'id', ''),

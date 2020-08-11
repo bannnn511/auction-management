@@ -2,7 +2,7 @@ const db = require('../../../../models');
 
 export async function createAuctionHistory(body) {
   try {
-    const history = db.AuctionHistories.create({
+    const history = await db.AuctionHistories.create({
       userId: body.userId,
       auctionId: body.auctionId,
       price: body.price,
