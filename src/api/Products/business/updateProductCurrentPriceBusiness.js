@@ -1,9 +1,7 @@
 import * as _ from 'lodash';
-import { serializeBidProduct, serializeProducts } from '../product.serialize';
 import { getProductWithId, updateProductPrice } from '../database';
 import { getAuctionWithProductId } from '../../AuctionManagement/business';
 import { AppError } from '../../../utils/appError';
-import { serializeAuction } from '../../AuctionManagement/auction.serialize';
 import { serializeAuctionHistory } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/business';
 import { responseError } from '../../../shared/helpers';
@@ -14,15 +12,13 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     const { body } = req;
     body.updatedBy = req.currentUser.id;
     body.id = id;
-    const serializedBody = serializeBidProduct(body);
 
     // check product exist
     const checkProduct = await getProductWithId(id);
     if (!checkProduct) {
       res.status(204).send('Product does not exist');
+      throw new AppError('Product does not exist', 204);
     }
-    const currentProduct = serializeProducts(checkProduct);
-    console.log({ currentProduct });
 
     // check auction exist
     const auction = await getAuctionWithProductId(id);
@@ -31,7 +27,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     }
 
     // check if bidding price is valid
-    if (currentProduct.currentPrice >= serializedBody.price) {
+    if (checkProduct.currentPrice >= body.price) {
       throw new AppError(
         'Bidding price must be higher than current price',
         406,
@@ -43,19 +39,15 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       throw new AppError('Bidding time has expired', 204);
     }
 
-    const serializedAuction = serializeAuction(auction);
-    console.log({ currentProduct: serializedAuction });
-
-    const newProduct = await updateProductPrice(serializedBody);
+    const newProduct = await updateProductPrice(body);
     if (!newProduct) {
       throw new AppError('Bid product failed', 204);
     }
-    const serializedProduct = serializeProducts(newProduct);
-    console.log('New product detail', serializedProduct);
+
     const fullAuctionDetail = serializeAuctionHistory(
-      serializedBody,
-      serializedProduct,
-      serializedAuction,
+      body,
+      newProduct,
+      auction,
     );
 
     // create auction history

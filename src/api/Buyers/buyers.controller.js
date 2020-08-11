@@ -37,7 +37,7 @@ export async function getUserDetailWithId(req, res) {
 export async function createNewUser(req, res) {
   try {
     const data = await createNewUserByAdminBusiness(req, res);
-    const serializedData = serializeBuyers(data, false);
+    const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
@@ -48,7 +48,7 @@ export async function createNewUser(req, res) {
 export async function deleteUser(req, res) {
   try {
     const data = await deleteUserBusiness(req, res);
-    const serializedData = serializeBuyers(data, false);
+    const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
@@ -81,7 +81,11 @@ export async function updateUserInfo(req, res) {
   }
 }
 
-// update buyer info
+/* Update buyer info by admin
+ * Change buyer pending statu
+ * Accept buyer request to be a seller
+ * Update user basic info
+ */
 export async function updateUserInfoByAdmin(req, res) {
   try {
     const data = await updateUserInfoByAdminBusiness(req, res);
@@ -91,3 +95,5 @@ export async function updateUserInfoByAdmin(req, res) {
     responseError(res, error);
   }
 }
+
+// TODO: API DOC: SWAGGER
