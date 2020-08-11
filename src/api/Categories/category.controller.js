@@ -1,5 +1,8 @@
-import { getAllCategories, createCategory } from './business/index';
-import { AppError } from '../../utils/appError';
+import {
+  getListCategoryBusiness,
+  createNewCategoryBusiness,
+  updateCategoryBusiness,
+} from './business/index';
 import { responseSuccess, responseError } from '../../shared/helpers';
 import {
   serializeAllCategories,
@@ -9,15 +12,10 @@ import {
 // get list category
 export async function getListCategory(req, res) {
   try {
-    const categories = await getAllCategories();
-    if (!categories) {
-      throw new AppError('Cannot get category list', 204);
-    }
+    const categories = await getListCategoryBusiness(req, res);
     const data = serializeAllCategories(categories);
-    console.log(data);
     responseSuccess(res, data);
   } catch (error) {
-    console.log(error);
     responseError(res, error);
   }
 }
@@ -25,12 +23,18 @@ export async function getListCategory(req, res) {
 // create new category
 export async function createNewCategory(req, res) {
   try {
-    req.body.createdBy = req.currentUser.id;
-    req.body.updatedBy = req.currentUser.id;
-    const body = serializeCategory(req.body);
-    console.log(body);
+    const category = await createNewCategoryBusiness(req, res);
+    const data = serializeCategory(category);
+    responseSuccess(res, data);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
 
-    const category = await createCategory(body);
+//update category
+export async function updateCategoryInfo(req, res) {
+  try {
+    const category = await updateCategoryBusiness(req, res);
     const data = serializeCategory(category);
     responseSuccess(res, data);
   } catch (error) {

@@ -1,4 +1,8 @@
-import { getListCategory, createNewCategory } from './category.controller';
+import {
+  getListCategory,
+  createNewCategory,
+  updateCategoryInfo,
+} from './category.controller';
 import {
   restrictedTo,
   authentication,
@@ -24,5 +28,13 @@ categoriesRouter.post(
   redisValidation,
   restrictedTo(UserType.ADMIN),
   createNewCategory,
+);
+
+categoriesRouter.put(
+  './:id',
+  authentication,
+  redisValidation,
+  restrictedTo(UserType.ADMIN),
+  updateCategoryInfo,
 );
 export { categoriesRouter };
