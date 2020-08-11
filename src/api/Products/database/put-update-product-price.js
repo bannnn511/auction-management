@@ -14,13 +14,6 @@ export async function updateProductPrice(body) {
       },
     );
     return await Products.findOne({
-      attribute: [
-        'productName',
-        'imgURL',
-        'currentPrice',
-        'buyNowPrice',
-        'endAt',
-      ],
       where: {
         id: body.id,
       },

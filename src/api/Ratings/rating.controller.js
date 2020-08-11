@@ -1,7 +1,6 @@
 import { responseError, responseSuccess } from '../../shared/helpers';
-
-import { serializeAuction } from '../AuctionManagement/auction.serialize';
 import { ratingPointForUserBusiness } from './business';
+import { serializeAuction } from '../AuctionManagement/auction.serialize';
 
 export async function ratingPointForUser(req, res) {
   try {

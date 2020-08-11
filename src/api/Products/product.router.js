@@ -6,14 +6,16 @@ import {
   redisValidation,
 } from '../../shared/middleware';
 import {
-  productAuctionSchema,
-  bidProductAuctionSchema,
+  createProductAuctionSchema,
+  updateProductAuctionSchema,
+  updateProductPriceAuctionSchema,
 } from './product.schema';
 import {
   createNewProduct,
   getProducts,
-  updateProductCurrentPrice,
+  updateProductPrice,
   getProductsById,
+  updateProductDetail,
 } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
 
@@ -29,19 +31,35 @@ productsRouter.get('/:id', getProductsById);
  */
 productsRouter.post(
   '/',
-  validateBody(productAuctionSchema),
+  validateBody(createProductAuctionSchema),
   authentication,
   redisValidation,
   restrictedTo(UserType.SELLER),
   createNewProduct,
 );
 
+/*
+ * Update product price
+ */
 productsRouter.put(
-  '/:id',
-  validateBody(bidProductAuctionSchema),
+  '/:id/price',
+  validateBody(updateProductPriceAuctionSchema),
   authentication,
   redisValidation,
-  updateProductCurrentPrice,
+  updateProductPrice,
+);
+
+/*
+ * Update product detail
+ * Product name, description, endDate, imgurl
+ */
+productsRouter.put(
+  '/:id',
+  validateBody(updateProductAuctionSchema),
+  authentication,
+  redisValidation,
+  restrictedTo(UserType.SELLER),
+  updateProductDetail,
 );
 
 export { productsRouter };

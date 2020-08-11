@@ -4,7 +4,7 @@ import { pagination } from '../../../shared/helpers';
 const db = require('../../../../models');
 
 const { Op } = db.Sequelize;
-export async function getAuctionOnMarketOfASellerBusiness(page, pagesize, id) {
+export async function getAuctionOnMarketOfASeller(page, pagesize, id) {
   try {
     const { offset, limit } = pagination(page, pagesize);
     return await db.AuctionManagements.findAll({

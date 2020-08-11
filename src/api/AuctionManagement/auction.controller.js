@@ -1,14 +1,3 @@
-import {
-  getAllAuctions,
-  getAllBuyerInAuction,
-  getAuctionsSortByBiddingCount,
-  getAuctionsSortByRemaingTime,
-  getAuctionsWithTopNProducts,
-  getAuctionById,
-  getAuctionOnMarketOfASellerBusiness,
-  getAuctionSoldBySellerBusiness,
-} from './business/index';
-import { AppError } from '../../utils/appError';
 import { responseSuccess, responseError } from '../../shared/helpers';
 import {
   serializeAllAuctions,
@@ -16,17 +5,22 @@ import {
   serializeAuctionSortByBiddingCount,
   serializefullAction,
 } from './auction.serialize';
-import { getUserWinningAuction } from './business/get-user-winning-auction';
+import {
+  getAuctionByIdBusiness,
+  getAUserWinningAuctionBusiness,
+  getListAuctionBusiness,
+  getListAuctionSortByBiddingCountBusiness,
+  getListAuctionsSortByRemainTimeBusiness,
+  getListAuctionWithHighestPriceBusiness,
+  getAuctonOnMarketOfASellerBusiness,
+  getlistBuyerInAuctionBusiness,
+  getAuctionSoldOnMarketOfASellerBusiness,
+} from './business';
 
 export async function getListAuction(req, res) {
   try {
-    const { page, pagesize } = req.query;
-    const auctions = await getAllAuctions(page, pagesize);
-    if (!auctions) {
-      throw new AppError('Cannot get Auction list', 204);
-    }
-    const auctionData = serializeAllAuctions(auctions);
-    console.log(auctionData);
+    const data = await getListAuctionBusiness(req, res);
+    const auctionData = serializeAllAuctions(data);
     responseSuccess(res, auctionData);
   } catch (error) {
     responseError(res, error);
@@ -35,12 +29,8 @@ export async function getListAuction(req, res) {
 
 export async function getAnAuctionById(req, res) {
   try {
-    const { id } = req.params;
-    const auctions = await getAuctionById(id);
-    if (!auctions) {
-      throw new AppError('Cannot get Auction list', 204);
-    }
-    const auctionData = serializefullAction(auctions);
+    const data = await getAuctionByIdBusiness(req, res);
+    const auctionData = serializefullAction(data);
     console.log(auctionData);
     responseSuccess(res, auctionData);
   } catch (error) {
@@ -50,13 +40,8 @@ export async function getAnAuctionById(req, res) {
 
 export async function getListAuctionWithHighestPrice(req, res) {
   try {
-    const { max } = req.query;
-    const auctions = await getAuctionsWithTopNProducts(max);
-    if (!auctions) {
-      throw new AppError('Cannot get Auction list', 204);
-    }
-    const auctionData = serializeAllAuctions(auctions);
-    console.log(auctionData);
+    const data = await getListAuctionWithHighestPriceBusiness(req, res);
+    const auctionData = serializeAllAuctions(data);
     responseSuccess(res, auctionData);
   } catch (error) {
     responseError(res, error);
@@ -64,17 +49,9 @@ export async function getListAuctionWithHighestPrice(req, res) {
 }
 export async function getListAuctionSortByBiddingCount(req, res) {
   try {
-    const { max } = req.query;
-    const auction = await getAuctionsSortByBiddingCount(max);
-    if (!auction) {
-      throw new AppError(
-        'Cannot get list of Auctions sort by bidding count',
-        204,
-      );
-    }
-    const serializedAuction = serializeAuctionSortByBiddingCount(auction);
-    console.log(serializedAuction);
-    responseSuccess(res, serializedAuction);
+    const data = await getListAuctionSortByBiddingCountBusiness(req, res);
+    const serializedData = serializeAuctionSortByBiddingCount(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -83,15 +60,9 @@ export async function getListAuctionSortByBiddingCount(req, res) {
 // get list buyer in auction
 export async function getListBuyerInAuction(req, res) {
   try {
-    const { id } = req.params;
-    const buyers = await getAllBuyerInAuction(id);
-    if (!buyers) {
-      throw new AppError('Cannot get list buyer', 204);
-    }
-    console.log(buyers);
-
-    const data = serializeAllBuyerInAuction(buyers);
-    responseSuccess(res, data);
+    const data = await getlistBuyerInAuctionBusiness(req, res);
+    const serializedData = serializeAllBuyerInAuction(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -99,14 +70,8 @@ export async function getListBuyerInAuction(req, res) {
 
 export async function getListAuctionsSortByRemainingTime(req, res) {
   try {
-    const { max } = req.query;
-    const auctions = await getAuctionsSortByRemaingTime(max);
-    if (!auctions) {
-      throw new AppError('Cannot get list of Auctions sort by remaining time');
-    }
-    console.log(auctions);
-    const serializedAuction = serializeAllAuctions(auctions);
-    console.log(serializedAuction);
+    const data = await getListAuctionsSortByRemainTimeBusiness(req, res);
+    const serializedAuction = serializeAllAuctions(data);
     responseSuccess(res, serializedAuction);
   } catch (error) {
     responseError(res, error);
@@ -115,11 +80,9 @@ export async function getListAuctionsSortByRemainingTime(req, res) {
 
 export async function getAUserWinningAuction(req, res) {
   try {
-    const data = await getUserWinningAuction(req.currentUser.id);
-    if (!data) {
-      throw new AppError('This Buyer has not won any auction', 204);
-    }
-    responseSuccess(res, data);
+    const data = await getAUserWinningAuctionBusiness(req, res);
+    const serializedData = serializeAllAuctions(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -127,12 +90,7 @@ export async function getAUserWinningAuction(req, res) {
 
 export async function getAuctionOnMarketOfASeller(req, res) {
   try {
-    const { id } = req.currentUser;
-    const { page, pagesize } = req.query;
-    const data = await getAuctionOnMarketOfASellerBusiness(page, pagesize, id);
-    if (!data) {
-      throw new AppError('This seller is not selling anything on market', 204);
-    }
+    const data = await getAuctonOnMarketOfASellerBusiness(req, res);
     const serializedData = serializeAllAuctions(data);
     responseSuccess(res, serializedData);
   } catch (error) {
@@ -142,12 +100,7 @@ export async function getAuctionOnMarketOfASeller(req, res) {
 
 export async function getAuctionSoldOnMarketOfASeller(req, res) {
   try {
-    const { id } = req.currentUser;
-    const { page, pagesize } = req.query;
-    const data = await getAuctionSoldBySellerBusiness(page, pagesize, id);
-    if (!data) {
-      throw new AppError('This seller is not selling anything on market', 204);
-    }
+    const data = await getAuctionSoldOnMarketOfASellerBusiness(req, res);
     const serializedData = serializeAllAuctions(data);
     responseSuccess(res, serializedData);
   } catch (error) {

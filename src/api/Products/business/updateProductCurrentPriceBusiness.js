@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { getProductWithId, updateProductPrice } from '../database';
-import { getAuctionWithProductId } from '../../AuctionManagement/business';
+import { getAuctionWithProductId } from '../../AuctionManagement/database';
 import { AppError } from '../../../utils/appError';
-import { serializeAuctionHistory } from '../../AuctionHistories/history.serialize';
+import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/business';
 import { responseError } from '../../../shared/helpers';
 
@@ -16,7 +16,6 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     // check product exist
     const checkProduct = await getProductWithId(id);
     if (!checkProduct) {
-      res.status(204).send('Product does not exist');
       throw new AppError('Product does not exist', 204);
     }
 
@@ -44,8 +43,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       throw new AppError('Bid product failed', 204);
     }
 
-    const fullAuctionDetail = serializeAuctionHistory(
-      body,
+    const fullAuctionDetail = serializeAuctionHistoryFromProductAndAuction(
       newProduct,
       auction,
     );
@@ -55,7 +53,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     if (!history) {
       throw new AppError('Cannot create Auction History', 204);
     }
-    return fullAuctionDetail;
+    return await getProductWithId(newProduct.id);
   } catch (error) {
     responseError(res, error);
   }

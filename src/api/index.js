@@ -9,6 +9,13 @@ import { ratingsRouter } from './Ratings/rating.router';
 import { favouriteRouter } from './Favourites/favourite-router';
 
 const apiRouter = Router();
+
+// log request
+apiRouter.use('*', (req, res, next) => {
+  console.log('📧📧📧', { 'Request body': req.body });
+  next();
+});
+
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/buyers', buyersRouter);
 apiRouter.use('/products', productsRouter);
