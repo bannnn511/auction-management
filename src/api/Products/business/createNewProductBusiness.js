@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { serializeProducts } from '../product.serialize';
-import { createProduct } from '../database';
+import { createProduct, getProductWithId } from '../database';
 import { AppError } from '../../../utils/appError';
 import {
   isValidDate,
@@ -89,7 +89,8 @@ export async function createNewProductBusiness(req, res) {
     if (isValidDate(fullActionDetail.endAt)) {
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
-    return fullActionDetail;
+
+    return await getProductWithId(fullActionDetail.productId);
   } catch (error) {
     responseError(res, error);
     return null;

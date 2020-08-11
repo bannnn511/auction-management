@@ -1,6 +1,6 @@
 import { responseError, responseSuccess } from '../../shared/helpers';
 import { AppError } from '../../utils/appError';
-import { serializedAuctionHistory } from './history.serialize';
+import { serializeAuctionHistory } from './history.serialize';
 import { getWinningHistoryFromAuctionWithAuctionId } from './business';
 
 export async function getWinningHistoryFromAuction(req, res) {
@@ -11,7 +11,7 @@ export async function getWinningHistoryFromAuction(req, res) {
     if (!history) {
       throw new AppError('There is no history from this auction', 204);
     }
-    const serializedHistory = serializedAuctionHistory(history.dataValues);
+    const serializedHistory = serializeAuctionHistory(history.dataValues);
     console.log(serializedHistory);
     responseSuccess(res, serializedHistory);
   } catch (error) {

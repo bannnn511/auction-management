@@ -6,13 +6,13 @@ import {
   redisValidation,
 } from '../../shared/middleware';
 import {
-  productAuctionSchema,
-  bidProductAuctionSchema,
+  createProductAuctionSchema,
+  updateProductAuctionSchema,
 } from './product.schema';
 import {
   createNewProduct,
   getProducts,
-  updateProductCurrentPrice,
+  updateProductDetail,
   getProductsById,
 } from './product.controller';
 import { UserType } from '../../shared/helpers/constant';
@@ -29,19 +29,24 @@ productsRouter.get('/:id', getProductsById);
  */
 productsRouter.post(
   '/',
-  validateBody(productAuctionSchema),
+  validateBody(createProductAuctionSchema),
   authentication,
   redisValidation,
   restrictedTo(UserType.SELLER),
   createNewProduct,
 );
 
+/*
+ * Update product price
+ * New price must be higher than current price
+ * Create auction history if update price succeed
+ */
 productsRouter.put(
   '/:id',
-  validateBody(bidProductAuctionSchema),
+  validateBody(updateProductAuctionSchema),
   authentication,
   redisValidation,
-  updateProductCurrentPrice,
+  updateProductDetail,
 );
 
 export { productsRouter };

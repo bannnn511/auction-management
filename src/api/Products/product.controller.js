@@ -35,7 +35,8 @@ export async function getProductsById(req, res) {
 export async function createNewProduct(req, res) {
   try {
     const data = await createNewProductBusiness(req, res);
-    responseSuccess(res, data);
+    const serializedData = serializeProducts(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }
@@ -46,10 +47,11 @@ export async function createNewProduct(req, res) {
  * New price must be higher than current price
  * When succeed create a history for the bidding transaction
  */
-export async function updateProductCurrentPrice(req, res) {
+export async function updateProductDetail(req, res) {
   try {
     const data = await updateProductCurrentPriceBusiness(req, res);
-    responseSuccess(res, data);
+    const serializedData = serializeProducts(data);
+    responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);
   }

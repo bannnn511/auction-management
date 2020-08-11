@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { getProductWithId, updateProductPrice } from '../database';
 import { getAuctionWithProductId } from '../../AuctionManagement/business';
 import { AppError } from '../../../utils/appError';
-import { serializeAuctionHistory } from '../../AuctionHistories/history.serialize';
+import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/business';
 import { responseError } from '../../../shared/helpers';
 
@@ -44,8 +44,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       throw new AppError('Bid product failed', 204);
     }
 
-    const fullAuctionDetail = serializeAuctionHistory(
-      body,
+    const fullAuctionDetail = serializeAuctionHistoryFromProductAndAuction(
       newProduct,
       auction,
     );
@@ -55,7 +54,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     if (!history) {
       throw new AppError('Cannot create Auction History', 204);
     }
-    return fullAuctionDetail;
+    return await getProductWithId(newProduct.id);
   } catch (error) {
     responseError(res, error);
   }
