@@ -11,5 +11,6 @@ export async function logoutBusiness(req, res) {
     return req.currentUser;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

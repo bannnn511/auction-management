@@ -18,17 +18,23 @@ export function serializeProducts(product) {
 }
 
 export function serializeAllProducts(products) {
-  const data = [];
-  products.forEach((product) => {
-    data.push(serializeProducts(product));
-  });
-  return data;
+  if (products) {
+    const data = [];
+    products.forEach((product) => {
+      data.push(serializeProducts(product));
+    });
+    return data;
+  }
+  return null;
 }
 
 export function serializeBidProduct(product) {
-  return {
-    id: _.get(product, 'id'),
-    price: _.get(product, 'price'),
-    updatedBy: _.get(product, 'updatedBy', ''),
-  };
+  if (product) {
+    return {
+      id: _.get(product, 'id'),
+      price: _.get(product, 'price'),
+      updatedBy: _.get(product, 'updatedBy', ''),
+    };
+  }
+  return null;
 }

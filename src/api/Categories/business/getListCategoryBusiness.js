@@ -13,5 +13,6 @@ export async function getListCategoryBusiness(req, res) {
   } catch (error) {
     console.log(error);
     responseError(res, error);
+    return null;
   }
 }

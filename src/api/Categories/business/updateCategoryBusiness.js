@@ -15,5 +15,6 @@ export async function updateCategoryBusiness(req, res) {
   } catch (error) {
     console.log(error);
     responseError(res, error);
+    return null;
   }
 }

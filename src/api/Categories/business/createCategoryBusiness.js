@@ -11,5 +11,6 @@ export async function createNewCategoryBusiness(req, res) {
     return category;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

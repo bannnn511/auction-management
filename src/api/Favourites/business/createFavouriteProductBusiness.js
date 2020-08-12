@@ -16,5 +16,6 @@ export async function createFavouriteProductBusiness(req, res) {
     return product;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

@@ -11,5 +11,6 @@ export async function getAUserWinningAuctionBusiness(req, res) {
     return data;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

@@ -25,5 +25,5 @@ export async function loginBusiness(req, res) {
     );
     return token;
   }
-  responseSuccess(res, { error: 'Invalid Input' }, 401);
+  return responseSuccess(res, { error: 'Invalid Input' }, 401);
 }

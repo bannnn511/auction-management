@@ -12,5 +12,6 @@ export async function getUserDetailBusiness(req, res) {
     return buyer;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

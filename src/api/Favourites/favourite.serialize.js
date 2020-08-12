@@ -1,17 +1,23 @@
 import * as _ from 'lodash';
 
 export function serializeFavouriteProduct(product) {
-  return {
-    userId: _.get(product, 'userId', ''),
-    productId: _.get(product, 'productId', ''),
-    productName: _.get(product, 'products.productName', ''),
-  };
+  if (product) {
+    return {
+      userId: _.get(product, 'userId', ''),
+      productId: _.get(product, 'productId', ''),
+      productName: _.get(product, 'products.productName', ''),
+    };
+  }
+  return null;
 }
 
 export function serializeAllFavouriteProduct(products) {
-  const data = [];
-  products.forEach((product) => {
-    data.push(serializeFavouriteProduct(product));
-  });
-  return data;
+  if (products) {
+    const data = [];
+    products.forEach((product) => {
+      data.push(serializeFavouriteProduct(product));
+    });
+    return data;
+  }
+  return null;
 }

@@ -65,5 +65,6 @@ export async function ratingPointForUserBusiness(req, res) {
     return ratingData;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

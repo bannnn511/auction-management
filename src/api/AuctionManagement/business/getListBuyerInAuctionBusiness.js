@@ -12,5 +12,6 @@ export async function getlistBuyerInAuctionBusiness(req, res) {
     return buyers;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }
