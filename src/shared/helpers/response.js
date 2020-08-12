@@ -1,11 +1,14 @@
 import * as _ from 'lodash';
 
 export function responseSuccess(res, data, status) {
-  console.log({ Total: _.defaultTo(data.length, 1), data });
-  return res
-    .status(_.defaultTo(status, 200))
-    .set({ 'x-total-count': _.defaultTo(data.length, 1) })
-    .json(data);
+  if (data) {
+    console.log({ Total: _.defaultTo(data.length, 1), data });
+    return res
+      .status(_.defaultTo(status, 200))
+      .set({ 'x-total-count': _.defaultTo(data.length, 1) })
+      .json(data);
+  }
+  return null;
 }
 
 export function responseError(res, error) {

@@ -5,6 +5,7 @@ import { AppError } from '../../../utils/appError';
 import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/database';
 import { responseError } from '../../../shared/helpers';
+import { Email } from '../../../utils/email';
 
 export async function updateProductCurrentPriceBusiness(req, res) {
   try {
@@ -53,8 +54,19 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     if (!history) {
       throw new AppError('Cannot create Auction History', 204);
     }
+
+    // send email after bidding
+    const email = new Email(
+      process.env.MY_EMAIL,
+      req.currentUser.email,
+      'Bidding Succeed',
+      'You have bidded this auction successfully',
+    );
+    email.send();
+
     return await getProductWithId(newProduct.id);
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }
