@@ -23,5 +23,6 @@ export async function updateUserPasswordBusiness(req, res) {
     return buyer;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

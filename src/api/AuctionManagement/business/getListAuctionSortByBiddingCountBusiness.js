@@ -15,5 +15,6 @@ export async function getListAuctionSortByBiddingCountBusiness(req, res) {
     return auction;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

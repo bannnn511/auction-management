@@ -12,5 +12,6 @@ export async function getListAuctionWithHighestPriceBusiness(req, res) {
     return auctions;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

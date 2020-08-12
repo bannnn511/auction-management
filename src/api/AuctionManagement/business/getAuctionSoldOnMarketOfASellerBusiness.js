@@ -13,5 +13,6 @@ export async function getAuctionSoldOnMarketOfASellerBusiness(req, res) {
     return data;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

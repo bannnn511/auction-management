@@ -12,5 +12,6 @@ export async function getWinningHistoryFromAuctionBusiness(req, res) {
     return history;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }

@@ -43,5 +43,6 @@ export async function updateProductDetailBusiness(req, res) {
     return newProduct;
   } catch (error) {
     responseError(res, error);
+    return null;
   }
 }
