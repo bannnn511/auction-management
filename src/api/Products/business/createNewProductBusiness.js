@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { serializeProducts } from '../product.serialize';
 import { createProduct, getProductWithId } from '../database';
 import { AppError } from '../../../utils/appError';
 import {
@@ -8,54 +7,85 @@ import {
   toDateString,
 } from '../../../shared/helpers';
 import {
-  serializeAuction,
-  serializeAuctionFromProduct,
   serializefullAction,
   serializefullActionDetail,
 } from '../../AuctionManagement/auction.serialize';
 import {
   createAuction,
+  getAllBuyerInAuction,
   updateAuctionBuyerId,
 } from '../../AuctionManagement/database';
 import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistories/database';
+import { Email } from '../../../utils/email';
 
 const cron = require('node-cron');
 
+async function sendEmail(auctionId) {
+  try {
+    const datas = await getAllBuyerInAuction(auctionId);
+    const emailData = [];
+    datas.forEach((data) => {
+      emailData.push(data.email);
+    });
+
+    const email = new Email(
+      process.env.MY_EMAIL,
+      emailData,
+      'Auction ended',
+      `Auction with id: ${auctionId} that you have been participated had ended`,
+    );
+    email.send();
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function onAuctionEnded(auctionId, productId) {
-  const winningData = await getWinningHistoryFromAuctionWithAuctionId(
-    auctionId,
-  );
-  if (!winningData) {
-    throw new AppError('There is no winning data', 204);
-  }
+  try {
+    const winningData = await getWinningHistoryFromAuctionWithAuctionId(
+      auctionId,
+    );
+    if (!winningData) {
+      throw new AppError('There is no winning data', 204);
+    }
 
-  winningData.productId = productId;
-  const updatedAuction = await updateAuctionBuyerId(winningData);
-  if (!updatedAuction) {
-    throw new AppError('Cannot update winning Buyer', 204);
-  }
+    winningData.productId = productId;
+    winningData.auctionId = auctionId;
+    const updatedAuction = await updateAuctionBuyerId(winningData);
+    if (!updatedAuction) {
+      throw new AppError('Cannot update winning Buyer', 204);
+    }
 
-  return updatedAuction;
+    return updatedAuction;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function createCronJobForAutoEndAuction(auction) {
-  // cron job to check if auction has ended
-  const task = cron.schedule('*/1 * * * *', async () => {
-    const currentTime = new Date(_.now());
-    console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
-    console.log('Current time:', toDateString(currentTime));
-    console.log('End time:', toDateString(auction.endAt));
-    if (currentTime >= auction.endAt) {
-      console.log('🤖', 'Auction has ended');
-      const auctionEnded = await onAuctionEnded(
-        auction.auctionId,
-        auction.productId,
-      );
-      const serializedPostAuction = serializefullAction(auctionEnded);
-      console.log(serializedPostAuction);
-      task.destroy();
-    }
-  });
+  try {
+    // cron job to check if auction has ended
+    const task = cron.schedule('*/1 * * * *', async () => {
+      const currentTime = new Date(_.now());
+      const endDate = new Date(auction.endAt);
+      console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
+      console.log('Current time:', toDateString(currentTime));
+      console.log('End time:', toDateString(auction.endAt));
+      if (currentTime >= endDate) {
+        console.log('🤖', 'Auction has ended');
+        const auctionEnded = await onAuctionEnded(
+          auction.auctionId,
+          auction.productId,
+        );
+        const serializedPostAuction = serializefullAction(auctionEnded);
+        console.log(serializedPostAuction);
+        sendEmail(serializedPostAuction.id);
+        task.destroy();
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function createNewProductBusiness(req, res) {
@@ -63,6 +93,10 @@ export async function createNewProductBusiness(req, res) {
     const { body } = req;
     body.createdBy = req.currentUser.id;
     body.updatedBy = req.currentUser.id;
+    console.log(toDateString(body.endAt), toDateString(_.now()));
+    if (new Date(body.endAt) < new Date(_.now())) {
+      throw new AppError('End date muse be in the future');
+    }
     const product = await createProduct(body);
     if (!product) {
       throw new AppError('Cannot create product', 204);
@@ -87,6 +121,7 @@ export async function createNewProductBusiness(req, res) {
 
     // cronjob start here
     if (isValidDate(fullActionDetail.endAt)) {
+      console.log('Create cronjob for this auction', fullActionDetail);
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
 

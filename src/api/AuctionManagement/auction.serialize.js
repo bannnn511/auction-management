@@ -81,9 +81,11 @@ export function serializeAllAuctions(auctions) {
 export function serializeAuctionHistory(auction) {
   if (auction) {
     return {
-      userId: _.get(auction, 'userId', ''),
-      price: _.get(auction, 'price', ''),
+      userId: _.get(auction, 'user_id', ''),
+      email: _.get(auction, 'email', ''),
       fullname: _.get(auction, 'fullname', ''),
+      price: _.get(auction, 'price', ''),
+      auctoinId: _.get(auction, 'auction_id', ''),
     };
   }
   return null;

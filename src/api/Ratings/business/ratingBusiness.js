@@ -54,15 +54,15 @@ export async function ratingPointForUserBusiness(req, res) {
       throw new AppError('You are not allow to rate in this auction');
     }
 
-    const ratingData = serializeRating(data);
+    // const ratingData = serializeRating(data);
 
     // update user plus/minus point
-    if (ratingData.point > 0) {
-      await updateUserPlusPoint(ratingData.ratedId);
+    if (data.point > 0) {
+      await updateUserPlusPoint(data.ratedId);
     } else {
-      await updateUserMinusPoint(ratingData.ratedId);
+      await updateUserMinusPoint(data.ratedId);
     }
-    return ratingData;
+    return data;
   } catch (error) {
     responseError(res, error);
     return null;

@@ -11,6 +11,7 @@ export async function getWinningHistoryFromAuctionWithAuctionId(auctionId) {
       ],
       attributes: [
         [db.sequelize.fn('MAX', db.sequelize.col('price')), 'price'],
+        ['user_id', 'userId'],
       ],
       where: {
         auctionId,

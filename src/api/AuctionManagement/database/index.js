@@ -10,3 +10,4 @@ export * from './get-all-auctions-sort-by-remaining-time';
 export * from './get-auction-by-id';
 export * from './get-auction-on-marker';
 export * from './get-auction-sold';
+export * from './get-auction-by-product-name';
