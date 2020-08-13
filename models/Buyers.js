@@ -88,5 +88,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return Buyers;
 };
-
-// TODO: DEMO MIGRAGTION, why sequelize?

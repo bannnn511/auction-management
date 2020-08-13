@@ -5,7 +5,7 @@ import { loginBusiness, logoutBusiness, registerBusiness } from './business';
 export async function login(req, res) {
   try {
     const token = await loginBusiness(req, res);
-    responseSuccess(res, { token });
+    responseSuccess(res, token);
   } catch (error) {
     responseError(res, error);
   }
@@ -30,5 +30,3 @@ export async function logout(req, res) {
     responseError(res, error);
   }
 }
-
-// TODO: OVERIVEW -> DETAIL

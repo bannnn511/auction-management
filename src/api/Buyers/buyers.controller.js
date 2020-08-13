@@ -95,5 +95,3 @@ export async function updateUserInfoByAdmin(req, res) {
     responseError(res, error);
   }
 }
-
-// TODO: API DOC: SWAGGER

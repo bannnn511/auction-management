@@ -1,8 +1,18 @@
 import * as _ from 'lodash';
+import chalk from 'chalk';
+
+const util = require('util');
 
 export function responseSuccess(res, data, status) {
   if (data) {
-    console.log({ Total: _.defaultTo(data.length, 1), data });
+    console.log(
+      chalk.greenBright(
+        util.inspect(
+          { Total: _.defaultTo(data.length, 1), data },
+          { showHidden: false, depth: null },
+        ),
+      ),
+    );
     return res
       .status(_.defaultTo(status, 200))
       .set({ 'x-total-count': _.defaultTo(data.length, 1) })
@@ -12,6 +22,8 @@ export function responseSuccess(res, data, status) {
 }
 
 export function responseError(res, error) {
-  console.log('🔥🔥🔥 Response Error: ', error);
+  console.log(
+    chalk.red(util.inspect({ error }, { showHidden: false, depth: null })),
+  );
   return res.status(error.status || 400).json({ error });
 }

@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { responseError, responseSuccess } from '../helpers';
 
 export function restrictedTo(role) {
@@ -5,15 +6,11 @@ export function restrictedTo(role) {
     try {
       const { type } = req.currentUser;
       if (type === role) {
-        console.log('😎😎😎', 'Access granted');
+        console.log(chalk.cyan('Access granted'));
         next();
       } else {
-        console.log('🚫🚫🚫', 'Access denied');
-        responseSuccess(
-          res,
-          { message: `Authority denied, you are not ${role}` },
-          403,
-        );
+        console.log(chalk.yellow('Access denied'));
+        responseError(res, `Authority denied, you are not ${role}`, 403);
       }
     } catch (error) {
       responseError(res, error);

@@ -24,10 +24,10 @@ export async function loginBusiness(req, res) {
           expiresIn: '1h',
         },
       );
-      return token;
+      return { token };
     }
-    responseSuccess(res, { error: 'Invalid Input' }, 401);
-    return null;
+
+    return { error: 'Invalid Input' };
   } catch (error) {
     responseError(res, error);
     return null;

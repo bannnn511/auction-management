@@ -12,7 +12,7 @@ const apiRouter = Router();
 
 // log request
 apiRouter.use('*', (req, res, next) => {
-  console.log('📧📧📧', { 'Request body': req.body });
+  console.log('📧 📧 📧', { 'Request body': req.body });
   next();
 });
 
