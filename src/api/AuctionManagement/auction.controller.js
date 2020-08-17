@@ -5,6 +5,7 @@ import {
   serializeAuctionSortByBiddingCount,
   serializefullAction,
 } from './auction.serialize';
+import { serializeUser } from '../Auth/auth.serialize';
 import {
   getAuctionByIdBusiness,
   getAUserWinningAuctionBusiness,
@@ -15,6 +16,7 @@ import {
   getAuctonOnMarketOfASellerBusiness,
   getlistBuyerInAuctionBusiness,
   getAuctionSoldOnMarketOfASellerBusiness,
+  banUserFromAuctionBusiness,
 } from './business';
 
 export async function getListAuction(req, res) {
@@ -102,6 +104,16 @@ export async function getAuctionSoldOnMarketOfASeller(req, res) {
   try {
     const data = await getAuctionSoldOnMarketOfASellerBusiness(req, res);
     const serializedData = serializeAllAuctions(data);
+    responseSuccess(res, serializedData);
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function banUserFromAuction(req, res) {
+  try {
+    const data = await banUserFromAuctionBusiness(req, res);
+    const serializedData = serializeUser(data);
     responseSuccess(res, serializedData);
   } catch (error) {
     responseError(res, error);

@@ -7,3 +7,4 @@ export * from './getListAuctionsSortByRemainingTimeBusiness';
 export * from './getAuctionOnMarketOfASellerBusiness';
 export * from './getAUserWinningAuctionBusiness';
 export * from './getAuctionSoldOnMarketOfASellerBusiness';
+export * from './banUserFromAuctionBusiness';

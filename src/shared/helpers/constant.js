@@ -15,6 +15,11 @@ export const UserIsSeller = {
   PENDING: 1,
 };
 
+export const UserBanStatus = {
+  ACTIVE: 'active',
+  BAN: 'ban',
+};
+
 export const defaultLimit = {
   MAX: 5,
   LIMIT: 50,

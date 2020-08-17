@@ -8,13 +8,16 @@ import {
   getAUserWinningAuction,
   getAuctionOnMarketOfASeller,
   getAuctionSoldOnMarketOfASeller,
+  banUserFromAuction,
 } from './auction.controller';
 import {
   authentication,
   redisValidation,
   restrictedTo,
+  validateBody,
 } from '../../shared/middleware';
 import { UserType } from '../../shared/helpers/constant';
+import { banUserFromAuctionSchema } from './auction.schema';
 
 const { Router } = require('express');
 
@@ -51,5 +54,13 @@ auctionRouter.get(
   getAUserWinningAuction,
 );
 auctionRouter.get('/:id', getAnAuctionById);
+auctionRouter.post(
+  '/:id/ban',
+  validateBody(banUserFromAuctionSchema),
+  authentication,
+  redisValidation,
+  restrictedTo(UserType.SELLER),
+  banUserFromAuction,
+);
 
 export { auctionRouter };

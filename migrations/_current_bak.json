@@ -191,10 +191,6 @@
                     "field": "updated_by",
                     "seqType": "Sequelize.UUID"
                 },
-                "notes": {
-                    "field": "notes",
-                    "seqType": "Sequelize.STRING"
-                },
                 "created_at": {
                     "allowNull": false,
                     "field": "created_at",
@@ -503,5 +499,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }
