@@ -19,6 +19,7 @@ import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistorie
 import { Email } from '../../../utils/email';
 
 const cron = require('node-cron');
+const db = require('../../../../models');
 
 async function sendEmail(auctionId) {
   try {
@@ -89,6 +90,7 @@ async function createCronJobForAutoEndAuction(auction) {
 }
 
 export async function createNewProductBusiness(req, res) {
+  const transaction = await db.sequelize.transaction();
   try {
     const { body } = req;
     body.createdBy = req.currentUser.id;
@@ -97,7 +99,7 @@ export async function createNewProductBusiness(req, res) {
     if (new Date(body.endAt) < new Date(_.now())) {
       throw new AppError('End date muse be in the future');
     }
-    const product = await createProduct(body);
+    const product = await createProduct(body, transaction);
     if (!product) {
       throw new AppError('Cannot create product', 204);
     }
@@ -113,7 +115,7 @@ export async function createNewProductBusiness(req, res) {
       updatedBy: _.get(product, 'updatedBy', ''),
       endAt: _.get(product, 'endAt', ''),
     };
-    const newAuction = await createAuction(auction);
+    const newAuction = await createAuction(auction, transaction);
     if (!newAuction) {
       throw new AppError('Cannot start auction', 204);
     }
@@ -125,8 +127,10 @@ export async function createNewProductBusiness(req, res) {
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
 
+    await transaction.commit();
     return await getProductWithId(fullActionDetail.productId);
   } catch (error) {
+    await transaction.rollback();
     responseError(res, error);
     return null;
   }

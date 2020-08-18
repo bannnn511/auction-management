@@ -23,7 +23,7 @@ export function responseSuccess(res, data, status) {
 
 export function responseError(res, error) {
   console.log(
-    chalk.red(util.inspect({ error }, { showHidden: false, depth: null })),
+    chalk.yellow(util.inspect({ error }, { showHidden: false, depth: null })),
   );
   return res.status(error.status || 400).json({ error });
 }

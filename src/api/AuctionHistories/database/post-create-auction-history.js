@@ -1,15 +1,19 @@
 const db = require('../../../../models');
 
-export async function createAuctionHistory(body) {
+export async function createAuctionHistory(body, t) {
   try {
-    const history = await db.AuctionHistories.create({
-      userId: body.userId,
-      auctionId: body.auctionId,
-      price: body.price,
-      createdBy: body.createdBy,
-      updatedBy: body.updatedBy,
-    });
-    return history;
+    return await db.AuctionHistories.create(
+      {
+        userId: body.userId,
+        auctionId: body.auctionId,
+        price: body.price,
+        createdBy: body.createdBy,
+        updatedBy: body.updatedBy,
+      },
+      {
+        transaction: t,
+      },
+    );
   } catch (error) {
     console.log(error);
     return null;

@@ -1,6 +1,6 @@
 const { Products } = require('../../../../models');
 
-export async function updateProductPrice(body) {
+export async function updateProductPrice(body, t) {
   try {
     await Products.update(
       {
@@ -11,6 +11,7 @@ export async function updateProductPrice(body) {
         where: {
           id: body.id,
         },
+        transaction: t,
       },
     );
     return await Products.findOne({

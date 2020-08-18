@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { getProductWithId, updateProductPrice } from '../database';
 import { getAuctionWithProductId } from '../../AuctionManagement/database';
 import { AppError } from '../../../utils/appError';
@@ -6,8 +6,13 @@ import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHisto
 import { createAuctionHistory } from '../../AuctionHistories/database';
 import { responseError } from '../../../shared/helpers';
 import { Email } from '../../../utils/email';
+import { getUserBanStatusFromAuctions } from '../../AuctionParticipating/database';
+import { UserBanStatus } from '../../../shared/helpers/constant';
+
+const db = require('../../../../models');
 
 export async function updateProductCurrentPriceBusiness(req, res) {
+  const transaction = await db.sequelize.transaction();
   try {
     const { id } = req.params;
     const { body } = req;
@@ -26,7 +31,15 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       throw new AppError('There is no auction with this product', 204);
     }
 
-    // check if bidding price is valid
+    // check ban status
+    const status = await getUserBanStatusFromAuctions({
+      auctionId: auction.id,
+      userId: body.updatedBy,
+    });
+    if (status === UserBanStatus.BAN) {
+      throw new AppError('You have been banned from this auction', 400);
+    }
+
     if (checkProduct.currentPrice >= body.price) {
       throw new AppError(
         'Bidding price must be higher than current price',
@@ -39,21 +52,26 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       throw new AppError('Bidding time has expired', 204);
     }
 
-    const newProduct = await updateProductPrice(body);
+    /*
+    transaction for update product price
+    create auction history after update product price
+    rollback if transaction failed
+    */
+    const newProduct = await updateProductPrice(body, transaction);
     if (!newProduct) {
-      throw new AppError('Bid product failed', 204);
+      throw new AppError('Cannot create Auction History', 204);
     }
-
     const fullAuctionDetail = serializeAuctionHistoryFromProductAndAuction(
       newProduct,
       auction,
     );
 
-    // create auction history
-    const history = await createAuctionHistory(fullAuctionDetail);
+    const history = await createAuctionHistory(fullAuctionDetail, transaction);
     if (!history) {
       throw new AppError('Cannot create Auction History', 204);
     }
+
+    await transaction.commit();
 
     // send email after bidding
     const email = new Email(
@@ -66,6 +84,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
 
     return await getProductWithId(newProduct.id);
   } catch (error) {
+    await transaction.rollback();
     responseError(res, error);
     return null;
   }
