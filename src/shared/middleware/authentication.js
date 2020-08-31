@@ -8,11 +8,11 @@ const jwt = require('jsonwebtoken');
 export async function authentication(req, res, next) {
   // JSON web token logic right here
   try {
-    console.log(req.header('Authorization'));
-    const token = getToken(req);
-    if (!token) {
+    if (!req.header('Authorization')) {
       throw new AppError('You need to login', 401);
     }
+    console.log(req.header('Authorization'));
+    const token = getToken(req);
     const data = jwt.verify(token, process.env.JWT_SECRET_KEY);
     console.log('Requested from Authorization ☔: ', data);
     const user = await getLoginUserById(data.id);

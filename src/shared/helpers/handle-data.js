@@ -51,5 +51,8 @@ export function isValidDate(d) {
 }
 
 export function getToken(req) {
-  return req.header('Authorization').replace('Bearer', '').replace(/\s/g, '');
+  if (req.header('Authorization')) {
+    return req.header('Authorization').replace('Bearer', '').replace(/\s/g, '');
+  }
+  return null;
 }
