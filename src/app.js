@@ -4,7 +4,7 @@ require('@babel/polyfill');
 require('dotenv').config();
 
 const express = require('express');
-
+const helmet = require('helmet');
 const cors = require('cors');
 
 const { json } = require('body-parser');
@@ -13,6 +13,7 @@ const { errorHandler } = require('./shared/middleware/error-handler');
 const { apiRouter } = require('./api');
 
 const app = express();
+app.use(helmet());
 const corsOptions = {
   origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

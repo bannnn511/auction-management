@@ -1,6 +1,6 @@
 import { getLoginUserId, getPassOfUser } from '../database';
 import { AppError } from '../../../utils/appError';
-import { responseError, responseSuccess } from '../../../shared/helpers';
+import { responseError } from '../../../shared/helpers';
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
