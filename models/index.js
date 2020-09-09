@@ -8,6 +8,7 @@ if (result.error) {
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const chalk = require('chalk');
 
 const basename = path.basename(__filename);
 const db = {};
@@ -31,7 +32,9 @@ const sequelize = new Sequelize(dbName, dbUserName, dbPassword, {
 sequelize
   .authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.');
+    console.log(
+      chalk.magenta('[DATABASE] Connection has been established successfully.'),
+    );
   })
   .catch((err) => {
     console.error('Unable to connect to the database:', err);

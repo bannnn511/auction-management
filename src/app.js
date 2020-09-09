@@ -4,13 +4,16 @@ require('@babel/polyfill');
 require('dotenv').config();
 
 const express = require('express');
+const socketio = require('socket.io');
 const helmet = require('helmet');
 const cors = require('cors');
-
 const { json } = require('body-parser');
 const logger = require('morgan');
+const chalk = require('chalk');
+
 const { errorHandler } = require('./shared/middleware/error-handler');
 const { apiRouter } = require('./api');
+const { client } = require('./shared/helpers/redis');
 
 const app = express();
 app.use(helmet());
@@ -23,13 +26,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const { client } = require('./shared/helpers/redis');
-
 client.on('connect', () => {
-  console.log('Redis client connected');
+  console.log(chalk.magenta('[REDIS] client connected'));
 });
 client.on('error', (error) => {
-  console.log('Redis not connected', error);
+  console.log(chalk.magenta('[REDIS] not connected', error));
 });
 
 app.use(logger('dev'));
@@ -44,6 +45,25 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });
+
+const io = socketio(server);
+const activeAuctions = new Set();
+
+io.sockets.on('connection', (socket) => {
+  activeAuctions.add(socket);
+  console.log(
+    chalk.magenta('[SOCKET] make connection with Socket ID:', socket.id),
+  );
+  console.log('Auctions:', activeAuctions.size);
+
+  socket.on('disconnect', () => {
+    activeAuctions.delete(socket.id);
+    console.log(chalk.red('[SOCKET] disconnected', socket.id));
+    io.emit('auction disconnected', socket.id);
+  });
+});
+
+app.set('socket', io);

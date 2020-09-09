@@ -8,7 +8,7 @@ export function responseSuccess(res, data, status) {
     console.log(
       chalk.greenBright(
         util.inspect(
-          { data, Total: _.defaultTo(data.length, 1) },
+          { data, total: _.defaultTo(data.length, 1) },
           { showHidden: false, depth: null },
         ),
       ),

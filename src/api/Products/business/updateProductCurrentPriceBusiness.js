@@ -9,9 +9,10 @@ import { Email } from '../../../utils/email';
 import { getUserBanStatusFromAuctions } from '../../AuctionParticipating/database';
 import { UserBanStatus } from '../../../shared/helpers/constant';
 
-const db = require('../../../../models');
+import db from '../../../../models';
 
 export async function updateProductCurrentPriceBusiness(req, res) {
+  const io = req.app.get('socket');
   const transaction = await db.sequelize.transaction();
   try {
     const { id } = req.params;
@@ -70,8 +71,10 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     if (!history) {
       throw new AppError('Cannot create Auction History', 204);
     }
-
     await transaction.commit();
+
+    const returnData = await getProductWithId(newProduct.id);
+    io.emit('broadcast', returnData);
 
     // send email after bidding
     const email = new Email(
@@ -82,7 +85,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     );
     email.send();
 
-    return await getProductWithId(newProduct.id);
+    return returnData;
   } catch (error) {
     await transaction.rollback();
     responseError(res, error);
