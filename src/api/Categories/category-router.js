@@ -14,13 +14,7 @@ const { Router } = require('express');
 
 const categoriesRouter = Router();
 
-categoriesRouter.get(
-  '/',
-  authentication,
-  redisValidation,
-  restrictedTo(UserType.ADMIN),
-  getListCategory,
-);
+categoriesRouter.get('/', getListCategory);
 
 categoriesRouter.post(
   '/newcategory',

@@ -17,6 +17,9 @@ import {
 } from '../../AuctionManagement/database';
 import { getWinningHistoryFromAuctionWithAuctionId } from '../../AuctionHistories/database';
 import { Email } from '../../../utils/email';
+import { addProductToCategory } from '../../CategoriesManagement/database/post-add-product-to-category';
+import { getCategoryId } from '../../Categories/database/get-category-id';
+import { getFavouriteUserIdFromCategory } from '../../Favourites/database';
 
 const cron = require('node-cron');
 const db = require('../../../../models');
@@ -40,6 +43,7 @@ async function sendEmail(auctionId) {
     console.log(error);
   }
 }
+
 async function onAuctionEnded(auctionId, productId) {
   try {
     const winningData = await getWinningHistoryFromAuctionWithAuctionId(
@@ -63,9 +67,9 @@ async function onAuctionEnded(auctionId, productId) {
   }
 }
 
+// cron job to check if auction has ended
 async function createCronJobForAutoEndAuction(auction) {
   try {
-    // cron job to check if auction has ended
     const task = cron.schedule('*/1 * * * *', async () => {
       const currentTime = new Date(_.now());
       const endDate = new Date(auction.endAt);
@@ -89,9 +93,29 @@ async function createCronJobForAutoEndAuction(auction) {
   }
 }
 
+async function sendNotiForNewProductInCategory(
+  io,
+  noti,
+  activeAuctions,
+  categoryId,
+) {
+  io.emit('askForUserId');
+  const userId = await getFavouriteUserIdFromCategory(categoryId);
+}
+
+async function addProductToCategoryBusiness(data) {
+  await addProductToCategory({
+    categoryId: data.category,
+    productId: data.productId,
+    createdBy: data.byId,
+    updatedBy: data.byId,
+  });
+}
+
 export async function createNewProductBusiness(req, res) {
   const transaction = await db.sequelize.transaction();
   try {
+    const io = req.app.get('socket');
     const { body } = req;
     body.createdBy = req.currentUser.id;
     body.updatedBy = req.currentUser.id;
@@ -125,6 +149,19 @@ export async function createNewProductBusiness(req, res) {
     if (isValidDate(fullActionDetail.endAt)) {
       console.log('Create cronjob for this auction', fullActionDetail);
       await createCronJobForAutoEndAuction(fullActionDetail);
+    }
+
+    if (body.category) {
+      const categoryId = await getCategoryId(body.category);
+      const noti = await addProductToCategoryBusiness({
+        category,
+        productId: auction.productId,
+        byId: body.createdBy,
+      });
+      if (noti) {
+        const activeAuctions = req.app.get('activeAuctions');
+        sendNotiForNewProductInCategory(io, noti, activeAuctions, categoryId);
+      }
     }
 
     await transaction.commit();

@@ -13,7 +13,7 @@ export async function getUserIdWithEmail(buyer) {
     });
     return newBuyer;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error(error);
+    return null;
   }
 }

@@ -10,7 +10,7 @@ export async function getFavouriteProduct(productId) {
     console.log(products);
     return products;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 }

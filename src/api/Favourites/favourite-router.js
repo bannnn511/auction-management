@@ -4,8 +4,12 @@ import {
   authentication,
   redisValidation,
 } from '../../shared/middleware';
-import { FavouriteProductSchema } from './favourite.schema';
 import {
+  FavoriteCategorySchema,
+  FavouriteProductSchema,
+} from './favourite.schema';
+import {
+  createNewFavoriteCategory,
   createNewFavouriteProduct,
   getListFavouriteProducts,
 } from './favourite.controller';
@@ -18,6 +22,14 @@ favouriteRouter.post(
   authentication,
   redisValidation,
   createNewFavouriteProduct,
+);
+
+favouriteRouter.post(
+  '/category',
+  validateBody(FavoriteCategorySchema),
+  authentication,
+  redisValidation,
+  createNewFavoriteCategory,
 );
 
 favouriteRouter.get(

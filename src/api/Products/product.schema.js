@@ -9,6 +9,7 @@ export const createProductAuctionSchema = Joi.object({
   description: Joi.string()
     .empty('')
     .pattern(/^[a-zA-Z]+/),
+  category: Joi.string(),
 });
 
 export const updateProductAuctionSchema = Joi.object({

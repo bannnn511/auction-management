@@ -2,9 +2,9 @@ import { UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');
 
-export function getLoginUserById(id) {
+export async function getLoginUserById(id) {
   try {
-    const buyer = db.Buyers.findOne({
+    return await db.Buyers.findOne({
       attributes: [
         'id',
         'email',
@@ -20,9 +20,8 @@ export function getLoginUserById(id) {
         status: UserStatus.ACTIVE,
       },
     });
-    return buyer;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 }

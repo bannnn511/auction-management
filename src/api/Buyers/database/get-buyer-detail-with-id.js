@@ -11,7 +11,7 @@ export async function getBuyerDetailWithId(id) {
       },
     });
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error(error);
+    return null;
   }
 }

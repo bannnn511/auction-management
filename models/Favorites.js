@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         field: 'product_id',
       },
+      categoryId: {
+        type: DataTypes.UUID,
+        field: 'category_id',
+      },
       createdBy: {
         type: DataTypes.UUID,
         field: 'created_by',
@@ -40,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     Favorites.belongsTo(models.Products, {
       as: 'products',
       foreignKey: 'productId',
+    });
+    Favorites.belongsTo(models.Categories, {
+      as: 'categories',
+      foreignKey: 'categoryId',
     });
   };
 

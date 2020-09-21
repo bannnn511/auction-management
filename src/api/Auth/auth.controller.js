@@ -23,9 +23,9 @@ export async function register(req, res) {
 
 export async function logout(req, res) {
   try {
-    const data = await logoutBusiness(req, res);
-    const serializedData = serializeUser(data);
-    responseSuccess(res, serializedData);
+    await logoutBusiness(req, res);
+    const mess = 'Logout successfully';
+    responseSuccess(res, mess);
   } catch (error) {
     responseError(res, error);
   }

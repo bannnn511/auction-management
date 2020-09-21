@@ -365,6 +365,13 @@
                         "value": "Sequelize.UUIDV4"
                     },
                     "field": "id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "categories",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
                 "userId": {
@@ -383,6 +390,17 @@
                     "allowNull": true,
                     "references": {
                         "model": "products",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "categoryId": {
+                    "field": "category_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "categories",
                         "key": "id"
                     },
                     "onDelete": "NO ACTION",
@@ -558,5 +576,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 1
 }

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { responseError, responseSuccess } from '../helpers';
+import { responseError } from '../helpers';
 
 export function restrictedTo(role) {
   return (req, res, next) => {

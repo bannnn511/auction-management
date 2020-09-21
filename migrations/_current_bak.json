@@ -126,6 +126,65 @@
             },
             "indexes": []
         },
+        "auction_participatings": {
+            "tableName": "auction_participatings",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "field": "id",
+                    "seqType": "Sequelize.UUID"
+                },
+                "userId": {
+                    "field": "user_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "buyers",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "auctionId": {
+                    "field": "auction_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "auction_managements",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
+                "status": {
+                    "field": "status",
+                    "seqType": "Sequelize.ENUM('active', 'ban')"
+                },
+                "createdBy": {
+                    "field": "created_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "updatedBy": {
+                    "field": "updated_by",
+                    "seqType": "Sequelize.UUID"
+                },
+                "created_at": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updated_at": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "buyers": {
             "tableName": "buyers",
             "schema": {
@@ -330,6 +389,17 @@
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
+                "categoryId": {
+                    "field": "category_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "categories",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.UUID"
+                },
                 "createdBy": {
                     "field": "created_by",
                     "seqType": "Sequelize.UUID"
@@ -499,5 +569,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 6
 }

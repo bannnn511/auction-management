@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'category_managements',
       foreignKey: 'categoryId',
     });
+
+    Categories.hasMany(models.Favorites, {
+      as: 'category_favorites',
+      foreignKey: 'id',
+    });
   };
 
   return Categories;
