@@ -29,3 +29,8 @@ export const defaultLimit = {
 export const Hash = {
   SALT: 10,
 };
+
+export const userFavoriteType = {
+  CATEGORY: 'category',
+  PRODUCT: 'product',
+};

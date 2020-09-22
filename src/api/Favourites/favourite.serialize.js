@@ -7,6 +7,7 @@ export function serializeFavouriteProduct(product) {
       productId: _.get(product, 'productId', ''),
       categoryId: _.get(product, 'categoryId', ''),
       productName: _.get(product, 'products.productName', ''),
+      categoryName: _.get(product, 'categories.categoryName', ''),
     };
   }
   return null;

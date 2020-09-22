@@ -46,18 +46,19 @@ const server = app.listen(PORT, () => {
 });
 
 const io = socketio(server);
-const activeAuctions = {};
+const activeAuctions = [];
 
 io.sockets.on('connection', (socket) => {
   console.log(chalk.magenta('[SOCKET] connected:', socket.id));
-  // console.log('Auctions:', Object.keys(activeAuctions).length);
+  console.log('Auctions:', activeAuctions.length);
+  io.emit('askForUserId');
 
   socket.on('userIdReceived', (userId) => {
-    activeAuctions[socket.id] = userId;
+    activeAuctions[userId] = socket.id;
   });
 
   socket.on('disconnect', () => {
-    delete activeAuctions[socket.id];
+    activeAuctions.filter((disconnectedId) => disconnectedId === socket.id);
     console.log(chalk.red('[SOCKET] disconnected', socket.id));
     io.emit('auction disconnected', socket.id);
   });

@@ -99,13 +99,18 @@ async function sendNotiForNewProductInCategory(
   activeAuctions,
   categoryId,
 ) {
-  io.emit('askForUserId');
   const userId = await getFavouriteUserIdFromCategory(categoryId);
+  userId.forEach((user) => {
+    const id = activeAuctions.indexOf(user);
+    if (id) {
+      io.to(activeAuctions[id]).emit(noti);
+    }
+  });
 }
 
 async function addProductToCategoryBusiness(data) {
   await addProductToCategory({
-    categoryId: data.category,
+    categoryId: data.categoryId,
     productId: data.productId,
     createdBy: data.byId,
     updatedBy: data.byId,
@@ -119,7 +124,6 @@ export async function createNewProductBusiness(req, res) {
     const { body } = req;
     body.createdBy = req.currentUser.id;
     body.updatedBy = req.currentUser.id;
-    console.log(toDateString(body.endAt), toDateString(_.now()));
     if (new Date(body.endAt) < new Date(_.now())) {
       throw new AppError('End date muse be in the future');
     }
@@ -154,7 +158,7 @@ export async function createNewProductBusiness(req, res) {
     if (body.category) {
       const categoryId = await getCategoryId(body.category);
       const noti = await addProductToCategoryBusiness({
-        category,
+        categoryId,
         productId: auction.productId,
         byId: body.createdBy,
       });
