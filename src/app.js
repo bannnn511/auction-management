@@ -51,7 +51,6 @@ const activeAuctions = [];
 io.sockets.on('connection', (socket) => {
   console.log(chalk.magenta('[SOCKET] connected:', socket.id));
   console.log('Auctions:', activeAuctions.length);
-  io.emit('askForUserId');
 
   socket.on('userIdReceived', (userId) => {
     activeAuctions[userId] = socket.id;
@@ -65,4 +64,4 @@ io.sockets.on('connection', (socket) => {
 });
 
 app.set('socket', io);
-app.set('activeAuction', activeAuctions);
+app.set('activeAuctions', activeAuctions);

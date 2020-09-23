@@ -10,16 +10,18 @@ var Sequelize = require('sequelize');
  * createTable "products", deps: []
  * createTable "auction_managements", deps: [buyers, buyers, products]
  * createTable "auction_histories", deps: [auction_managements]
+ * createTable "auction_participatings", deps: [buyers, auction_managements]
  * createTable "category_managments", deps: [categories, products]
- * createTable "favorites", deps: [buyers, products]
+ * createTable "favorites", deps: [categories, buyers, products, categories]
+ * createTable "notifications", deps: [buyers]
  * createTable "ratings", deps: [buyers, buyers, auction_managements, buyers, buyers]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "1595921427000-init-db",
-    "created": "2020-07-28T07:30:29.025Z",
+    "name": "1600852668000-init-db",
+    "created": "2020-09-23T09:17:49.622Z",
     "comment": ""
 };
 
@@ -325,6 +327,67 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
+                "auction_participatings",
+                {
+                    "id": {
+                        "type": Sequelize.UUID,
+                        "field": "id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "userId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "buyers",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "user_id"
+                    },
+                    "auctionId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "auction_managements",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "auction_id"
+                    },
+                    "status": {
+                        "type": Sequelize.ENUM('active', 'ban'),
+                        "field": "status"
+                    },
+                    "createdBy": {
+                        "type": Sequelize.UUID,
+                        "field": "created_by"
+                    },
+                    "updatedBy": {
+                        "type": Sequelize.UUID,
+                        "field": "updated_by"
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
                 "category_managments",
                 {
                     "id": {
@@ -386,6 +449,13 @@ var migrationCommands = function(transaction) {
                 {
                     "id": {
                         "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "categories",
+                            "key": "id"
+                        },
+                        "allowNull": true,
                         "field": "id",
                         "defaultValue": Sequelize.UUIDV4,
                         "primaryKey": true
@@ -411,6 +481,71 @@ var migrationCommands = function(transaction) {
                         },
                         "allowNull": true,
                         "field": "product_id"
+                    },
+                    "categoryId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "categories",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "category_id"
+                    },
+                    "createdBy": {
+                        "type": Sequelize.UUID,
+                        "field": "created_by"
+                    },
+                    "updatedBy": {
+                        "type": Sequelize.UUID,
+                        "field": "updated_by"
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "notifications",
+                {
+                    "id": {
+                        "type": Sequelize.UUID,
+                        "field": "id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "userId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "buyers",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "user_id"
+                    },
+                    "description": {
+                        "type": Sequelize.TEXT,
+                        "field": "description"
+                    },
+                    "isRead": {
+                        "type": Sequelize.BOOLEAN,
+                        "field": "is_read"
                     },
                     "createdBy": {
                         "type": Sequelize.UUID,
@@ -551,6 +686,12 @@ var rollbackCommands = function(transaction) {
         },
         {
             fn: "dropTable",
+            params: ["auction_participatings", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
             params: ["buyers", {
                 transaction: transaction
             }]
@@ -570,6 +711,12 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["favorites", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["notifications", {
                 transaction: transaction
             }]
         },

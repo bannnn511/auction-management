@@ -5,9 +5,9 @@ export async function addProductToCategory(data, t) {
     return await db.CategoryManagements.create(
       {
         categoryId: data.categoryId,
-        proudctId: data.proudctId,
-        createdBy: data.createdBy,
-        updatedBy: data.updatedBy,
+        productId: data.productId,
+        createdBy: data.byId,
+        updatedBy: data.byId,
       },
       { transaction: t },
     );

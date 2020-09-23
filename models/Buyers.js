@@ -84,6 +84,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'rated',
       foreignKey: 'rated_id',
     });
+    Buyers.hasMany(models.Notifications, {
+      as: 'notifications',
+      foreignKey: 'userId',
+    });
   };
 
   return Buyers;

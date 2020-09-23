@@ -93,37 +93,33 @@ async function createCronJobForAutoEndAuction(auction) {
   }
 }
 
-async function sendNotiForNewProductInCategory(
-  io,
-  noti,
-  activeAuctions,
-  categoryId,
-) {
-  const userId = await getFavouriteUserIdFromCategory(categoryId);
+async function sendNotiForNewProductInCategory(io, activeAuctions, data) {
+  const userId = await getFavouriteUserIdFromCategory(data.categoryId);
   userId.forEach((user) => {
-    const id = activeAuctions.indexOf(user);
-    if (id) {
-      io.to(activeAuctions[id]).emit(noti);
-    }
+    io.to(activeAuctions[user.userId]).emit(
+      'notification',
+      `There is a new product in your favourite category: ${data.category}`,
+    );
   });
 }
 
-async function addProductToCategoryBusiness(data) {
-  await addProductToCategory({
-    categoryId: data.categoryId,
-    productId: data.productId,
-    createdBy: data.byId,
-    updatedBy: data.byId,
-  });
+async function addProductToCategoryBusiness(req, data, transaction) {
+  const io = req.app.get('socket');
+  const noti = await addProductToCategory(data, transaction);
+  if (noti) {
+    io.emit('askForUserId');
+    const activeAuctions = req.app.get('activeAuctions');
+    sendNotiForNewProductInCategory(io, activeAuctions, data);
+  }
 }
 
 export async function createNewProductBusiness(req, res) {
   const transaction = await db.sequelize.transaction();
   try {
-    const io = req.app.get('socket');
     const { body } = req;
     body.createdBy = req.currentUser.id;
     body.updatedBy = req.currentUser.id;
+    const { category } = body;
     if (new Date(body.endAt) < new Date(_.now())) {
       throw new AppError('End date muse be in the future');
     }
@@ -155,17 +151,22 @@ export async function createNewProductBusiness(req, res) {
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
 
-    if (body.category) {
+    // send notification for user who favourited thid category
+    if (category) {
       const categoryId = await getCategoryId(body.category);
-      const noti = await addProductToCategoryBusiness({
-        categoryId,
-        productId: auction.productId,
-        byId: body.createdBy,
-      });
-      if (noti) {
-        const activeAuctions = req.app.get('activeAuctions');
-        sendNotiForNewProductInCategory(io, noti, activeAuctions, categoryId);
+      if (!categoryId) {
+        throw new AppError('This category does not exist');
       }
+      await addProductToCategoryBusiness(
+        req,
+        {
+          categoryId,
+          productId: product.id,
+          byId: body.createdBy,
+          category,
+        },
+        transaction,
+      );
     }
 
     await transaction.commit();
