@@ -7,6 +7,7 @@ import { categoriesRouter } from './Categories/category-router';
 import { historiesRouter } from './AuctionHistories/history.router';
 import { ratingsRouter } from './Ratings/rating.router';
 import { favouriteRouter } from './Favourites/favourite-router';
+import { notificationRouter } from './Notifications/notifications.router';
 
 const apiRouter = Router();
 
@@ -24,5 +25,6 @@ apiRouter.use('/categories', categoriesRouter);
 apiRouter.use('/histories', historiesRouter);
 apiRouter.use('/ratings', ratingsRouter);
 apiRouter.use('/favourites', favouriteRouter);
+apiRouter.use('/notifications', notificationRouter);
 
 export { apiRouter };
