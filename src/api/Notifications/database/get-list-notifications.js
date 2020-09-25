@@ -2,7 +2,7 @@ const db = require('../../../../models');
 
 export async function getListNotifications(userId) {
   try {
-    return await db.notifications.findAll({
+    return await db.Notifications.findAll({
       where: { userId },
     });
   } catch (error) {

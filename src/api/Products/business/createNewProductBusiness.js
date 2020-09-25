@@ -20,6 +20,7 @@ import { Email } from '../../../utils/email';
 import { addProductToCategory } from '../../CategoriesManagement/database/post-add-product-to-category';
 import { getCategoryId } from '../../Categories/database/get-category-id';
 import { getFavouriteUserIdFromCategory } from '../../Favourites/database';
+import { createNotification } from '../../Notifications/database/post-create-notification';
 
 const cron = require('node-cron');
 const db = require('../../../../models');
@@ -96,10 +97,9 @@ async function createCronJobForAutoEndAuction(auction) {
 async function sendNotiForNewProductInCategory(io, activeAuctions, data) {
   const userId = await getFavouriteUserIdFromCategory(data.categoryId);
   userId.forEach((user) => {
-    io.to(activeAuctions[user.userId]).emit(
-      'notification',
-      `There is a new product in your favourite category: ${data.category}`,
-    );
+    const description = `There is a new product in your favourite category: ${data.category}`;
+    io.to(activeAuctions[user.userId]).emit('notification', description);
+    createNotification({ userId: user.userId, description });
   });
 }
 
@@ -132,12 +132,12 @@ export async function createNewProductBusiness(req, res) {
     product.endAt = req.body.endAt;
 
     const auction = {
-      sellerId: _.get(product, 'createdBy', ''),
-      productId: _.get(product, 'id', ''),
-      description: _.get(product, 'description', ''),
-      createdBy: _.get(product, 'createdBy', ''),
-      updatedBy: _.get(product, 'updatedBy', ''),
-      endAt: _.get(product, 'endAt', ''),
+      sellerId: _.get(product, 'createdBy'),
+      productId: _.get(product, 'id'),
+      description: _.get(product, 'description'),
+      createdBy: _.get(product, 'createdBy'),
+      updatedBy: _.get(product, 'updatedBy'),
+      endAt: _.get(product, 'endAt'),
     };
     const newAuction = await createAuction(auction, transaction);
     if (!newAuction) {
@@ -151,7 +151,7 @@ export async function createNewProductBusiness(req, res) {
       await createCronJobForAutoEndAuction(fullActionDetail);
     }
 
-    // send notification for user who favourited thid category
+    // send notification for user who favourited this category
     if (category) {
       const categoryId = await getCategoryId(body.category);
       if (!categoryId) {
