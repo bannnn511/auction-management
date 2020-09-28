@@ -7,6 +7,7 @@ import {
 import {
   createNotification,
   getListNotifications,
+  markAllNotificationAsRead,
 } from './notifications.controller';
 import { NotificationCreationSchema } from './notifications.schema';
 
@@ -25,6 +26,13 @@ notificationRouter.post(
   authentication,
   redisValidation,
   createNotification,
+);
+
+notificationRouter.put(
+  '/',
+  authentication,
+  redisValidation,
+  markAllNotificationAsRead,
 );
 
 export { notificationRouter };

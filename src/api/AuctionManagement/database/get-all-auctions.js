@@ -9,7 +9,6 @@ const { Op } = db.Sequelize;
 export async function getAllAuctions(page, pagesize) {
   try {
     const { offset, limit } = pagination(page, pagesize);
-    console.log(offset, limit);
     const auctions = await db.AuctionManagements.findAll({
       include: [
         {

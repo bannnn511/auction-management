@@ -1,6 +1,7 @@
 import { responseError, responseSuccess } from '../../shared/helpers';
 import { createNotificationBusiness } from './business/createNotificationBusiness';
 import { getListNotificationsBusiness } from './business/getListNotificationsBusiness';
+import { markAllNotficationAsReadBusiness } from './business/markAllNotificationAsReadBusiness';
 import { updateNotificationToReadBusiness } from './business/updateNotificationToReadBusiness';
 import {
   serializeAllNotifications,
@@ -29,6 +30,15 @@ export async function updateNotificationToRead(req, res) {
   try {
     const data = await updateNotificationToReadBusiness(req, res);
     responseSuccess(res, serializeNotification(data));
+  } catch (error) {
+    responseError(res, error);
+  }
+}
+
+export async function markAllNotificationAsRead(req, res) {
+  try {
+    const data = await markAllNotficationAsReadBusiness(req, res);
+    responseSuccess(res, serializeAllNotifications(data));
   } catch (error) {
     responseError(res, error);
   }
