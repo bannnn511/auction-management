@@ -7,6 +7,6 @@ export async function getListNotifications(userId) {
     });
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 }

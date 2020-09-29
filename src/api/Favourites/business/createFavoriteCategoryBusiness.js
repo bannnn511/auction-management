@@ -25,7 +25,7 @@ export async function createFavoriteCategoryBusiness(req, res) {
     const userId = req.currentUser.id;
     const categoryId = await getCategoryId(category);
     if (!categoryId) {
-      throw new AppError(`${category} category does not exist`);
+      throw new AppError(`${category} category does not exist`, 500, true);
     }
     if (checkIfAlreadyLikeCategory) {
       const deleteFav = await deleteUserDidLikeCategory(categoryId, userId);

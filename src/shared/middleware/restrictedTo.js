@@ -13,7 +13,7 @@ export function restrictedTo(role) {
         responseError(res, `Authority denied, you are not ${role}`, 403);
       }
     } catch (error) {
-      responseError(res, error);
+      next(error);
     }
   };
 }

@@ -1,5 +1,5 @@
 import { serializeBuyers, serializeAllBuyers } from './buyers.serialize';
-import { responseError, responseSuccess } from '../../shared/helpers';
+import { responseSuccess } from '../../shared/helpers';
 
 import {
   blacklistToken,
@@ -13,45 +13,45 @@ import {
 } from './business';
 
 // get buyer with status active but not admin
-export async function getAllUsers(req, res) {
+export async function getAllUsers(req, res, next) {
   try {
     const data = await getAllUserBusinness(req, res);
     const serializedData = serializeAllBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
-export async function getUserDetailWithId(req, res) {
+export async function getUserDetailWithId(req, res, next) {
   try {
     const data = await getUserDetailBusiness(req, res);
     const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
 // register user as buyer or seller by admin
-export async function createNewUser(req, res) {
+export async function createNewUser(req, res, next) {
   try {
     const data = await createNewUserByAdminBusiness(req, res);
     const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
 // update buyer status to deleted
-export async function deleteUser(req, res) {
+export async function deleteUser(req, res, next) {
   try {
     const data = await deleteUserBusiness(req, res);
     const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
@@ -59,25 +59,25 @@ export async function deleteUser(req, res) {
  * Update buyer password
  * destroy token after update password
  */
-export async function updateUserPassword(req, res) {
+export async function updateUserPassword(req, res, next) {
   try {
     const data = await updateUserPasswordBusiness(req, res);
     const serializedData = serializeBuyers(data);
     await blacklistToken(req);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
 // update buyer info
-export async function updateUserInfo(req, res) {
+export async function updateUserInfo(req, res, next) {
   try {
     const data = await updateUserInfoBusiness(req, res);
     const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
@@ -86,12 +86,12 @@ export async function updateUserInfo(req, res) {
  * Accept buyer request to be a seller
  * Update user basic info
  */
-export async function updateUserInfoByAdmin(req, res) {
+export async function updateUserInfoByAdmin(req, res, next) {
   try {
     const data = await updateUserInfoByAdminBusiness(req, res);
     const serializedData = serializeBuyers(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }

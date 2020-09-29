@@ -13,6 +13,6 @@ export function redisValidation(req, res, next) {
       }
     });
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }

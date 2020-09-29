@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { pagination } from '../../../shared/helpers';
 
 const db = require('../../../../models');
 
@@ -25,6 +24,6 @@ export async function getAuctionByProductName(productName) {
     return auctions;
   } catch (error) {
     console.log(error);
-    return null;
+    return error;
   }
 }

@@ -6,24 +6,19 @@ const { Op } = db.Sequelize;
 
 // get data of auction + products with JOIN
 export async function getAuctionById(id) {
-  try {
-    const auctions = await db.AuctionManagements.findOne({
-      include: [
-        {
-          model: db.Products,
-          as: 'products',
-        },
-      ],
-      where: {
-        endAt: {
-          [Op.gt]: _.now(),
-        },
-        id,
+  const auctions = await db.AuctionManagements.findOne({
+    include: [
+      {
+        model: db.Products,
+        as: 'products',
       },
-    });
-    return auctions;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+    ],
+    where: {
+      endAt: {
+        [Op.gt]: _.now(),
+      },
+      id,
+    },
+  });
+  return auctions;
 }

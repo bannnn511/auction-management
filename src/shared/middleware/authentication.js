@@ -1,7 +1,7 @@
 import { AppError } from '../../utils/appError';
 import { getLoginUserById } from '../../api/Auth/database';
 import { serializeBuyers } from '../../api/Buyers/buyers.serialize';
-import { getToken, responseError } from '../helpers';
+import { getToken } from '../helpers';
 
 const jwt = require('jsonwebtoken');
 
@@ -22,6 +22,6 @@ export async function authentication(req, res, next) {
     req.currentUser = serializeBuyers(user);
     next();
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }

@@ -1,22 +1,25 @@
 const db = require('../../../../models');
 
-export async function markAllNotificationsAsRead(data) {
+/**
+ * Update all isRead field of a user to true.
+ *
+ * @param  {string} userId - The Id of user.
+ * @return {Object} An array of notifications object.
+ */
+
+export async function markAllNotificationsAsRead(userId) {
   try {
-    await db.Notifications.update(
+    const data = await db.Notifications.update(
       {
-        isRead: true,
+        isRead: false,
       },
       {
         where: {
-          userId: data.userId,
+          userId,
         },
       },
     );
-    return await db.Notifications.findAll({
-      where: {
-        userId: data.userId,
-      },
-    });
+    return data;
   } catch (error) {
     console.error(error);
     return null;

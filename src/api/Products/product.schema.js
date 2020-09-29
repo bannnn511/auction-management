@@ -6,9 +6,7 @@ export const createProductAuctionSchema = Joi.object({
   currentPrice: Joi.number().required(),
   buyNowPrice: Joi.number(),
   endAt: Joi.date().required(),
-  description: Joi.string()
-    .empty('')
-    .pattern(/^[a-zA-Z]+/),
+  description: Joi.string(),
   category: Joi.string(),
 });
 
@@ -17,9 +15,7 @@ export const updateProductAuctionSchema = Joi.object({
   buyNowPrice: Joi.number(),
   endAt: Joi.date(),
   imgURL: Joi.string(),
-  description: Joi.string()
-    .empty('')
-    .pattern(/^[a-zA-Z]+/),
+  description: Joi.string(),
 });
 
 export const updateProductPriceAuctionSchema = Joi.object({

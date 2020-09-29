@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
 
-export const NotificationCreationSchema = Joi.object({
+export const NotificationSchema = Joi.object({
   description: Joi.string().required(),
 });

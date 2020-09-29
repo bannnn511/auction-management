@@ -8,8 +8,9 @@ import {
   createNotification,
   getListNotifications,
   markAllNotificationAsRead,
+  markANotficationAsRead,
 } from './notifications.controller';
-import { NotificationCreationSchema } from './notifications.schema';
+import { NotificationSchema } from './notifications.schema';
 
 const notificationRouter = Router();
 
@@ -22,17 +23,25 @@ notificationRouter.get(
 
 notificationRouter.post(
   '/',
-  validateBody(NotificationCreationSchema),
+  validateBody(NotificationSchema),
   authentication,
   redisValidation,
   createNotification,
 );
 
 notificationRouter.put(
-  '/',
+  '/all',
   authentication,
   redisValidation,
   markAllNotificationAsRead,
+);
+
+notificationRouter.put(
+  '/',
+  validateBody(NotificationSchema),
+  authentication,
+  redisValidation,
+  markANotficationAsRead,
 );
 
 export { notificationRouter };

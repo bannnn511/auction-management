@@ -7,7 +7,7 @@ export async function getListCategoryBusiness(req, res) {
     const { page, pagesize } = req.query;
     const categories = await getAllCategories(page, pagesize);
     if (!categories) {
-      throw new AppError('Cannot get category list', 204);
+      throw new AppError('Cannot get category list', 500, true);
     }
     return categories;
   } catch (error) {

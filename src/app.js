@@ -28,9 +28,8 @@ app.use(helmet());
 app.use(logger('dev'));
 app.use(json());
 app.use('/api', apiRouter);
-app.use('*', (req, res) => {
-  responseError(res, 'Invalid address');
-});
+
+// Error handling middleware, we delegate the handling to the centralized error handler
 app.use(errorHandler);
 
 client.on('connect', () => {
