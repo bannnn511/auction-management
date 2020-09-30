@@ -1,4 +1,3 @@
-import { responseError } from '../../../shared/helpers';
 import { AppError } from '../../../utils/appError';
 import { getCategoryId } from '../../Categories/database/get-category-id';
 import {
@@ -19,23 +18,18 @@ async function checkIfAlreadyLikeCategory(categoryId, userId) {
   }
 }
 
-export async function createFavoriteCategoryBusiness(req, res) {
-  try {
-    const { category } = req.body;
-    const userId = req.currentUser.id;
-    const categoryId = await getCategoryId(category);
-    if (!categoryId) {
-      throw new AppError(`${category} category does not exist`, 500, true);
-    }
-    if (checkIfAlreadyLikeCategory) {
-      const deleteFav = await deleteUserDidLikeCategory(categoryId, userId);
-      if (deleteFav) {
-        return 'Delete favorite category';
-      }
-    }
-    return await createFavoriteCategory(userId, categoryId);
-  } catch (error) {
-    responseError(res, error);
-    return null;
+export async function createFavoriteCategoryBusiness(req) {
+  const { category } = req.body;
+  const userId = req.currentUser.id;
+  const categoryId = await getCategoryId(category);
+  if (!categoryId) {
+    throw new AppError(`${category} category does not exist`, 500, true);
   }
+  if (checkIfAlreadyLikeCategory) {
+    const deleteFav = await deleteUserDidLikeCategory(categoryId, userId);
+    if (deleteFav) {
+      return 'Delete favorite category';
+    }
+  }
+  return createFavoriteCategory(userId, categoryId);
 }

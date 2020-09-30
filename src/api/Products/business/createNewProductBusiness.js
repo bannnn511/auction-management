@@ -1,11 +1,7 @@
 import * as _ from 'lodash';
 import { createProduct, getProductWithId } from '../database';
 import { AppError } from '../../../utils/appError';
-import {
-  isValidDate,
-  responseError,
-  toDateString,
-} from '../../../shared/helpers';
+import { isValidDate, toDateString } from '../../../shared/helpers';
 import {
   serializefullAction,
   serializefullActionDetail,
@@ -25,75 +21,86 @@ import { createNotification } from '../../Notifications/database/post-create-not
 const cron = require('node-cron');
 const db = require('../../../../models');
 
+/**
+ * Sends an email to annouced that the auctions has ended.
+ *
+ * @param {string} auctionId - Id the the ended auction.
+ */
 async function sendEmail(auctionId) {
-  try {
-    const datas = await getAllBuyerInAuction(auctionId);
-    const emailData = [];
-    datas.forEach((data) => {
-      emailData.push(data.email);
-    });
+  const datas = await getAllBuyerInAuction(auctionId);
+  const emailData = [];
+  datas.forEach((data) => {
+    emailData.push(data.email);
+  });
 
-    const email = new Email(
-      process.env.MY_EMAIL,
-      emailData,
-      'Auction ended',
-      `Auction with id: ${auctionId} that you have been participated had ended`,
-    );
-    email.send();
-  } catch (error) {
-    console.log(error);
-  }
+  const email = new Email(
+    process.env.MY_EMAIL,
+    emailData,
+    'Auction ended',
+    `Auction with id: ${auctionId} that you have been participated had ended`,
+  );
+  email.send();
 }
 
+/**
+ * Updates buyerId in AuctionManagements table to whom has won the auction.
+ *
+ * @param {string} auctionId - Id of the ended auction.
+ * @param {string} productId - Id of the product in this auction.
+ * @return {Object} - updated info of the ended auction.
+ */
 async function onAuctionEnded(auctionId, productId) {
-  try {
-    const winningData = await getWinningHistoryFromAuctionWithAuctionId(
-      auctionId,
-    );
-    if (!winningData) {
-      throw new AppError('There is no winning data', 204);
-    }
-
-    winningData.productId = productId;
-    winningData.auctionId = auctionId;
-    const updatedAuction = await updateAuctionBuyerId(winningData);
-    if (!updatedAuction) {
-      throw new AppError('Cannot update winning Buyer', 204);
-    }
-
-    return updatedAuction;
-  } catch (error) {
-    console.log(error);
-    return null;
+  const winningData = await getWinningHistoryFromAuctionWithAuctionId(
+    auctionId,
+  );
+  if (!winningData) {
+    throw new AppError('There is no winning data', 500, true);
   }
+
+  winningData.productId = productId;
+  winningData.auctionId = auctionId;
+  const updatedAuction = await updateAuctionBuyerId(winningData);
+  if (!updatedAuction) {
+    throw new AppError('Cannot update winning Buyer', 500, true);
+  }
+
+  return updatedAuction;
 }
 
-// cron job to check if auction has ended
+/**
+ * Creates a cronjob to check when auction ended.
+ * If the auction ends, update the AuctionManagements table.
+ *
+ * @param {Object} auction - The auction data.
+ */
 async function createCronJobForAutoEndAuction(auction) {
-  try {
-    const task = cron.schedule('*/1 * * * *', async () => {
-      const currentTime = new Date(_.now());
-      const endDate = new Date(auction.endAt);
-      console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
-      console.log('Current time:', toDateString(currentTime));
-      console.log('End time:', toDateString(auction.endAt));
-      if (currentTime >= endDate) {
-        console.log('🤖', 'Auction has ended');
-        const auctionEnded = await onAuctionEnded(
-          auction.auctionId,
-          auction.productId,
-        );
-        const serializedPostAuction = serializefullAction(auctionEnded);
-        console.log(serializedPostAuction);
-        sendEmail(serializedPostAuction.id);
-        task.destroy();
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const task = cron.schedule('*/1 * * * *', async () => {
+    const currentTime = new Date(_.now());
+    const endDate = new Date(auction.endAt);
+    console.log('🤖🤖🤖', 'Checking Auction remaining time', auction);
+    console.log('Current time:', toDateString(currentTime));
+    console.log('End time:', toDateString(auction.endAt));
+    if (currentTime >= endDate) {
+      console.log('🤖', 'Auction has ended');
+      const auctionEnded = await onAuctionEnded(
+        auction.auctionId,
+        auction.productId,
+      );
+      const serializedPostAuction = serializefullAction(auctionEnded);
+      console.log(serializedPostAuction);
+      sendEmail(serializedPostAuction.id);
+      task.destroy();
+    }
+  });
 }
 
+/**
+ * Sends notifications to clients through socket.
+ *
+ * @param {Socket} io - The socket.
+ * @param {[Object]} activeAuctions - User ID mapped with socket ID.
+ * @param {Object} data - Data contains the category and category ID.
+ */
 async function sendNotiForNewProductInCategory(io, activeAuctions, data) {
   const userId = await getFavouriteUserIdFromCategory(data.categoryId);
   userId.forEach((user) => {
@@ -103,6 +110,14 @@ async function sendNotiForNewProductInCategory(io, activeAuctions, data) {
   });
 }
 
+/**
+ * Add product to a category.
+ * Then notify users who like this category.
+ *
+ * @param {Request} req - Data sent from client request.
+ * @param {Object} data - Data contains the category and category ID.
+ * @param {Transaction} transaction
+ */
 async function addProductToCategoryBusiness(req, data, transaction) {
   const io = req.app.get('socket');
   const noti = await addProductToCategory(data, transaction);
@@ -113,7 +128,15 @@ async function addProductToCategoryBusiness(req, data, transaction) {
   }
 }
 
-export async function createNewProductBusiness(req, res) {
+/**
+ * Create new product + auctions + cronjobs.
+ * Need transaction to assure atomicity.
+ *
+ * @export
+ * @param {*} req - Request sent from clients.
+ * @return {Object} - Return a Product instance.
+ */
+export async function createNewProductBusiness(req) {
   const transaction = await db.sequelize.transaction();
   try {
     const { body } = req;
@@ -125,7 +148,7 @@ export async function createNewProductBusiness(req, res) {
     }
     const product = await createProduct(body, transaction);
     if (!product) {
-      throw new AppError('Cannot create product', 204);
+      throw new AppError('Cannot create product', 500, true);
     }
 
     product.description = req.body.description;
@@ -141,7 +164,7 @@ export async function createNewProductBusiness(req, res) {
     };
     const newAuction = await createAuction(auction, transaction);
     if (!newAuction) {
-      throw new AppError('Cannot start auction', 204);
+      throw new AppError('Cannot start auction', 500, true);
     }
     const fullActionDetail = serializefullActionDetail(product, newAuction);
 
@@ -155,7 +178,7 @@ export async function createNewProductBusiness(req, res) {
     if (category) {
       const categoryId = await getCategoryId(body.category);
       if (!categoryId) {
-        throw new AppError('This category does not exist');
+        throw new AppError('This category does not exist', 500, true);
       }
       await addProductToCategoryBusiness(
         req,
@@ -173,7 +196,6 @@ export async function createNewProductBusiness(req, res) {
     return await getProductWithId(fullActionDetail.productId);
   } catch (error) {
     await transaction.rollback();
-    responseError(res, error);
-    return null;
+    throw error;
   }
 }

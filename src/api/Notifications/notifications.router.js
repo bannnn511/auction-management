@@ -10,7 +10,10 @@ import {
   markAllNotificationAsRead,
   markANotficationAsRead,
 } from './notifications.controller';
-import { NotificationSchema } from './notifications.schema';
+import {
+  NotficationUpdateSchema,
+  NotificationSchema,
+} from './notifications.schema';
 
 const notificationRouter = Router();
 
@@ -38,7 +41,7 @@ notificationRouter.put(
 
 notificationRouter.put(
   '/',
-  validateBody(NotificationSchema),
+  validateBody(NotficationUpdateSchema),
   authentication,
   redisValidation,
   markANotficationAsRead,

@@ -10,6 +10,6 @@ export async function checkIfUserDidLikeCategory(categoryId, userId) {
     });
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 }

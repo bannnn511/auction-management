@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         values: ['active', 'ban'],
         field: 'status',
       },
+      isReminderCreated: {
+        type: DataTypes.BOOLEAN,
+        field: 'is_reminder_created',
+      },
       createdBy: {
         type: DataTypes.UUID,
         field: 'created_by',

@@ -2,7 +2,7 @@ const db = require('../../../../models');
 
 export async function getFavouriteCategoryWithUserId(userId) {
   try {
-    return await db.Favorites.findAll({
+    const data = await db.Favorites.findAll({
       where: {
         userId,
         productId: null,
@@ -15,8 +15,9 @@ export async function getFavouriteCategoryWithUserId(userId) {
         },
       ],
     });
+    return data;
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 }

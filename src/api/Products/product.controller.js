@@ -1,4 +1,4 @@
-import { responseError, responseSuccess } from '../../shared/helpers';
+import { responseSuccess } from '../../shared/helpers';
 import { serializeProducts, serializeAllProducts } from './product.serialize';
 import {
   getAllProductsBusiness,
@@ -8,23 +8,23 @@ import {
 } from './business';
 import { createNewProductBusiness } from './business/createNewProductBusiness';
 
-export async function getProducts(req, res) {
+export async function getProducts(req, res, next) {
   try {
     const data = await getAllProductsBusiness(req, res);
     const serializedData = serializeAllProducts(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
-export async function getProductsById(req, res) {
+export async function getProductsById(req, res, next) {
   try {
     const data = await getProductByIdBusiness(req, res);
     const serializedProduct = serializeProducts(data);
     responseSuccess(res, serializedProduct);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
@@ -33,13 +33,13 @@ export async function getProductsById(req, res) {
  * Start a cronjob to check when auction ended
  * update buyerId for auction if there was a bid
  */
-export async function createNewProduct(req, res) {
+export async function createNewProduct(req, res, next) {
   try {
     const data = await createNewProductBusiness(req, res);
     const serializedData = serializeProducts(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
@@ -48,13 +48,13 @@ export async function createNewProduct(req, res) {
  * New price must be higher than current price
  * When succeed create a history for the bidding transaction
  */
-export async function updateProductPrice(req, res) {
+export async function updateProductPrice(req, res, next) {
   try {
     const data = await updateProductCurrentPriceBusiness(req, res);
     const serializedData = serializeProducts(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }
 
@@ -63,12 +63,12 @@ export async function updateProductPrice(req, res) {
  * Request should only be sent by who created this product
  * Update auction detail field for endAt and desciption if exists
  */
-export async function updateProductDetail(req, res) {
+export async function updateProductDetail(req, res, next) {
   try {
     const data = await updateProductDetailBusiness(req, res);
     const serializedData = serializeProducts(data);
     responseSuccess(res, serializedData);
   } catch (error) {
-    responseError(res, error);
+    next(error);
   }
 }

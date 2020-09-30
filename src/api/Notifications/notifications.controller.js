@@ -19,9 +19,13 @@ export async function getListNotifications(req, res, next) {
   }
 }
 
-export async function createNotification(req, res) {
-  const data = await createNotificationBusiness(req, res);
-  responseSuccess(res, serializeNotification(data));
+export async function createNotification(req, res, next) {
+  try {
+    const data = await createNotificationBusiness(req, res);
+    responseSuccess(res, serializeNotification(data));
+  } catch (error) {
+    next(error);
+  }
 }
 
 export async function markAllNotificationAsRead(req, res, next) {
@@ -33,7 +37,11 @@ export async function markAllNotificationAsRead(req, res, next) {
   }
 }
 
-export async function markANotficationAsRead(req, res) {
-  const data = await markANotificationAsreadBusiness(req, res);
-  responseSuccess(res, serializeAllNotifications(data));
+export async function markANotficationAsRead(req, res, next) {
+  try {
+    const data = await markANotificationAsreadBusiness(req, res);
+    responseSuccess(res, serializeAllNotifications(data));
+  } catch (error) {
+    next(error);
+  }
 }

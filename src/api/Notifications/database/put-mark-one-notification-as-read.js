@@ -1,5 +1,3 @@
-import { Sequelize } from '../../../../models';
-
 const db = require('../../../../models');
 
 /**
@@ -16,25 +14,25 @@ const db = require('../../../../models');
 
 export async function markANotificationAsRead(data) {
   try {
+    console.log(data);
     await db.Notifications.update(
       { isRead: true },
       {
         where: {
           userId: data.userId,
-          description: Sequelize.literal(
-            `MATCH(description) AGAINST(${data.description}) IN NATURAL LANGUAGE MODE`,
-          ),
-          createdAt: data.createdAt,
+          created_at: data.createdAt,
+          description: data.description,
         },
       },
     );
-    return await db.Notifications.findAll({
+    return db.Notifications.findAll({
       where: {
         userId: data.userId,
       },
+      raw: true,
     });
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 }

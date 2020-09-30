@@ -164,10 +164,6 @@
                     "field": "status",
                     "seqType": "Sequelize.ENUM('active', 'ban')"
                 },
-                "isReminderCreated": {
-                    "field": "is_reminder_created",
-                    "seqType": "Sequelize.BOOLEAN"
-                },
                 "createdBy": {
                     "field": "created_by",
                     "seqType": "Sequelize.UUID"
@@ -630,44 +626,7 @@
                 }
             },
             "indexes": []
-        },
-        "reminders": {
-            "tableName": "reminders",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "defaultValue": {
-                        "internal": true,
-                        "value": "Sequelize.UUIDV4"
-                    },
-                    "field": "id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "userId": {
-                    "field": "user_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "auctionId": {
-                    "field": "auction_id",
-                    "seqType": "Sequelize.UUID"
-                },
-                "pushAt": {
-                    "field": "push_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "created_at": {
-                    "allowNull": false,
-                    "field": "created_at",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updated_at": {
-                    "allowNull": false,
-                    "field": "updated_at",
-                    "seqType": "Sequelize.DATE"
-                }
-            },
-            "indexes": []
         }
     },
-    "revision": 2
+    "revision": 1
 }

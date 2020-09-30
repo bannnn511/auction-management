@@ -9,9 +9,9 @@ const db = require('../../../../models');
 
 export async function markAllNotificationsAsRead(userId) {
   try {
-    const data = await db.Notifications.update(
+    return db.Notifications.update(
       {
-        isRead: false,
+        isRead: true,
       },
       {
         where: {
@@ -19,9 +19,8 @@ export async function markAllNotificationsAsRead(userId) {
         },
       },
     );
-    return data;
   } catch (error) {
     console.error(error);
-    return null;
+    return error;
   }
 }

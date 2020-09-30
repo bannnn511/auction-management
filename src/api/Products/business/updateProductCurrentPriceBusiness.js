@@ -4,14 +4,13 @@ import { getAuctionWithProductId } from '../../AuctionManagement/database';
 import { AppError } from '../../../utils/appError';
 import { serializeAuctionHistoryFromProductAndAuction } from '../../AuctionHistories/history.serialize';
 import { createAuctionHistory } from '../../AuctionHistories/database';
-import { responseError } from '../../../shared/helpers';
 import { Email } from '../../../utils/email';
 import { getUserBanStatusFromAuctions } from '../../AuctionParticipating/database';
 import { UserBanStatus } from '../../../shared/helpers/constant';
 
 import db from '../../../../models';
 
-export async function updateProductCurrentPriceBusiness(req, res) {
+export async function updateProductCurrentPriceBusiness(req) {
   const io = req.app.get('socket');
   const transaction = await db.sequelize.transaction();
   try {
@@ -23,13 +22,13 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     // check product exist
     const checkProduct = await getProductWithId(id);
     if (!checkProduct) {
-      throw new AppError('Product does not exist', 204);
+      throw new AppError('Product does not exist', 500, true);
     }
 
     // check auction exist
     const auction = await getAuctionWithProductId(id);
     if (!auction) {
-      throw new AppError('There is no auction with this product', 204);
+      throw new AppError('There is no auction with this product', 500, true);
     }
 
     // check ban status
@@ -38,7 +37,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
       userId: body.updatedBy,
     });
     if (status === UserBanStatus.BAN) {
-      throw new AppError('You have been banned from this auction', 400);
+      throw new AppError('You have been banned from this auction', 500, true);
     }
 
     if (checkProduct.currentPrice >= body.price) {
@@ -50,7 +49,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
 
     // check if bidding time is till valid
     if (auction.endAt <= new Date(_.now())) {
-      throw new AppError('Bidding time has expired', 204);
+      throw new AppError('Bidding time has expired', 500, true);
     }
 
     /*
@@ -60,7 +59,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     */
     const newProduct = await updateProductPrice(body, transaction);
     if (!newProduct) {
-      throw new AppError('Cannot create Auction History', 204);
+      throw new AppError('Cannot create Auction History', 500, true);
     }
     const fullAuctionDetail = serializeAuctionHistoryFromProductAndAuction(
       newProduct,
@@ -69,7 +68,7 @@ export async function updateProductCurrentPriceBusiness(req, res) {
 
     const history = await createAuctionHistory(fullAuctionDetail, transaction);
     if (!history) {
-      throw new AppError('Cannot create Auction History', 204);
+      throw new AppError('Cannot create Auction History', 500, true);
     }
     await transaction.commit();
 
@@ -88,7 +87,6 @@ export async function updateProductCurrentPriceBusiness(req, res) {
     return returnData;
   } catch (error) {
     await transaction.rollback();
-    responseError(res, error);
-    return null;
+    throw error;
   }
 }

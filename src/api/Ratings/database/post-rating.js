@@ -9,19 +9,13 @@ export async function ratingUser(
   createdBy,
   updatedBy,
 ) {
-  try {
-    const rating = db.Ratings.create({
-      raterId,
-      ratedId,
-      description,
-      auctionId,
-      point,
-      createdBy,
-      updatedBy,
-    });
-    return rating;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+  return db.Ratings.create({
+    raterId,
+    ratedId,
+    description,
+    auctionId,
+    point,
+    createdBy,
+    updatedBy,
+  });
 }

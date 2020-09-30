@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { isEmptyObject } from '../../../shared/helpers';
 import { AppError } from '../../../utils/appError';
 import { getListNotifications } from '../database';
 import { markAllNotificationsAsRead } from '../database/put-mark-all-notifications-as-read';
@@ -23,8 +22,12 @@ import { markAllNotificationsAsRead } from '../database/put-mark-all-notificatio
 export async function markAllNotficationAsReadBusiness(req) {
   const userId = _.get(req, 'currentUser.id');
   const data = await markAllNotificationsAsRead(userId);
-  if (!data || !isEmptyObject(data)) {
-    throw new AppError('Can not mark all notifications as read for this user');
+  if (!data) {
+    throw new AppError(
+      'Can not mark all notifications as read for this user',
+      500,
+      true,
+    );
   }
   return getListNotifications(userId);
 }
