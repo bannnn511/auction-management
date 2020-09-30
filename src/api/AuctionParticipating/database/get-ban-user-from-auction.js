@@ -13,5 +13,5 @@ export async function getUserBanStatusFromAuctions(data) {
   if (auction == null) {
     return UserBanStatus.ACTIVE;
   }
-  return auction.status;
+  return UserBanStatus.BAN;
 }

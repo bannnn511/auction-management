@@ -68,7 +68,7 @@ async function onAuctionEnded(auctionId, productId) {
 }
 
 /**
- * Creates a cronjob to check when auction ended.
+ * Create a cronjob to check when auction ended.
  * If the auction ends, update the AuctionManagements table.
  *
  * @param {Object} auction - The auction data.
