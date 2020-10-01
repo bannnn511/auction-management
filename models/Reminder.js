@@ -27,5 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
     },
   );
+
+  Reminders.associate = (models) => {
+    Reminders.belongsTo(models.AuctionManagements, {
+      as: 'reminder',
+      foreignKey: 'auctionId',
+    });
+  };
   return Reminders;
 };

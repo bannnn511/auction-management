@@ -94,9 +94,8 @@ async function checkBiddingCondition(body) {
  * @param {*} data
  */
 async function addUserParticipateAuction(data) {
-  if (
-    UserBanStatus.ACTIVE !== (await checkUserParticipateAuction(data).status)
-  ) {
+  const payload = await checkUserParticipateAuction(data);
+  if (!payload) {
     const participate = await userParticipateAuctions(data);
     if (!participate) {
       throw new AppError('Cannot add user paraticipate auction', 500, true);
@@ -125,7 +124,7 @@ export async function updateProductCurrentPriceBusiness(req) {
     body.updatedBy = req.currentUser.id;
     body.id = id;
 
-    const auction = checkBiddingCondition(body);
+    const auction = await checkBiddingCondition(body);
     if (auction instanceof Error) {
       throw auction;
     }

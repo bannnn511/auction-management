@@ -65,6 +65,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'auction',
       foreignKey: 'auctionId',
     });
+    AuctionManagements.hasMany(models.Reminders, {
+      as: 'reminder',
+      foreignKey: 'auctionId',
+    });
   };
 
   return AuctionManagements;

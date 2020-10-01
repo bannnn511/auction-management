@@ -10,7 +10,7 @@ export function restrictedTo(role) {
         next();
       } else {
         console.log(chalk.yellow('Access denied'));
-        responseError(res, `Authority denied, you are not ${role}`, 403);
+        responseError(res, `Authority denied, you are not ${role}`, 403, true);
       }
     } catch (error) {
       next(error);

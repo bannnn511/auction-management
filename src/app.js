@@ -13,7 +13,7 @@ const chalk = require('chalk');
 const { errorHandler } = require('./shared/middleware/error-handler');
 const { apiRouter } = require('./api');
 const { client } = require('./shared/helpers/redis');
-const { responseError } = require('./shared/helpers');
+const { Cron } = require('./jobs/index');
 
 const app = express();
 const corsOptions = {
@@ -38,11 +38,14 @@ client.on('connect', () => {
 client.on('error', (error) => {
   console.error(chalk.magenta('[REDIS] not connected', error));
 });
-// winston
+
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });
+
+const cronJobs = new Cron();
+cronJobs.start();
 
 const io = socketio(server);
 const activeAuctions = [];

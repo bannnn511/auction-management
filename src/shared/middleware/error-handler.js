@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 export function errorHandler(err, req, res, next) {
-  console.log('🔥🔥🔥 Error handler');
+  console.error('🔥🔥🔥 Error handler', err);
 
   if (err.isAppError) {
     return res.status(err.statusCode || 500).json({
