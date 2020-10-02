@@ -1,6 +1,6 @@
 import { getToken, responseError } from '../helpers';
 
-const { client } = require('../helpers/redis');
+const { client } = require('../../loaders/redis');
 
 export function redisValidation(req, res, next) {
   const token = getToken(req);

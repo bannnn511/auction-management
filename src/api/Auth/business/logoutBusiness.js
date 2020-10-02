@@ -1,6 +1,6 @@
 import { getToken, responseError } from '../../../shared/helpers';
 
-const { client } = require('../../../shared/helpers/redis');
+const { client } = require('../../../loaders/redis');
 
 export async function logoutBusiness(req, res) {
   try {

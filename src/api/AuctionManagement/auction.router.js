@@ -9,6 +9,7 @@ import {
   getAuctionOnMarketOfASeller,
   getAuctionSoldOnMarketOfASeller,
   banUserFromAuction,
+  getAuctionsByDescription,
 } from './auction.controller';
 import {
   authentication,
@@ -17,7 +18,10 @@ import {
   validateBody,
 } from '../../shared/middleware';
 import { UserType } from '../../shared/helpers/constant';
-import { banUserFromAuctionSchema } from './auction.schema';
+import {
+  auctionDescriptionSchema,
+  banUserFromAuctionSchema,
+} from './auction.schema';
 
 const { Router } = require('express');
 
@@ -43,6 +47,11 @@ auctionRouter.get(
   getAuctionSoldOnMarketOfASeller,
 );
 auctionRouter.get('/:id/buyers', getListBuyerInAuction);
+auctionRouter.get(
+  '/description',
+  validateBody(auctionDescriptionSchema),
+  getAuctionsByDescription,
+);
 
 /*
  * Get User winning auction products

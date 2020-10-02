@@ -16,5 +16,6 @@ export function createReminder(reminder) {
     userId: reminder.userId,
     auctionId: reminder.auctionId,
     pushAt: reminder.pushAt,
+    isPushed: false,
   });
 }

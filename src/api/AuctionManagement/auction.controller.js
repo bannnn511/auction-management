@@ -18,6 +18,7 @@ import {
   getAuctionSoldOnMarketOfASellerBusiness,
   banUserFromAuctionBusiness,
 } from './business';
+import { getAuctionsByDescriptionBusiness } from './business/getAuctionsByDescription';
 
 export async function getListAuction(req, res, next) {
   try {
@@ -115,6 +116,15 @@ export async function banUserFromAuction(req, res, next) {
     const data = await banUserFromAuctionBusiness(req, res);
     const serializedData = serializeUser(data);
     responseSuccess(res, serializedData);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getAuctionsByDescription(req, res, next) {
+  try {
+    const data = await getAuctionsByDescriptionBusiness(req);
+    responseSuccess(res, serializeAllAuctions(data));
   } catch (error) {
     next(error);
   }

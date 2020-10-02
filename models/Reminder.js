@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         field: 'push_at',
       },
+      isPushed: {
+        type: DataTypes.BOOLEAN,
+        field: 'is_pushed',
+      },
     },
     {
       tableName: 'reminders',

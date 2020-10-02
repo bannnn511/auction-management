@@ -12,3 +12,4 @@ export * from './get-auction-on-marker';
 export * from './get-auction-sold';
 export * from './get-auction-by-product-name';
 export * from './post-ban-user-from-auction';
+export * from './get-auctions-by-description';

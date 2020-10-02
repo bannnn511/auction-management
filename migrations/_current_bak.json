@@ -649,6 +649,13 @@
                 },
                 "auctionId": {
                     "field": "auction_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "auction_managements",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.UUID"
                 },
                 "pushAt": {
@@ -669,5 +676,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }

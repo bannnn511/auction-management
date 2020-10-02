@@ -1,5 +1,5 @@
 import { getToken } from '../../../shared/helpers';
-import { client } from '../../../shared/helpers/redis';
+import { client } from '../../../loaders/redis';
 import AppError from '../../../utils/appError';
 
 export async function blacklistToken(req) {

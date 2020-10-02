@@ -662,6 +662,10 @@
                     "field": "push_at",
                     "seqType": "Sequelize.DATE"
                 },
+                "isPushed": {
+                    "field": "is_pushed",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "created_at": {
                     "allowNull": false,
                     "field": "created_at",
@@ -676,5 +680,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }

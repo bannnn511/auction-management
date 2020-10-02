@@ -3,68 +3,12 @@ require('@babel/polyfill');
 require('dotenv').config();
 
 const express = require('express');
-const socketio = require('socket.io');
-const helmet = require('helmet');
-const cors = require('cors');
-const { json } = require('body-parser');
-const logger = require('morgan');
-const chalk = require('chalk');
-
-const { errorHandler } = require('./shared/middleware/error-handler');
-const { apiRouter } = require('./api');
-const { client } = require('./shared/helpers/redis');
-const { Cron } = require('./jobs/index');
+const loaders = require('./loaders');
 
 const app = express();
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  exposedHeaders: ['X-Total-Count'],
-};
-app.use(cors(corsOptions));
-app.use(helmet());
-app.use(logger('dev'));
-app.use(json());
-app.use('/api', apiRouter);
-
-// Error handling middleware, we delegate the handling to the centralized error handler
-app.use(errorHandler);
-
-client.on('connect', () => {
-  console.info(chalk.magenta('[REDIS] client connected'));
-});
-client.on('error', (error) => {
-  console.error(chalk.magenta('[REDIS] not connected', error));
-});
-
 const PORT = process.env.PORT || 4000;
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });
 
-const cronJobs = new Cron();
-cronJobs.start();
-
-const io = socketio(server);
-const activeAuctions = [];
-
-io.sockets.on('connection', (socket) => {
-  console.log(chalk.magenta('[SOCKET] connected:', socket.id));
-  console.log('Auctions:', activeAuctions.length);
-  io.emit('askForUserId');
-
-  socket.on('userIdReceived', (userId) => {
-    activeAuctions[userId] = socket.id;
-  });
-
-  socket.on('disconnect', () => {
-    activeAuctions.filter((disconnectedId) => disconnectedId === socket.id);
-    console.log(chalk.red('[SOCKET] disconnected', socket.id));
-    io.emit('auction disconnected', socket.id);
-  });
-});
-
-app.set('socket', io);
-app.set('activeAuctions', activeAuctions);
+loaders.default({ app, server });
