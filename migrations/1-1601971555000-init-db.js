@@ -14,14 +14,16 @@ var Sequelize = require('sequelize');
  * createTable "category_managments", deps: [categories, products]
  * createTable "favorites", deps: [categories, buyers, products, categories]
  * createTable "notifications", deps: [buyers]
+ * createTable "onesignal", deps: [buyers]
  * createTable "ratings", deps: [buyers, buyers, auction_managements, buyers, buyers]
+ * createTable "reminders", deps: [auction_managements]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "1600852668000-init-db",
-    "created": "2020-09-23T09:17:49.622Z",
+    "name": "1601971555000-init-db",
+    "created": "2020-10-06T08:05:56.167Z",
     "comment": ""
 };
 
@@ -361,6 +363,10 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.ENUM('active', 'ban'),
                         "field": "status"
                     },
+                    "isReminderCreated": {
+                        "type": Sequelize.BOOLEAN,
+                        "field": "is_reminder_created"
+                    },
                     "createdBy": {
                         "type": Sequelize.UUID,
                         "field": "created_by"
@@ -574,6 +580,48 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
+                "onesignal",
+                {
+                    "id": {
+                        "type": Sequelize.UUID,
+                        "field": "id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "userId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "NO ACTION",
+                        "references": {
+                            "model": "buyers",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "user_id"
+                    },
+                    "playerId": {
+                        "type": Sequelize.UUID,
+                        "field": "player_id"
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
                 "ratings",
                 {
                     "id": {
@@ -668,6 +716,56 @@ var migrationCommands = function(transaction) {
                     "transaction": transaction
                 }
             ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "reminders",
+                {
+                    "id": {
+                        "type": Sequelize.UUID,
+                        "field": "id",
+                        "defaultValue": Sequelize.UUIDV4,
+                        "primaryKey": true
+                    },
+                    "userId": {
+                        "type": Sequelize.UUID,
+                        "field": "user_id"
+                    },
+                    "auctionId": {
+                        "type": Sequelize.UUID,
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "auction_managements",
+                            "key": "id"
+                        },
+                        "allowNull": true,
+                        "field": "auction_id"
+                    },
+                    "pushAt": {
+                        "type": Sequelize.DATE,
+                        "field": "push_at"
+                    },
+                    "isPushed": {
+                        "type": Sequelize.BOOLEAN,
+                        "field": "is_pushed"
+                    },
+                    "created_at": {
+                        "type": Sequelize.DATE,
+                        "field": "created_at",
+                        "allowNull": false
+                    },
+                    "updated_at": {
+                        "type": Sequelize.DATE,
+                        "field": "updated_at",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
         }
     ];
 };
@@ -722,6 +820,12 @@ var rollbackCommands = function(transaction) {
         },
         {
             fn: "dropTable",
+            params: ["onesignal", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
             params: ["products", {
                 transaction: transaction
             }]
@@ -729,6 +833,12 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["ratings", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["reminders", {
                 transaction: transaction
             }]
         }

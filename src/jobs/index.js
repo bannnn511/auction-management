@@ -5,6 +5,7 @@ import {
   updateReminderCreated,
 } from '../api/AuctionParticipating/database';
 import { createNotification } from '../api/Notifications/database/post-create-notification';
+import { getOneSignalPlayerId } from '../api/OneSignal/database';
 import {
   createReminder,
   getUnpuhsedReminders,
@@ -42,8 +43,8 @@ function createReminderWithArrayOfDays(reminder, dates) {
 /**
  * Push notifications with one signal.
  *
- * @param {*} description
- * @param {*} players
+ * @param {string} description
+ * @param {[string]} players
  */
 function sendNotificationOneSignal(description, players) {
   const oneSignalMess = {
@@ -57,7 +58,7 @@ function sendNotificationOneSignal(description, players) {
 export class Cron {
   constructor(app) {
     this.uncreatedReminders = [];
-    this.unpuhedNotifications = [];
+    this.unpushedNotifications = [];
     this.io = app.get('socket');
     this.activeAuctions = app.get('activeAuctions');
     this.isRunning = false;
@@ -122,7 +123,7 @@ export class Cron {
 
   /**
    * Cron job for getting unpushed notifications.
-   * isNotifi - semaphore clock to run concurrently with fireNotifications().
+   * isNotifi - semaphore lock to run concurrently with fireNotifications().
    *
    * @memberof Cron
    */
@@ -130,7 +131,7 @@ export class Cron {
     cron.schedule('*/1 * * * *', async () => {
       if (!this.isNotifi) {
         this.isNotifi = true;
-        this.unpuhedNotifications = await getUnpuhsedReminders();
+        this.unpushedNotifications = await getUnpuhsedReminders();
         this.isNotifi = false;
       }
     });
@@ -140,20 +141,21 @@ export class Cron {
    * Push notifications
    * Update isPushed in Reminders to true;
    * Create notification logs;
-   * isNotifi - semaphore clock to run concurrently with getUnpushedNotifications().
+   * isNotifi - semaphore lock to run concurrently with getUnpushedNotifications().
    *
    * @memberof Cron
    */
   fireNotifications() {
     this.io.emit('askForUserId');
     cron.schedule('*/1 * * * *', () => {
-      this.unpuhedNotifications.forEach(async (noti) => {
+      this.unpushedNotifications.forEach(async (noti) => {
         if (!this.isNotifi) {
           this.isNotifi = true;
           if (noti.pushAt <= new Date(_.now())) {
             const description = 'Your participating auctions is about to end';
             this.pushWithSocket(noti.userId, description);
-            sendNotificationOneSignal();
+            const players = await getOneSignalPlayerId(noti.userId);
+            sendNotificationOneSignal(description, players);
             await updateReminderToCreated(noti);
             await createNotification({
               userId: noti.userId,

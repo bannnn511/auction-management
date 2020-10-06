@@ -8,10 +8,11 @@ import { historiesRouter } from './AuctionHistories/history.router';
 import { ratingsRouter } from './Ratings/rating.router';
 import { favouriteRouter } from './Favourites/favourite-router';
 import { notificationRouter } from './Notifications/notifications.router';
+import { onesignalRouter } from './OneSignal/onesignal.router';
 
 const apiRouter = Router();
 
-// log request
+// Log request
 apiRouter.use('*', (req, res, next) => {
   console.log('📧 📧 📧', { 'Request body': req.body });
   next();
@@ -26,5 +27,6 @@ apiRouter.use('/histories', historiesRouter);
 apiRouter.use('/ratings', ratingsRouter);
 apiRouter.use('/favourites', favouriteRouter);
 apiRouter.use('/notifications', notificationRouter);
+apiRouter.use('/onesignal', onesignalRouter);
 
 export { apiRouter };

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: 'favorites',
+      tableName: 'onesignal',
       updatedAt: 'updated_at',
       createdAt: 'created_at',
     },
