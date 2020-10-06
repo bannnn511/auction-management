@@ -95,6 +95,7 @@ async function checkBiddingCondition(body) {
  */
 async function addUserParticipateAuction(data) {
   const payload = await checkUserParticipateAuction(data);
+  console.log(payload);
   if (!payload) {
     const participate = await userParticipateAuctions(data);
     if (!participate) {
