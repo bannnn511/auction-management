@@ -11,9 +11,9 @@ const onesignalRouter = Router();
 
 onesignalRouter.post(
   '/',
-  validateBody(OneSignalSchema),
   authentication,
   redisValidation,
+  validateBody(OneSignalSchema),
   addOneSignalPlayerId,
 );
 
