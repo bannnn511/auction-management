@@ -7,7 +7,7 @@ import { addOneSignalPlayerId, getOneSignalPlayerId } from '../database';
  *
  * @param {string} playerId - OneSignal playerId
  * @param {string} userId - user Id
- * @return {boolean}
+ * @return {Promise<boolean>}
  */
 async function checkOneSignalId(playerId, userId) {
   if (playerId === (await getOneSignalPlayerId(userId))) {
@@ -19,11 +19,12 @@ async function checkOneSignalId(playerId, userId) {
 export async function addOneSignalPlayerIdBusiness(req) {
   const userId = _.get(req, 'currentUser.id');
   const { playerId } = req.body;
-  if (!checkOneSignalId(playerId, userId)) {
-    return;
+  if (!(await checkOneSignalId(playerId, userId))) {
+    return 'OneSignal playerId already exists';
   }
   const data = await addOneSignalPlayerId({ userId, playerId });
   if (!data) {
     throw new AppError('Cannot add user onesignal playerId', 500, true);
   }
+  return 'OneSignal playerId sent successfully';
 }

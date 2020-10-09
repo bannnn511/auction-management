@@ -4,7 +4,7 @@ const db = require('../../../../models');
  * Get list of reminders where field isPushed == false.
  *
  * @export
- * @return {[Reminders]} List of Reminders.
+ * @return {Promise<object[]>} List of Reminders.
  */
 export async function getUnpuhsedReminders() {
   return db.Reminders.findAll({

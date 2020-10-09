@@ -5,7 +5,7 @@ import {
   updateReminderCreated,
 } from '../api/AuctionParticipating/database';
 import { createNotification } from '../api/Notifications/database/post-create-notification';
-import { getOneSignalPlayerId } from '../api/OneSignal/database';
+import { getAllOneSignalPlayerId } from '../api/OneSignal/database';
 import {
   createReminder,
   getUnpuhsedReminders,
@@ -25,10 +25,9 @@ const cron = require('node-cron');
 
 /**
  * Create reminders.
- * Mutated dates.
  *
  * @param {Reminder} reminder
- * @param {Date} dates - array of dates to push notifications.
+ * @param {Date[]} dates - array of dates to push notifications.
  */
 function createReminderWithArrayOfDays(reminder, dates) {
   dates.forEach((date) => {
@@ -47,6 +46,7 @@ function createReminderWithArrayOfDays(reminder, dates) {
  * @param {[string]} players
  */
 function sendNotificationOneSignal(description, players) {
+  console.log('OneSignal playerIds:', players);
   const oneSignalMess = {
     app_id: process.env.ONESIGNAL_ID,
     contents: { en: description },
@@ -104,18 +104,16 @@ export class Cron {
     cron.schedule('*/1 * * * *', () => {
       if (!this.isRunning) {
         this.isRunning = true;
-        if (this.uncreatedReminders.length > 0) {
-          this.uncreatedReminders.forEach(async (reminder, index, object) => {
-            const endat = new Date(_.get(reminder, 'auctionManagements.endAt'));
-            const dates = [];
-            dates.push(endat.setDate(endat.getDate() + 1)); // after 24h
-            dates.push(new Date(endat - 3600 * 1000 * 24 * 2)); // before 48h
-            dates.push(new Date(endat - 3600 * 1000 * 24)); // before 24h
-            createReminderWithArrayOfDays(reminder, dates);
-            await updateReminderCreated(reminder);
-            object.splice(index, 1);
-          });
-        }
+        this.uncreatedReminders.forEach(async (reminder, index, object) => {
+          const endat = new Date(_.get(reminder, 'auctionManagements.endAt'));
+          const dates = [];
+          dates.push(endat.setDate(endat.getDate() + 1)); // after 24h
+          dates.push(new Date(endat - 3600 * 1000 * 24 * 2)); // before 48h
+          dates.push(new Date(endat - 3600 * 1000 * 24)); // before 24h
+          createReminderWithArrayOfDays(reminder, dates);
+          await updateReminderCreated(reminder);
+          object.splice(index, 1);
+        });
         this.isRunning = false;
       }
     });
@@ -146,15 +144,15 @@ export class Cron {
    * @memberof Cron
    */
   fireNotifications() {
-    this.io.emit('askForUserId');
     cron.schedule('*/1 * * * *', () => {
-      this.unpushedNotifications.forEach(async (noti) => {
-        if (!this.isNotifi) {
-          this.isNotifi = true;
+      this.io.emit('askForUserId');
+      if (!this.isNotifi) {
+        this.isNotifi = true;
+        this.unpushedNotifications.forEach(async (noti) => {
           if (noti.pushAt <= new Date(_.now())) {
             const description = 'Your participating auctions is about to end';
             this.pushWithSocket(noti.userId, description);
-            const players = await getOneSignalPlayerId(noti.userId);
+            const players = await getAllOneSignalPlayerId(noti.userId);
             sendNotificationOneSignal(description, players);
             await updateReminderToCreated(noti);
             await createNotification({
@@ -162,9 +160,9 @@ export class Cron {
               description,
             });
           }
-          this.isNotifi = false;
-        }
-      });
+        });
+        this.isNotifi = false;
+      }
     });
   }
 

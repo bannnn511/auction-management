@@ -5,6 +5,7 @@ export async function getListNotifications(userId) {
     const data = await db.Notifications.findAll({
       where: { userId },
       raw: true,
+      order: [['created_at', 'DESC']],
     });
     return data;
   } catch (error) {

@@ -3,8 +3,8 @@ import { addOneSignalPlayerIdBusiness } from './business/addOneSignalPlayerIdBus
 
 export async function addOneSignalPlayerId(req, res, next) {
   try {
-    await addOneSignalPlayerIdBusiness(req);
-    responseSuccess(res, { mss: 'OneSignal Player Id sent successfully' });
+    const mss = await addOneSignalPlayerIdBusiness(req);
+    responseSuccess(res, { mss });
   } catch (error) {
     next(error);
   }
