@@ -8,12 +8,12 @@ export async function registerBusiness(req, res) {
     const { body } = req;
 
     const checkUser = await getUserIdWithEmail(body);
-    if (checkUser) {
-      throw new AppError('User already exists', 204);
+    if (!checkUser) {
+      throw new AppError('User already exists', 500, true);
     }
     const buyer = await registerUser(body);
     if (!buyer) {
-      throw new AppError('Create account fail', 400);
+      throw new AppError('Create account fail', 500, true);
     }
     return buyer;
   } catch (error) {

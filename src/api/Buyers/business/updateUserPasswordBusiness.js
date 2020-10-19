@@ -13,12 +13,12 @@ export async function updateUserPasswordBusiness(req, res) {
     // check if Id is the same
     if (req.currentUser.type !== UserType.ADMIN) {
       if (id !== req.currentUser.id) {
-        throw new AppError('Request to change password denied', 406);
+        throw new AppError('Request to change password denied', 406, true);
       }
     }
     const buyer = await updateBuyerPassword(body);
     if (!buyer) {
-      throw new AppError("Update Buyer's password failed", 500);
+      throw new AppError("Update Buyer's password failed", 500, true);
     }
     return buyer;
   } catch (error) {

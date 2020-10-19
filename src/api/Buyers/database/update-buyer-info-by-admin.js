@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { UserType, UserStatus } from '../../../shared/helpers/constant';
 
 const db = require('../../../../models');

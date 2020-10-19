@@ -1,8 +1,9 @@
 import { AppError } from '../../../utils/appError';
 import { Email } from '../../../utils/email';
+import { banUserFromAuctions } from '../../AuctionParticipating/database/post-ban-user-from-auction';
 import { getLoginUserById } from '../../Auth/database';
 
-const { banUserFromAuctions, getAuctionById } = require('../database');
+const { getAuctionById } = require('../database');
 
 export async function banUserFromAuctionBusiness(req) {
   const { id } = req.params;

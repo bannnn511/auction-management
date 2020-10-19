@@ -15,7 +15,7 @@ export async function loginBusiness(req, res) {
       const user = await getLoginUserId(email, passOfUser);
 
       if (!user) {
-        throw new AppError('Username or password does not exists.', 400);
+        throw new AppError('Username or password does not exist.', 500, true);
       }
       const token = jwt.sign(
         { id: user.id, permissions: user.type },

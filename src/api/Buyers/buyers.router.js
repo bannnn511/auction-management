@@ -73,8 +73,8 @@ buyersRouter.put(
 buyersRouter.post(
   '/:id/password',
   validateBody(changeBuyerOrSellerPasswordSchema),
-  redisValidation,
   authentication,
+  redisValidation,
   updateUserPassword,
 );
 
