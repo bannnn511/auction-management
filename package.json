@@ -36,7 +36,7 @@
     "nodemailer": "^6.4.11",
     "nodemon": "^2.0.4",
     "pino": "^6.6.1",
-    "redis": "^3.0.2",
+    "redis": "^3.1.1",
     "sequelize": "^5.21.8",
     "sequelize-auto-migrations": "github:scimonster/sequelize-auto-migrations#a063aa6535a3f580623581bf866cef2d609531ba",
     "sequelize-cli": "^5.5.1",
